@@ -1,3 +1,16 @@
+/*
+questions:
+- how to make width relative
+- center color scale around 50% 
+
+TODO without help
+- article layout
+- reimport csv, including data for "world"
+- create top-sentence
+
+*/
+
+
 // CONFIG
 var config = { 
 	years: d3.range(1961,2014) // maximum value not included
@@ -9,7 +22,8 @@ var config = {
 var state = {
 	currentYear:d3.max(config.years), 
 	countries: [],
-	world: null
+	world: null,
+	timeline: "ready"
 };
 
 // ACTIONS
@@ -23,16 +37,39 @@ var actions = {
 		state.countries = rows;
 		render();
 	},
+	toggleTimeline : function () {
+		if (state.timeline == "ready") {
+			state.timeline = "playing";
+			state.currentYear = d3.min(config.years);
+			actions.playTimeline();
+		}
+
+		else if (state.timeline == "playing") {
+			state.timeline = "paused";
+			d3.select('.play').text("Resume");
+			return;
+		}
+
+		else if (state.timeline == "paused") {
+			state.timeline = "playing";
+			actions.playTimeline();
+		}
+	},
 	playTimeline : function() {
-		state.currentYear = d3.min(config.years);
+		
+		d3.select('.play').text("Pause");
 		setInterval(function(){
 			state.currentYear += 1;
-			if (state.currentYear <= d3.max(config.years)) {
+			if (state.timeline == "playing" && state.currentYear <= d3.max(config.years)) {
 				render();
 			}
 			else return;	
 		},800)
-		}
+	},
+	colourCountries : d3.scale.quantize() // TODO: improve
+    		.domain([45, 56])
+    		.range(d3.range(9).map(function(i) { return "q" + i + "-9"; })) // output of format quantile i of 9 (i starting at 0)
+	
 }
 
 
@@ -104,7 +141,8 @@ function renderBarchart() {
 }
 
 function renderMap() {
-	var width = 960,
+	
+	var width = 960, // TODO: make relative to viewport
     height = 960;
 
 	var projection = d3.geo.orthographic()
@@ -143,7 +181,7 @@ function renderMap() {
 	    .attr("class", "graticule")
 	    .attr("d", path);
 
-	var countries = map.selectAll('.country').data(topojson.feature(state.world, state.world.objects.countries).features);
+	var countries = map.selectAll('.country').data(topojson.feature(state.world, state.world.objects.countries).features); // TODO: make sure countries are created only once
 	  
 	countries.enter()
 	  	.insert("path", ".graticule")
@@ -156,24 +194,23 @@ function renderMap() {
       .attr("class", "boundary")
       .attr("d", path);
 
-	// TODO color counties according to their value for current year
-	// compare d.id with id in countries array
-	// return value for current year for that country
-
 	countries
-		.style('fill', function(d) {
-			var countryData = _.findWhere(state.countries, {id: +d.id});
+		/*.style('fill', function(d) {
+			var countryData = _.findWhere(state.countries, {id: +d.id}); // underscore method to find an object in an array based on property id
 			if (countryData) {
-				return countryData[state.currentYear] > 50 ? 'steelblue' : 'pink';
+				return countryData[state.currentYear] > 50 ? 'pink' : 'steelblue'; // color countries roughly (male/female)
 			}
 			return 'gray';
+		})*/
+		.attr('class', function(d) {
+			var countryData = _.findWhere(state.countries, {id: +d.id}); // underscore method to find an object in an array based on property id
+			if (countryData) {
+				// var quantile = d3.scale.quantize(countryData[state.currentYear]); // find
+				return actions.colourCountries(countryData[state.currentYear]); // colour contries by quantile
+			}
+			return 'nodata';
 		});
 }
-
-
-// TODO: function drawGlobe() {}
-
-
 
 // START
 
@@ -215,7 +252,9 @@ d3.csv('data/sexratios.csv')
 
 render(); // start rendering
 
-d3.select('.play').on("click", actions.playTimeline);
+d3.select('.play').on("click", actions.toggleTimeline); // TODO: what's a good place to put this?
+
+console.log(state.timeline);
 
 
 // it's the end of the code as we know it
