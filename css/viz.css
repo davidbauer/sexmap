@@ -1,7 +1,7 @@
 /* World map
 -------------------------------------------------------------------------------*/
 
-#map {margin:0 auto;width: 960px;}
+#map {margin:0 auto;width: 100%;max-width: 800px;}
 
 .stroke {
   fill: none;
@@ -30,19 +30,15 @@
   stroke-width: .5px;
 }
 
+.key path {display: none;}
+.key .tick {font-size: 10px;}
+.key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+
 /* Gender colors
 -------------------------------------------------------------------------------*/
-
-.q0-9 {fill:#4d9221;}
-.q1-9 {fill:#7fbc41;}
-.q2-9 {fill:#b8e186;}
-.q3-9 {fill:#e6f5d0;}
-.q4-9 {fill:#f7f7f7;}
-.q5-9 {fill:#fde0ef;}
-.q6-9 {fill:#f1b6da;}
-.q7-9 {fill:#de77ae;}
-.q8-9 {fill:#c51b7d;}
-.nodata {fill:white;}
-
-.max-m {color:#4d9221;}
-.max-f {color:#c51b7d;}
+.max-m {color:#4393c3;}
+.max-f {color:#de77ae;}

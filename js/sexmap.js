@@ -1,22 +1,23 @@
 /*
-questions:
-- define non-linear color scale colorbrewer rdbu
-- how to make width relative?
-- timeline control; pause function?
-- countries always created anew
-- import world data separately or separate during data import?
-- color legend for map
 
-TODO without help
-- reimport csv, including data for "world"
-- finish top-sentence with world percentage
+QUESTIONS:
+- how to better distinguish between missing and near-50%-values
+- whats up with greenland (dark blue even though no values), id -99, id 10
 
+TODO:
+- finish color legend for map, tick positioning on y axis alternating or just remove middle 2?: http://bl.ocks.org/mbostock/5144735
+- line chart
 */
 
 
 // CONFIG
 var config = { 
-	years: d3.range(1961,2014) // maximum value not included, so produces range 1961-2013
+	years: d3.range(1961,2014), // maximum value not included, so produces range 1961-2013
+	color : d3.scale.threshold() // TODO: improve
+    		.domain([40,45,48,49,49.8,50.2,51,52,55,60])
+			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"])
+	// predefine country groups for linecharts
+
 	} 
 
 // STATE
@@ -40,7 +41,6 @@ var actions = {
 	updateData : function(rows) {
 		state.total = _.findWhere(rows, {name: "World"});
 		state.countries = _.without(rows, _.findWhere(rows, {name: "World"}));
-		console.log(state.total);
 		render();
 	},
 	toggleTimeline : function () {
@@ -54,9 +54,11 @@ var actions = {
 
 		else if (state.timeline == "playing") {
 			state.timeline = "paused";
+			clearInterval(state.timelineInterval);
+			state.timelineInterval = null;
 			console.log(state.timeline);
 			d3.select('.play').text("Resume");
-			return; // TODO: Pause function doesn't work properly
+			return;
 		}
 
 		else if (state.timeline == "paused") {
@@ -69,7 +71,7 @@ var actions = {
 		
 		d3.select('.play').text("Pause");
 		
-		setInterval(function(){
+		state.timelineInterval = setInterval(function(){
 			
 			if (state.currentYear == d3.max(config.years)) {
 				d3.select('.play').text("Play again");
@@ -84,24 +86,19 @@ var actions = {
 
 			else return;
 		},800)
-	},
-	colourCountries : d3.scale.quantize() // TODO: improve
-    		.domain([45, 56])
-    		.range(d3.range(9).map(function(i) { return "q" + i + "-9"; })) // output of format quantile i of 9 (i starting at 0)
-	
+	}
 }
 
 
 
 // RENDERING
 
-function render() { // make one render() function and call all functions to render sub-elements within 
-	
+function render() { // make one render() function and call all functions to render sub-elements within 	
 	renderMenu();
 	renderDatatext();
-	// renderBarchart(); that was just a test
 	if (state.world && state.countries.length > 0) renderMap();
-
+	renderKey(); // map legend
+	renderLinechart();
 } 
 
 // RENDERING FUNCTIONS
@@ -146,38 +143,21 @@ function renderDatatext() {
 
 }
 
-/*function renderBarchart() {
-	
-	var x = d3.scale.linear()
-		.domain([0,d3.max(state.countries, function(d) {return d[state.currentYear]})]) // input, from zero to max value
-		.range([0,1000]); // output
-
-	state.countries.sort(function(a,b) {
-			return d3.descending(a[state.currentYear], b[state.currentYear]);
-	})
-
-	var bars = d3.select('#chart').selectAll('.bar').data(state.countries); // save all bars even though they don't exist yet, hooray!
-
-	bars.enter().append('div')
-		.attr('class','bar');
-
-	bars.text(function(d) {return d.name + ": " + d[state.currentYear]})
-		.style('background', function(d) {return d[state.currentYear] > 50 ? 'steelblue' : 'pink'})
-		.style('width', function (d) {return x(d[state.currentYear]) + 'px'})
-
-
-	bars.exit().remove();
-}*/
-
 function renderMap() {
 	
-	var width = 960, // TODO: make relative to viewport
-    height = 960;
+	var width = d3.select("#map").node().offsetWidth, // .node().offsetWidth reads width of element #map
+    height = width;
 
-	var projection = d3.geo.orthographic()
-	    .scale(475)
+	// var projection = d3.geo.orthographic()
+	//     .scale(475)
+	//     .translate([width / 2, height / 2])
+	//     .clipAngle(90)
+	//     .precision(.1);
+
+	var projection = d3.geo.azimuthalEqualArea()
+	    .clipAngle(180 - 1e-3)
+	    .scale(237 / 960 * width)
 	    .translate([width / 2, height / 2])
-	    .clipAngle(90)
 	    .precision(.1);
 
 	var path = d3.geo.path()
@@ -185,13 +165,13 @@ function renderMap() {
 
 	var graticule = d3.geo.graticule();
 
-	var λ = d3.scale.linear()
-    .domain([0, width])
-    .range([-180, 180]);
+	// var λ = d3.scale.linear()
+ //    .domain([0, width])
+ //    .range([-180, 180]);
 
-	var φ = d3.scale.linear()
-    .domain([0, height])
-    .range([90, -90]);
+	// var φ = d3.scale.linear()
+ //    .domain([0, height])
+ //    .range([90, -90]);
 
 	var map = d3.select("#map").selectAll('svg').data([0]);
 
@@ -223,6 +203,7 @@ function renderMap() {
 	countries.enter()
 	  	.insert("path", ".graticule")
 	    .attr("class", "country")
+	    .attr("title", function(d) { return d.name;})
 	    .attr("id", function(d) { return "country-" + d.id;})
 	    .attr("d", path);
 
@@ -231,22 +212,67 @@ function renderMap() {
       .attr("class", "boundary")
       .attr("d", path);
 
-    svg.on("mousemove", function() {
-  		var p = d3.mouse(this);
-  		projection.rotate([λ(p[0]), φ(p[1])]);
-  		svg.selectAll("path").attr("d", path);
-	});
+      // drag to rotate via zoom function
+
+ //    svg.on("mousemove", function() {
+ //  		var p = d3.mouse(this);
+ //  		projection.rotate([λ(p[0]), φ(p[1])]);
+ //  		svg.selectAll("path").attr("d", path);
+	// });
 
 	countries
-		.attr('class', function(d) {
+		.style({'fill': function(d) {
 			var countryData = _.findWhere(state.countries, {id: +d.id}); // underscore method to find an object in an array based on property id
 			if (countryData) {
-				// var quantile = d3.scale.quantize(countryData[state.currentYear]); // find
-				return actions.colourCountries(countryData[state.currentYear]); // colour contries by quantile
-			}
-			return 'nodata';
+		 		return config.color(countryData[state.currentYear]); // colour contries
+		 	}
+		 	return '#f0f0f0'; // TODO: find better way to represent missing data
+		}
 		});
 }
+
+function renderKey() {
+
+	var x = d3.scale.linear()
+    .domain([37, 57]) // range of values to be included in the legend
+    .range([0, 300]); // defines length of legend
+
+	var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .tickSize(9)
+    .tickValues(config.color.domain());
+
+    var g = d3.select("#map").selectAll('svg').append("g")
+	    .attr("class", "key")
+	    .attr("transform", "translate(250,700)"); // position within the svg space 250 to the right, 700 from top, TODO: make responsive
+
+	g.selectAll("rect")
+	    .data(config.color.range().map(function(d, i) {
+	      return {
+	        x0: i ? x(config.color.domain()[i - 1]) : x.range()[0],
+	        x1: i < config.color.domain().length ? x(config.color.domain()[i]) : x.range()[1],
+	        z: d
+	      };
+	    }))
+	  .enter().append("rect")
+	    .attr("height", 8)
+	    .attr("x", function(d) { return d.x0; })
+	    .attr("width", function(d) { return d.x1 - d.x0; })
+	    .style("fill", function(d) { return d.z; });
+	    // .attr("x", function(d,i) { return i*(x.range()[1]/ config.color.domain().length) }) // alternative with all rects same size
+	    // .attr("width", x.range()[1]/ config.color.domain().length)
+
+	g.call(xAxis).append("text")
+	    .attr("class", "caption")
+	    .attr("y", -6)
+	    .text("Percentage of women in population");
+}
+
+function renderLinechart(selector, countries) {
+
+}
+
 
 // START
 
