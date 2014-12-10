@@ -1,7 +1,9 @@
 /*
 questions:
-- how to make width relative
-- center color scale around 50% 
+- how to make width relative?
+- timeline control; pause function?
+- countries always created anew
+- center color scale around 50%?
 
 TODO without help
 - article layout
@@ -38,32 +40,45 @@ var actions = {
 		render();
 	},
 	toggleTimeline : function () {
+
 		if (state.timeline == "ready") {
 			state.timeline = "playing";
+			console.log(state.timeline);
 			state.currentYear = d3.min(config.years);
 			actions.playTimeline();
 		}
 
 		else if (state.timeline == "playing") {
 			state.timeline = "paused";
+			console.log(state.timeline);
 			d3.select('.play').text("Resume");
-			return;
+			return; // TODO: Pause function doesn't work properly
 		}
 
 		else if (state.timeline == "paused") {
 			state.timeline = "playing";
+			console.log(state.timeline);
 			actions.playTimeline();
 		}
 	},
 	playTimeline : function() {
 		
 		d3.select('.play').text("Pause");
+		
 		setInterval(function(){
-			state.currentYear += 1;
-			if (state.timeline == "playing" && state.currentYear <= d3.max(config.years)) {
+			
+			if (state.currentYear == d3.max(config.years)) {
+				d3.select('.play').text("Play again");
+				state.timeline = "ready";
+			}
+
+			if (state.timeline == "playing") {
+				state.currentYear += 1;
+				console.log("Visualising data from " + state.currentYear);
 				render();
 			}
-			else return;	
+
+			else return;
 		},800)
 	},
 	colourCountries : d3.scale.quantize() // TODO: improve

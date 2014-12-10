@@ -4,55 +4,32 @@
 	<meta charset="UTF-8">
 	<title>Sex Map</title>
 </head>
+<link rel="stylesheet" type="text/css" href="css/reset.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 
-<style>
-
-body {
-  background: #fcfcfa;
-}
-
-.stroke {
-  fill: none;
-  stroke: #000;
-  stroke-width: 3px;
-}
-
-.fill {
-  fill: #fff;
-}
-
-.graticule {
-  fill: none;
-  stroke: #777;
-  stroke-width: .5px;
-  stroke-opacity: .5;
-}
-
-.country {
-  fill: gray;
-}
-
-.boundary {
-  fill: none;
-  stroke: #fff;
-  stroke-width: .5px;
-}
-
-</style>
-
 <body>
-	
-	<h1>World Sex Map</h1>
-	
-	<h2>In the year <span class="currentYear"></span>, <span class="currentTotalPercentage">XX%</span> of the global population were women. <span class="currentFemaleCountries">YYY</span> countries had <span class="max-f">more women</span>, <span class="currentMaleCountries">ZZ</span> countries had <span class="max-m">more men.</span></h2>
 
-	<div id="menu"></div><button class="play">Play</button>
+<div id="wrapper">
 	
-	<div id="map" width="100%"></div>
+	<article id="content">
+		
+		<section class="intro">
+			<h1>World Sex Map</h1>
+			<p>Women live longer, but in total, there are more men on this planet. The data from all countries over the past 50 years reveals some astonishing geographical patterns and striking developments over time.</p>
+		
+			<p class="datatext">In the year <span class="currentYear"></span>, <span class="currentTotalPercentage">XX%</span> of the global population were women. <span class="currentFemaleCountries">YYY</span> countries had <span class="max-f">more women</span>, <span class="currentMaleCountries">ZZ</span> countries had <span class="max-m">more men.</span></p>
 
-	<div id="chart"></div>
-	
+		</section>
+
+		<div id="menu"></div><button class="play">Play</button>
+		
+		<div id="map"></div>
+
+		<!-- <div id="chart"></div> -->
+
+	</article>
+
+</div>	
 
 	<!-- d3 must be loaded after all the other elements -->
 	<script src="http://underscorejs.org/underscore-min.js" charset="utf-8"></script>
