@@ -27,8 +27,11 @@ var actions = {
 		state.currentYear = d3.min(config.years);
 		setInterval(function(){
 			state.currentYear += 1;
-			render();
-		},1000)
+			if (state.currentYear <= d3.max(config.years)) {
+				render();
+			}
+			else return;	
+		},800)
 		}
 }
 
