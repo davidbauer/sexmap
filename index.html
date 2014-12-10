@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sex Map</title>
+</head>
+
+<style>
+
+body {
+  background: #fcfcfa;
+}
+
+.stroke {
+  fill: none;
+  stroke: #000;
+  stroke-width: 3px;
+}
+
+.fill {
+  fill: #fff;
+}
+
+.graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.country {
+  fill: gray;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+</style>
+
+<body>
+	
+	<h1>Global Sex Map (but not what you think)</h1>
+	
+	<p>You're currently looking at data from <span class="currentYear"></span></p>
+
+	<div id="menu"></div><button class="play">Play</button>
+	
+	<div id="map"></div>
+
+	<div id="chart"></div>
+	
+
+	<!-- d3 must be loaded after all the other elements -->
+	<script src="http://underscorejs.org/underscore-min.js" charset="utf-8"></script>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script type="text/javascript" src="js/sexmap.js"></script>
+</body>
+</html>
