@@ -1,0 +1,48 @@
+/* World map
+-------------------------------------------------------------------------------*/
+
+#map {margin:0 auto;width: 960px;}
+
+.stroke {
+  fill: none;
+  stroke: #000;
+  stroke-width: 3px;
+}
+
+.fill {
+  fill: #fff;
+}
+
+.graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.country {
+  fill: gray;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+/* Gender colors
+-------------------------------------------------------------------------------*/
+
+.q0-9 {fill:#4d9221;}
+.q1-9 {fill:#7fbc41;}
+.q2-9 {fill:#b8e186;}
+.q3-9 {fill:#e6f5d0;}
+.q4-9 {fill:#f7f7f7;}
+.q5-9 {fill:#fde0ef;}
+.q6-9 {fill:#f1b6da;}
+.q7-9 {fill:#de77ae;}
+.q8-9 {fill:#c51b7d;}
+.nodata {fill:white;}
+
+.max-m {color:#4d9221;}
+.max-f {color:#c51b7d;}

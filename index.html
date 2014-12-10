@@ -5,7 +5,8 @@
 	<title>Sex Map</title>
 </head>
 <link rel="stylesheet" type="text/css" href="css/reset.css">
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/page.css">
+<link rel="stylesheet" type="text/css" href="css/viz.css">
 
 <body>
 
@@ -17,12 +18,15 @@
 			<h1>World Sex Map</h1>
 			<p>Women live longer, but in total, there are more men on this planet. The data from all countries over the past 50 years reveals some astonishing geographical patterns and striking developments over time.</p>
 		
-			<p class="datatext">In the year <span class="currentYear"></span>, <span class="currentTotalPercentage">XX%</span> of the global population were women. <span class="currentFemaleCountries">YYY</span> countries had <span class="max-f">more women</span>, <span class="currentMaleCountries">ZZ</span> countries had <span class="max-m">more men.</span></p>
+			<p class="datatext">In <span class="currentYear datapoint">2013</span>, <span class="currentTotalPercentage datapoint">49.59</span>% of the global population were women.<br/> <span class="currentFemaleCountries datapoint">118</span> countries had <span class="max-f">more women</span>, <span class="currentMaleCountries datapoint">76</span> countries had <span class="max-m">more men.</span></p>
 
 		</section>
-
-		<div id="menu"></div><button class="play">Play</button>
 		
+		<section class="controls">
+			<button class="play">Play</button>
+			<div id="menu"></div>	
+		</section>
+
 		<div id="map"></div>
 
 		<!-- <div id="chart"></div> -->

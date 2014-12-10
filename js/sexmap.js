@@ -1,21 +1,22 @@
 /*
 questions:
+- define non-linear color scale colorbrewer rdbu
 - how to make width relative?
 - timeline control; pause function?
 - countries always created anew
-- center color scale around 50%?
+- import world data separately or separate during data import?
+- color legend for map
 
 TODO without help
-- article layout
 - reimport csv, including data for "world"
-- create top-sentence
+- finish top-sentence with world percentage
 
 */
 
 
 // CONFIG
 var config = { 
-	years: d3.range(1961,2014) // maximum value not included
+	years: d3.range(1961,2014) // maximum value not included, so produces range 1961-2013
 	} 
 
 // STATE
@@ -24,6 +25,7 @@ var config = {
 var state = {
 	currentYear:d3.max(config.years), 
 	countries: [],
+	total: {},
 	world: null,
 	timeline: "ready"
 };
@@ -36,7 +38,9 @@ var actions = {
 		render();
 	},
 	updateData : function(rows) {
-		state.countries = rows;
+		state.total = _.findWhere(rows, {name: "World"});
+		state.countries = _.without(rows, _.findWhere(rows, {name: "World"}));
+		console.log(state.total);
 		render();
 	},
 	toggleTimeline : function () {
@@ -94,9 +98,8 @@ var actions = {
 function render() { // make one render() function and call all functions to render sub-elements within 
 	
 	renderMenu();
-	renderText();
-	renderBarchart();
-	// drawGlobe();
+	renderDatatext();
+	// renderBarchart(); that was just a test
 	if (state.world && state.countries.length > 0) renderMap();
 
 } 
@@ -128,11 +131,22 @@ function renderMenu() {
 	})
 }
 
-function renderText() {
+function renderDatatext() {
 	d3.select('.currentYear').text(state.currentYear);
+	d3.select('.currentTotalPercentage').text(d3.round(state.total[state.currentYear],2));
+
+	var sexcount = _.countBy(state.countries, function(country) {
+		if (country[state.currentYear]) {
+  			return country[state.currentYear] > 50 ? 'female': 'male';
+  		}
+	});
+
+	d3.select('.currentMaleCountries').text(sexcount['male']);
+	d3.select('.currentFemaleCountries').text(sexcount['female']);
+
 }
 
-function renderBarchart() {
+/*function renderBarchart() {
 	
 	var x = d3.scale.linear()
 		.domain([0,d3.max(state.countries, function(d) {return d[state.currentYear]})]) // input, from zero to max value
@@ -153,7 +167,7 @@ function renderBarchart() {
 
 
 	bars.exit().remove();
-}
+}*/
 
 function renderMap() {
 	
@@ -170,6 +184,14 @@ function renderMap() {
 	    .projection(projection);
 
 	var graticule = d3.geo.graticule();
+
+	var λ = d3.scale.linear()
+    .domain([0, width])
+    .range([-180, 180]);
+
+	var φ = d3.scale.linear()
+    .domain([0, height])
+    .range([90, -90]);
 
 	var map = d3.select("#map").selectAll('svg').data([0]);
 
@@ -209,14 +231,13 @@ function renderMap() {
       .attr("class", "boundary")
       .attr("d", path);
 
+    svg.on("mousemove", function() {
+  		var p = d3.mouse(this);
+  		projection.rotate([λ(p[0]), φ(p[1])]);
+  		svg.selectAll("path").attr("d", path);
+	});
+
 	countries
-		/*.style('fill', function(d) {
-			var countryData = _.findWhere(state.countries, {id: +d.id}); // underscore method to find an object in an array based on property id
-			if (countryData) {
-				return countryData[state.currentYear] > 50 ? 'pink' : 'steelblue'; // color countries roughly (male/female)
-			}
-			return 'gray';
-		})*/
 		.attr('class', function(d) {
 			var countryData = _.findWhere(state.countries, {id: +d.id}); // underscore method to find an object in an array based on property id
 			if (countryData) {
@@ -240,8 +261,8 @@ d3.json("data/world-110m.json", function(error, world) {
 	state.world = world;
 });
 
-//load the data and prepare it
-d3.csv('data/sexratios.csv')
+//load the data for all countries and prepare it
+d3.csv('data/sexratios_inclworld.csv')
 	.row(function(d) { // go through all rows and make sure values are saved as numbers
 		
 		var row = { // save values for all columns that we need
