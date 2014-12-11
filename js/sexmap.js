@@ -1,17 +1,18 @@
 /*
 
 QUESTIONS:
-- add rotation (and zooming): http://www.jasondavies.com/maps/rotate/
+!! whats up with greenland (dark blue even though no values), id -99, id 10
+- add rzooming: http://www.jasondavies.com/maps/rotate/
 - tooltip accuracy
-- line chart!
-
 - show above 60 color in legend to keep symmetry, even though it it not used in the map?
-- whats up with greenland (dark blue even though no values), id -99, id 10
+
 
 
 TODO:
+- import cleaned data (no countries with no values), check if it works with map, otherwise countries with no values need to be removed from userinput dropdown
+- add all colour steps in linechart background
 - analysis: strongest 5-year changes (in spreadsheet?)
-- finish user input for line charts
+- refactor manual repositioning of labels in linecharts
 - autocomplete for user input: http://www.brightpointinc.com/clients/brightpointinc.com/library/autocomplete/download.html
 */
 
@@ -24,7 +25,7 @@ var config = {
 			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]),
 	countryGroups: { // predefine country groups for linecharts
 		"soviet": [],	
-		"war": [],	
+		"warridden": [],	
 		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa	
 		"neighbors": [756,276,250,380,40], // Switzerland, Germany, France, Italy, Austria	
 		"arab": [682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
@@ -42,7 +43,7 @@ var state = {
 	total: {},
 	world: null,
 	timeline: "ready",
-	userselected: []
+	userselected: [32, 56] // preset to argentina and belgium
 };
 
 // ACTIONS
@@ -102,7 +103,10 @@ var actions = {
 		},800)
 	},
 	updateUserinput : function() {
-		alert("userinput");
+		state.userselected[0] = d3.select(".userinput-0").node().value; 
+		state.userselected[1] = d3.select(".userinput-1").node().value;
+
+		renderLinechart(".chart-8",state.userselected,"normal");
 	}
 }
 
@@ -116,9 +120,14 @@ function render() { // make one render() function and call all functions to rend
 	renderDatatext();
 	if (state.world && state.countries.length > 0) renderMap();
 	renderKey(); // map legend
-	renderLinechart(".chart-1", config.countryGroups.neighbors); // where to place, what data to use
-	renderLinechart(".chart-2", config.countryGroups.arab);
-	renderLinechart(".chart-3", config.countryGroups.brics);
+	renderLinechart(".chart-1", config.countryGroups.neighbors, "normal"); // where to place, what data to use
+	renderLinechart(".chart-2", config.countryGroups.brics, "normal");
+	renderLinechart(".chart-3", config.countryGroups.arab, "large");
+	renderLinechart(".chart-4", config.countryGroups.mostrising, "normal");
+	renderLinechart(".chart-5", config.countryGroups.mostbalanced, "normal");
+	//renderLinechart(".chart-6", config.countryGroups.warridden, "normal");
+	//renderLinechart(".chart-7", config.countryGroups.soviet, "normal");
+	renderLinechart(".chart-8",state.userselected,"normal");
 	renderUserinput();
 } 
 
@@ -310,13 +319,48 @@ function renderKey() {
 	    .text("Percentage of women in population");
 }
 
-function renderLinechart(selector, countries) {
+function renderLinechart(selector, countries, size) {
 
-	var margin = {top: 20, right: 10, bottom: 20, left: 50};
-	var width = 400 - margin.left - margin.right,
-	    height = 200 - margin.top - margin.bottom;
+	// manual label position corrections (refactor to come as a param)
+	var countryLabelPositionDeltas = {
+		'.chart-1': {
+			
+		},
+		'.chart-2': {
+			356: -3,
+			156: +3
 
-	var data = countries.map(function(id) {
+		},
+		'.chart-3': {
+			
+		},
+		'.chart-4': {
+
+			
+		},
+		'.chart-5': {
+
+			834: -10,
+			218: +10,
+			434: +20
+			
+		},
+		'.chart-6': {
+			
+		}
+		,
+		'.chart-7': {
+			
+		},
+		'.chart-8': {
+			
+		}
+	};
+	var margin = {top: 20, right: 70, bottom: 20, left: 50};
+	var width = d3.select(selector).node().offsetWidth - margin.left - margin.right,
+	    height = size == "normal" ? d3.select(selector).node().offsetWidth/2 - margin.top - margin.bottom : d3.select(selector).node().offsetWidth - margin.top - margin.bottom;
+
+	var data = countries.map(function(id) { // take input countries and prepare the data
 		var countryData = _.findWhere(state.countries, {id: +id});
 		return {
 			key: +id,
@@ -330,6 +374,7 @@ function renderLinechart(selector, countries) {
 		};
 	});
 
+	// extract range from values to define y-axis range
 	var valueExtent = [
 		d3.min(data, function(countryData) { return d3.min(countryData.values, function(d) { return d.value; }); }),
 		d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); })
@@ -337,6 +382,7 @@ function renderLinechart(selector, countries) {
 
 	var colorScale = d3.scale.category10();
 
+	// scale values on axes
 	var x = d3.scale.linear()
 		.domain(d3.extent(config.years))
 		.range([0, width]);
@@ -346,21 +392,21 @@ function renderLinechart(selector, countries) {
 		.range([height, 0])
 		.nice(2);
 
-
+	// draw the line
 	var line = d3.svg.line()
 		.x(function(d) { return x(d.year); })
 	    .y(function(d) { return y(d.value); })
 	    .interpolate("basis");
 
+	// draw the axes
 	var xAxis = d3.svg.axis()
 		.scale(x)
 		.orient('bottom')
 		.tickFormat(function(d) { return +d; });
 
-	var yAxis = d3.svg.axis().scale(y).orient('left')
-		
-    	
-
+	var yAxis = d3.svg.axis()
+		.scale(y)
+		.orient('left');
 
 	var container = d3.select(selector);
 
@@ -372,62 +418,68 @@ function renderLinechart(selector, countries) {
 		.attr('class', 'vis')
     	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-    visEnter.append("g")
-    	.attr('class', 'axis')
-    	.attr("transform", "translate(" + 0 + "," + height + ")")
-    	.call(xAxis);
-
-    visEnter.append("g")
-    	.attr('class', 'axis')
-    	.call(yAxis);
-
-
     var vis = container.select('.vis');
+
+    vis.append("rect")
+	    .attr("height", y(50))
+	    .attr("x", 0)
+	    .attr("width", width)
+	    .attr("class", "chart-background")
+	    .style("fill", "#fde0ef");
+
+	vis.append("rect")
+	    .attr("height", height-y(50))
+	    .attr("y", y(50))
+	    .attr("x", 0)
+	    .attr("width", width)
+	    .attr("class", "chart-background")
+	    .style("fill", "#d1e5f0");
+
+    visEnter.append("g")
+    	.attr('class', 'axis x-axis')
+    	.attr("transform", "translate(" + 0 + "," + height + ")");
+
+	vis.select('.x-axis').call(xAxis);
+
+    visEnter.append("g")
+    	.attr('class', 'axis y-axis');
+
+	vis.select('.y-axis').call(yAxis);
+
     var countryLine = vis.selectAll('.country-line')
-    	.data(data);
+    	.data(data, function(d) { return d.key; });
 
     var countryLineEnter = countryLine.enter().append('g')
     	.attr('class', 'country-line');
 
+    countryLine.exit().remove();
+
     countryLineEnter.append("path")
 		.attr('class', 'country-line-path')
+
+	vis.selectAll('.country-line-path')
 		.attr("d", function(d) { return line(d.values); })
-		.attr('stroke', function(d) { return colorScale(d.key); })
+		.attr('stroke', function(d) { return colorScale(d.key); });
 
+	countryLineEnter.append("text")
+	    .attr("class", "legend")
+	    .attr("x", width + 3)
 
-
-   
-
-
-    // countryLineEnter.append(...)
-
-
-
-
-	// console.log(data);
-	// var bars = d3.select(selector).selectAll('.bar').data(countries);
-
-	// bars.enter().append('div')
-	// 	.attr('class','bar');
-
-	// bars.text(function(d) {
-	// 	///var countryData = _.findWhere(state.countries, {id: +d}); // save data for all selected countries
-	// 	//console.log(countryData);
-		
-	// 	 // config.years.forEach(function(y){ // retrieve all years' values for all selected countries
-	// 	 // 	console.log(countryData[y])
-	// 	 // })
-
-	// })
+	countryLine.select('.legend')
+	    .attr("y", function(d) {return y(_.last(d.values).value)+2 + 
+	                                   (countryLabelPositionDeltas[selector][d.key] || 0)}) // +2 to correct visual appearance
+	    .text(function(d) {return d.name; })
+	    .style("fill", function(d) { return colorScale(d.key)}); // TODO: is being overwritten
 
 }
 
 function renderUserinput() {
 
-	var userinput = d3.select('.userinput').selectAll('select').data([0]);
+	var userinput = d3.select('.userinput').selectAll('select').data([0,1]);
 
 	userinput.enter()
-		.append('select');
+		.append('select')
+		.attr('class', function(d) {return 'userinput-' + d});
 
 	var options = userinput.selectAll('option')
 		.data(state.countries);
@@ -437,14 +489,17 @@ function renderUserinput() {
 
 	options
 		.text(function(d) {return d.name})
-		.attr("value", function(d){ return d.id});
-		//on change, add value to state.userselected and add class selected to option
+		.attr("value", function(d){ return d.id})
+		.attr('selected',function(d) {
+			var pd = d3.select(this.parentNode).datum();
+			return state.userselected[pd] === +d.id ? 'selected' : null;});
+
 
 	options.exit()
 		.remove();
 
-	userinput.on('change', function(d) {
-		actions.updateUserinput(this.value);
+	userinput.on('change', function(d) { 
+		actions.updateUserinput();
 	})
 
 }

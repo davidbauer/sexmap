@@ -71,8 +71,14 @@
 .max-f {color:#de77ae;}
 
 
+/* Line charts
+-------------------------------------------------------------------------------*/
+
+.linechart {width: 100%;max-width: 600px;}
+
 .country-line-path {
   fill: none;
+  stroke-width:3;
 }
 
 .axis path,
@@ -82,6 +88,14 @@
   shape-rendering: crispEdges;
 }
 
-.axis text {
+.axis text, .linechart .legend {
   font: 10px sans-serif;
 }
+
+.chart-background {
+  opacity: 0.6;
+}
+
+/* Userinput */
+
+.userinput-1 {margin-right:10px;}

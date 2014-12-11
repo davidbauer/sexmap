@@ -19,9 +19,9 @@ body, select, input, textarea {color: #333;}
 a {color: #008148;}
 a:hover {text-decoration: none;}
 
-/* Custom text-selection colors (remove any text shadows: http://twitter.com/miketaylr/status/12228805301) */
+/* Custom text-selection colors (remove any text shadows: http://twitter.com/miketaylr/status/12228805301) 
 ::-moz-selection{background: #008148; color: #fff; text-shadow: none;}
-::selection {background: #008148; color: #fff; text-shadow: none;} 
+::selection {background: #008148; color: #fff; text-shadow: none;} */
 
 /*	j.mp/webkit-tap-highlight-color */
 a:link {-webkit-tap-highlight-color: #fcd700;} 
