@@ -1,12 +1,18 @@
 /*
 
 QUESTIONS:
-- how to better distinguish between missing and near-50%-values
+- add rotation (and zooming): http://www.jasondavies.com/maps/rotate/
+- tooltip accuracy
+- line chart!
+
+- show above 60 color in legend to keep symmetry, even though it it not used in the map?
 - whats up with greenland (dark blue even though no values), id -99, id 10
 
+
 TODO:
-- finish color legend for map, tick positioning on y axis alternating or just remove middle 2?: http://bl.ocks.org/mbostock/5144735
-- line chart
+- analysis: strongest 5-year changes (in spreadsheet?)
+- finish user input for line charts
+- autocomplete for user input: http://www.brightpointinc.com/clients/brightpointinc.com/library/autocomplete/download.html
 */
 
 
@@ -14,10 +20,17 @@ TODO:
 var config = { 
 	years: d3.range(1961,2014), // maximum value not included, so produces range 1961-2013
 	color : d3.scale.threshold() // TODO: improve
-    		.domain([40,45,48,49,49.8,50.2,51,52,55,60])
-			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"])
-	// predefine country groups for linecharts
-
+    		.domain([40,45,48,49,49.9,50.1,51,52,55,60])
+			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]),
+	countryGroups: { // predefine country groups for linecharts
+		"soviet": [],	
+		"war": [],	
+		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa	
+		"neighbors": [756,276,250,380,40], // Switzerland, Germany, France, Italy, Austria	
+		"arab": [682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
+		"mostrising": [344,144,524], //Hong Kong, Sri Lanka, Nepal
+		"mostbalanced": [120,218,834,434] // Cameroon, Ecuador, Tanzania, Libya
+		}
 	} 
 
 // STATE
@@ -28,7 +41,8 @@ var state = {
 	countries: [],
 	total: {},
 	world: null,
-	timeline: "ready"
+	timeline: "ready",
+	userselected: []
 };
 
 // ACTIONS
@@ -47,7 +61,7 @@ var actions = {
 
 		if (state.timeline == "ready") {
 			state.timeline = "playing";
-			console.log(state.timeline);
+			console.log("timeline " + state.timeline);
 			state.currentYear = d3.min(config.years);
 			actions.playTimeline();
 		}
@@ -56,14 +70,14 @@ var actions = {
 			state.timeline = "paused";
 			clearInterval(state.timelineInterval);
 			state.timelineInterval = null;
-			console.log(state.timeline);
+			console.log("timeline " + state.timeline);
 			d3.select('.play').text("Resume");
 			return;
 		}
 
 		else if (state.timeline == "paused") {
 			state.timeline = "playing";
-			console.log(state.timeline);
+			console.log("timeline " + state.timeline);
 			actions.playTimeline();
 		}
 	},
@@ -86,6 +100,9 @@ var actions = {
 
 			else return;
 		},800)
+	},
+	updateUserinput : function() {
+		alert("userinput");
 	}
 }
 
@@ -94,11 +111,15 @@ var actions = {
 // RENDERING
 
 function render() { // make one render() function and call all functions to render sub-elements within 	
+	console.log('render')
 	renderMenu();
 	renderDatatext();
 	if (state.world && state.countries.length > 0) renderMap();
 	renderKey(); // map legend
-	renderLinechart();
+	renderLinechart(".chart-1", config.countryGroups.neighbors); // where to place, what data to use
+	renderLinechart(".chart-2", config.countryGroups.arab);
+	renderLinechart(".chart-3", config.countryGroups.brics);
+	renderUserinput();
 } 
 
 // RENDERING FUNCTIONS
@@ -173,32 +194,36 @@ function renderMap() {
  //    .domain([0, height])
  //    .range([90, -90]);
 
-	var map = d3.select("#map").selectAll('svg').data([0]);
+	var map = d3.select("#map");
 
-	var svg = map.enter()
+	var svg = map.selectAll('svg').data([0]);
+
+
+	var svgEnter = svg.enter()
 		.append("svg")
 	    .attr("width", width)
 	    .attr("height", height);
 
-	svg.append("defs").append("path")
+
+	svgEnter.append("defs").append("path")
 	    .datum({type: "Sphere"})
 	    .attr("id", "sphere")
 	    .attr("d", path);
 
-	svg.append("use")
+	svgEnter.append("use")
 	    .attr("class", "stroke")
 	    .attr("xlink:href", "#sphere");
 
-	svg.append("use")
+	svgEnter.append("use")
 	    .attr("class", "fill")
 	    .attr("xlink:href", "#sphere");
 
-	svg.append("path")
+	svgEnter.append("path")
 	    .datum(graticule)
 	    .attr("class", "graticule")
 	    .attr("d", path);
 
-	var countries = map.selectAll('.country').data(topojson.feature(state.world, state.world.objects.countries).features); // TODO: make sure countries are created only once
+	var countries = svg.selectAll('.country').data(topojson.feature(state.world, state.world.objects.countries).features); // TODO: make sure countries are created only once
 	  
 	countries.enter()
 	  	.insert("path", ".graticule")
@@ -207,7 +232,7 @@ function renderMap() {
 	    .attr("id", function(d) { return "country-" + d.id;})
 	    .attr("d", path);
 
-	svg.insert("path", ".graticule")
+	svgEnter.insert("path", ".graticule")
       .datum(topojson.mesh(state.world, state.world.objects.countries, function(a, b) { return a !== b; }))
       .attr("class", "boundary")
       .attr("d", path);
@@ -220,6 +245,20 @@ function renderMap() {
  //  		svg.selectAll("path").attr("d", path);
 	// });
 
+	var tip = d3.tip()
+	  .attr('class', 'd3-tip')
+	  .offset([5, 0])
+	  .html(function(d) {
+	    var countryData = _.findWhere(state.countries, {id: +d.id});
+	    if (countryData) {
+	    	return countryData.name + ": " + d3.round(countryData[state.currentYear],2) + "% women";
+	    }
+	    return 'unknown';
+	  });
+
+	d3.selectAll('.d3-tip').remove();
+	svg.call(tip);
+
 	countries
 		.style({'fill': function(d) {
 			var countryData = _.findWhere(state.countries, {id: +d.id}); // underscore method to find an object in an array based on property id
@@ -228,20 +267,22 @@ function renderMap() {
 		 	}
 		 	return '#f0f0f0'; // TODO: find better way to represent missing data
 		}
-		});
+		})
+		.on('mouseover', tip.show)
+      	.on('mouseout', tip.hide);
 }
 
 function renderKey() {
 
 	var x = d3.scale.linear()
-    .domain([37, 57]) // range of values to be included in the legend
+    .domain([38, 62]) // range of values to be included in the legend
     .range([0, 300]); // defines length of legend
 
 	var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
     .tickSize(9)
-    .tickValues(config.color.domain());
+    .tickValues([40,45,48,49,51,52,55,60]); // left out two middle values for space, to generate tick values dynamically: config.color.domain()
 
     var g = d3.select("#map").selectAll('svg').append("g")
 	    .attr("class", "key")
@@ -270,6 +311,141 @@ function renderKey() {
 }
 
 function renderLinechart(selector, countries) {
+
+	var margin = {top: 20, right: 10, bottom: 20, left: 50};
+	var width = 400 - margin.left - margin.right,
+	    height = 200 - margin.top - margin.bottom;
+
+	var data = countries.map(function(id) {
+		var countryData = _.findWhere(state.countries, {id: +id});
+		return {
+			key: +id,
+			name: countryData.name,
+			values: config.years.map(function(y) { 
+				return {
+					year: y,
+					value: countryData[y]
+				}; 
+			}) 
+		};
+	});
+
+	var valueExtent = [
+		d3.min(data, function(countryData) { return d3.min(countryData.values, function(d) { return d.value; }); }),
+		d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); })
+	];
+
+	var colorScale = d3.scale.category10();
+
+	var x = d3.scale.linear()
+		.domain(d3.extent(config.years))
+		.range([0, width]);
+
+	var y = d3.scale.linear()
+		.domain(valueExtent)
+		.range([height, 0])
+		.nice(2);
+
+
+	var line = d3.svg.line()
+		.x(function(d) { return x(d.year); })
+	    .y(function(d) { return y(d.value); })
+	    .interpolate("basis");
+
+	var xAxis = d3.svg.axis()
+		.scale(x)
+		.orient('bottom')
+		.tickFormat(function(d) { return +d; });
+
+	var yAxis = d3.svg.axis().scale(y).orient('left')
+		
+    	
+
+
+	var container = d3.select(selector);
+
+	var svg = container.selectAll('svg').data([0]);
+	var visEnter = svg.enter().append('svg')
+		.attr('width', width + margin.left + margin.right)
+		.attr('height', height + margin.top + margin.bottom)
+	.append("g")
+		.attr('class', 'vis')
+    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+    visEnter.append("g")
+    	.attr('class', 'axis')
+    	.attr("transform", "translate(" + 0 + "," + height + ")")
+    	.call(xAxis);
+
+    visEnter.append("g")
+    	.attr('class', 'axis')
+    	.call(yAxis);
+
+
+    var vis = container.select('.vis');
+    var countryLine = vis.selectAll('.country-line')
+    	.data(data);
+
+    var countryLineEnter = countryLine.enter().append('g')
+    	.attr('class', 'country-line');
+
+    countryLineEnter.append("path")
+		.attr('class', 'country-line-path')
+		.attr("d", function(d) { return line(d.values); })
+		.attr('stroke', function(d) { return colorScale(d.key); })
+
+
+
+   
+
+
+    // countryLineEnter.append(...)
+
+
+
+
+	// console.log(data);
+	// var bars = d3.select(selector).selectAll('.bar').data(countries);
+
+	// bars.enter().append('div')
+	// 	.attr('class','bar');
+
+	// bars.text(function(d) {
+	// 	///var countryData = _.findWhere(state.countries, {id: +d}); // save data for all selected countries
+	// 	//console.log(countryData);
+		
+	// 	 // config.years.forEach(function(y){ // retrieve all years' values for all selected countries
+	// 	 // 	console.log(countryData[y])
+	// 	 // })
+
+	// })
+
+}
+
+function renderUserinput() {
+
+	var userinput = d3.select('.userinput').selectAll('select').data([0]);
+
+	userinput.enter()
+		.append('select');
+
+	var options = userinput.selectAll('option')
+		.data(state.countries);
+	
+	options.enter()
+		.append('option');
+
+	options
+		.text(function(d) {return d.name})
+		.attr("value", function(d){ return d.id});
+		//on change, add value to state.userselected and add class selected to option
+
+	options.exit()
+		.remove();
+
+	userinput.on('change', function(d) {
+		actions.updateUserinput(this.value);
+	})
 
 }
 
@@ -312,11 +488,11 @@ d3.csv('data/sexratios_inclworld.csv')
 		actions.updateData(rows);
 	});
 
-render(); // start rendering
+//render(); // start rendering
 
 d3.select('.play').on("click", actions.toggleTimeline); // TODO: what's a good place to put this?
 
-console.log(state.timeline);
+console.log("timeline " + state.timeline);
 
 
 // it's the end of the code as we know it

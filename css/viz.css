@@ -30,6 +30,7 @@
   stroke-width: .5px;
 }
 
+.key {}
 .key path {display: none;}
 .key .tick {font-size: 10px;}
 .key line {
@@ -38,7 +39,49 @@
 }
 
 
+.d3-tip {
+  line-height: 1;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.6);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+
 /* Gender colors
 -------------------------------------------------------------------------------*/
 .max-m {color:#4393c3;}
 .max-f {color:#de77ae;}
+
+
+.country-line-path {
+  fill: none;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
