@@ -8,6 +8,7 @@ QUESTIONS:
 
 TODO:
 - analysis: strongest 5-year changes (in spreadsheet?)
+- order in dropdown
 - optimise page styles (font, mobile styles)
 - refactor manual repositioning of labels in linecharts
 - better colors for linecharts 
@@ -184,17 +185,18 @@ function renderMap() {
 	var width = d3.select("#map").node().offsetWidth, // .node().offsetWidth reads width of element #map
     height = width;
 
-	// var projection = d3.geo.orthographic()
-	//     .scale(475)
-	//     .translate([width / 2, height / 2])
-	//     .clipAngle(90)
-	//     .precision(.1);
-
 	var projection = d3.geo.azimuthalEqualArea()
 	    .clipAngle(180 - 1e-3)
 	    .scale(237 / 960 * width)
 	    .translate([width / 2, height / 2])
 	    .precision(.1);
+
+	// an alternative projection
+	// var projection = d3.geo.orthographic()
+	//     .scale(475)
+	//     .translate([width / 2, height / 2])
+	//     .clipAngle(90)
+	//     .precision(.1);
 
 	var path = d3.geo.path()
 	    .projection(projection);
@@ -225,9 +227,10 @@ function renderMap() {
 	    .attr("id", "sphere")
 	    .attr("d", path);
 
-	svgEnter.append("use")
-	    .attr("class", "stroke")
-	    .attr("xlink:href", "#sphere");
+	// circle around the globe
+	// svgEnter.append("use")
+	//     .attr("class", "stroke")
+	//     .attr("xlink:href", "#sphere");
 
 	svgEnter.append("use")
 	    .attr("class", "fill")
@@ -252,12 +255,12 @@ function renderMap() {
       .attr("class", "boundary")
       .attr("d", path);
 
-      // drag to rotate via zoom function
+      // rotate the globe on mouseover 
 
- //    svg.on("mousemove", function() {
- //  		var p = d3.mouse(this);
- //  		projection.rotate([λ(p[0]), φ(p[1])]);
- //  		svg.selectAll("path").attr("d", path);
+	// svg.on("mousemove", function() {
+ // 	 		var p = d3.mouse(this);
+ // 	 		projection.rotate([λ(p[0]), φ(p[1])]);
+ // 		 	svg.selectAll("path").attr("d", path);
 	// });
 
 	var tip = d3.tip()
@@ -304,7 +307,7 @@ function renderKey() {
 
     var g = d3.select("#map").selectAll('svg').append("g")
 	    .attr("class", "key")
-	    .attr("transform", "translate(250,700)"); // position within the svg space 250 to the right, 700 from top, TODO: make responsive
+	    .attr("transform", "translate(250,30)"); // position within the svg space 250 to the right, 700 from top, TODO: make responsive
 
 	g.selectAll("rect")
 	    .data(config.color.range().map(function(d, i) {

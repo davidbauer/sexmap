@@ -71,16 +71,13 @@ img.totop {position:fixed;left:20px;bottom:30px;z-index: 1000;}
 
 footer {padding: 0 10px; margin-bottom: 50px;clear:both;color: #7c7c7c;text-align: center;}
 
-aside {float:left;}
-
-.caption {font-size: 85%;text-align: left;margin-bottom: 20px;}
 .hidden {display: none;}
 
 .controls {max-width: 300px;}
 
 hr {width:100px;margin:30px auto;}
 
-.la h3, .la p {max-width: 800px;text-align: left;padding-left:11%;float: left;}
+.la {max-width: 800px;text-align: left;}
 
 .footnote {color: gray;text-align:center;margin:0 auto;font-size: 80%;}
 
