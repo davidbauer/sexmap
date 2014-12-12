@@ -1,16 +1,12 @@
 /*
 
 QUESTIONS:
-!! whats up with greenland (dark blue even though no values), id -99, id 10
-- add rzooming: http://www.jasondavies.com/maps/rotate/
 - tooltip accuracy
 - show above 60 color in legend to keep symmetry, even though it it not used in the map?
 - add all colour steps as a legend along y-axis in linechart?
 
 
 TODO:
-- import cleaned data (no countries with no values, beautify country names), check if it works with map, otherwise countries with no values need to be removed from userinput dropdown
-- add world average to line charts
 - analysis: strongest 5-year changes (in spreadsheet?)
 - refactor manual repositioning of labels in linecharts
 - better colors for linecharts 
@@ -22,7 +18,7 @@ TODO:
 // CONFIG
 var config = { 
 	years: d3.range(1961,2014), // maximum value not included, so produces range 1961-2013
-	color : d3.scale.threshold() // TODO: improve
+	color : d3.scale.threshold() // define steps for color changes in map
     		.domain([40,45,48,49,49.9,50.1,51,52,55,60])
 			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]),
 	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
@@ -45,7 +41,7 @@ var state = {
 	total: {},
 	world: null,
 	timeline: "ready",
-	userselected: [32, 56, 999] // preset to argentina and belgium
+	userselected: [32, 56, 999] // preset to argentina and belgium and world average
 };
 
 // ACTIONS
@@ -233,8 +229,8 @@ function renderMap() {
 	    .attr("class", "graticule")
 	    .attr("d", path);
 
-	var countries = svg.selectAll('.country').data(topojson.feature(state.world, state.world.objects.countries).features); // TODO: make sure countries are created only once
-	  
+	var countries = svg.selectAll('.country').data(topojson.feature(state.world, state.world.objects.countries).features);
+
 	countries.enter()
 	  	.insert("path", ".graticule")
 	    .attr("class", "country")
@@ -261,9 +257,12 @@ function renderMap() {
 	  .html(function(d) {
 	    var countryData = _.findWhere(state.countries, {id: +d.id});
 	    if (countryData) {
-	    	return countryData.name + ": " + d3.round(countryData[state.currentYear],2) + "% women";
+	    	if (!isNaN(countryData[state.currentYear])) { // check if actual value exists
+	    		return countryData.name + ": " + d3.round(countryData[state.currentYear],2) + "% women";
+	    	}
+	    	else {return countryData.name + ": no data available";}
 	    }
-	    return 'unknown';
+	    return 'no data available'; 
 	  });
 
 	d3.selectAll('.d3-tip').remove();
@@ -273,9 +272,9 @@ function renderMap() {
 		.style({'fill': function(d) {
 			var countryData = _.findWhere(state.countries, {id: +d.id}); // underscore method to find an object in an array based on property id
 			if (countryData) {
-		 		return config.color(countryData[state.currentYear]); // colour contries
+		 		return config.color(countryData[state.currentYear]); // colour countries
 		 	}
-		 	return '#f0f0f0'; // TODO: find better way to represent missing data
+		 	return '#f0f0f0'; // grey for countries without any data
 		}
 		})
 		.on('mouseover', tip.show)
@@ -374,9 +373,6 @@ function renderLinechart(selector, countries, size) {
 		
 		var countryData = id === 999 ? state.total : _.findWhere(state.countries, {id: +id});
 
-		console.log(countryData);
-
-		//var countryData.push(state.total);
 		return {
 			key: +id,
 			name: countryData.name,
@@ -499,8 +495,12 @@ function renderUserinput() {
 		.attr('class', function(d) {return 'userinput-' + d});
 
 	var options = userinput.selectAll('option')
-		.data(state.countries);
-	
+		.data(state.countries.filter(function(datum) { 
+			return _.some(config.years, function(y) { return !isNaN(datum[y]); }); // filters all countries that have values for at least one (_.some) years
+		})); 
+
+		
+	 
 	options.enter()
 		.append('option');
 
@@ -545,7 +545,8 @@ d3.csv('data/sexratios_inclworld.csv')
 		}
 
 		config.years.forEach(function(year){ // save value for each year in a property with the year's name
-			row[year] = +d[year]
+			var v = d[year];
+			row[year] = (v!=null && v.length > 0 ? +v : NaN);
 		})
 
 		return row;
