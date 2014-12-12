@@ -93,9 +93,10 @@
 }
 
 .chart-background {
-  opacity: 0.6;
+  opacity: 0.1;
+  max-height: 235px !important;
 }
 
 /* Userinput */
 
-.userinput-1 {margin-right:10px;}
+.userinput-0 {margin-right:10px;}

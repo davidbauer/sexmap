@@ -5,14 +5,16 @@ QUESTIONS:
 - add rzooming: http://www.jasondavies.com/maps/rotate/
 - tooltip accuracy
 - show above 60 color in legend to keep symmetry, even though it it not used in the map?
-
+- add all colour steps as a legend along y-axis in linechart?
 
 
 TODO:
-- import cleaned data (no countries with no values), check if it works with map, otherwise countries with no values need to be removed from userinput dropdown
-- add all colour steps in linechart background
+- import cleaned data (no countries with no values, beautify country names), check if it works with map, otherwise countries with no values need to be removed from userinput dropdown
+- add world average to line charts
 - analysis: strongest 5-year changes (in spreadsheet?)
 - refactor manual repositioning of labels in linecharts
+- better colors for linecharts 
+- fallback images for all charts (place in html to be overwritten once charts load)
 - autocomplete for user input: http://www.brightpointinc.com/clients/brightpointinc.com/library/autocomplete/download.html
 */
 
@@ -23,14 +25,14 @@ var config = {
 	color : d3.scale.threshold() // TODO: improve
     		.domain([40,45,48,49,49.9,50.1,51,52,55,60])
 			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]),
-	countryGroups: { // predefine country groups for linecharts
-		"soviet": [],	
-		"warridden": [],	
-		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa	
-		"neighbors": [756,276,250,380,40], // Switzerland, Germany, France, Italy, Austria	
-		"arab": [682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
-		"mostrising": [344,144,524], //Hong Kong, Sri Lanka, Nepal
-		"mostbalanced": [120,218,834,434] // Cameroon, Ecuador, Tanzania, Libya
+	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
+		"neighbors": [999,756,276,250,380,40], // Switzerland, Germany, France, Italy, Austria	
+		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
+		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
+		"mostrising": [999,344,144,524], //Hong Kong, Sri Lanka, Nepal
+		"mostbalanced": [120,218,834,434], // Cameroon, Ecuador, Tanzania, Libya
+		"warridden": [646,191,320,760,180,368], // Rwanda ,Croatia, Guatemala, Syria, Dem. Rep. Congo, Iraq	
+		"soviet": [643,804,112,233,428] // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
 		}
 	} 
 
@@ -43,7 +45,7 @@ var state = {
 	total: {},
 	world: null,
 	timeline: "ready",
-	userselected: [32, 56] // preset to argentina and belgium
+	userselected: [32, 56, 999] // preset to argentina and belgium
 };
 
 // ACTIONS
@@ -51,11 +53,12 @@ var state = {
 var actions = {
 	updateYear : function(year) {
 		state.currentYear = +year; // + turns strings into numbers
-		render();
+		renderMap();
+		renderDatatext();
 	},
 	updateData : function(rows) {
-		state.total = _.findWhere(rows, {name: "World"});
-		state.countries = _.without(rows, _.findWhere(rows, {name: "World"}));
+		state.total = _.findWhere(rows, {name: "World average"});
+		state.countries = _.without(rows, _.findWhere(rows, {name: "World average"}));
 		render();
 	},
 	toggleTimeline : function () {
@@ -94,9 +97,8 @@ var actions = {
 			}
 
 			if (state.timeline == "playing") {
-				state.currentYear += 1;
+				actions.updateYear(state.currentYear+1);
 				console.log("Visualising data from " + state.currentYear);
-				render();
 			}
 
 			else return;
@@ -115,7 +117,6 @@ var actions = {
 // RENDERING
 
 function render() { // make one render() function and call all functions to render sub-elements within 	
-	console.log('render')
 	renderMenu();
 	renderDatatext();
 	if (state.world && state.countries.length > 0) renderMap();
@@ -125,8 +126,8 @@ function render() { // make one render() function and call all functions to rend
 	renderLinechart(".chart-3", config.countryGroups.arab, "large");
 	renderLinechart(".chart-4", config.countryGroups.mostrising, "normal");
 	renderLinechart(".chart-5", config.countryGroups.mostbalanced, "normal");
-	//renderLinechart(".chart-6", config.countryGroups.warridden, "normal");
-	//renderLinechart(".chart-7", config.countryGroups.soviet, "normal");
+	renderLinechart(".chart-6", config.countryGroups.warridden, "normal");
+	renderLinechart(".chart-7", config.countryGroups.soviet, "normal");
 	renderLinechart(".chart-8",state.userselected,"normal");
 	renderUserinput();
 } 
@@ -346,10 +347,19 @@ function renderLinechart(selector, countries, size) {
 			
 		},
 		'.chart-6': {
+			320: -2,
+			646: +4,
+			760: +3,
+			4: +3
 			
 		}
 		,
 		'.chart-7': {
+			804: -3,
+			643: +7,
+			112: +5,
+			643: -5
+
 			
 		},
 		'.chart-8': {
@@ -361,7 +371,12 @@ function renderLinechart(selector, countries, size) {
 	    height = size == "normal" ? d3.select(selector).node().offsetWidth/2 - margin.top - margin.bottom : d3.select(selector).node().offsetWidth - margin.top - margin.bottom;
 
 	var data = countries.map(function(id) { // take input countries and prepare the data
-		var countryData = _.findWhere(state.countries, {id: +id});
+		
+		var countryData = id === 999 ? state.total : _.findWhere(state.countries, {id: +id});
+
+		console.log(countryData);
+
+		//var countryData.push(state.total);
 		return {
 			key: +id,
 			name: countryData.name,
@@ -411,7 +426,7 @@ function renderLinechart(selector, countries, size) {
 	var container = d3.select(selector);
 
 	var svg = container.selectAll('svg').data([0]);
-	var visEnter = svg.enter().append('svg')
+	var visEnter = svg.enter().append('svg') // visEnter is used for appending everything that should only be appended once
 		.attr('width', width + margin.left + margin.right)
 		.attr('height', height + margin.top + margin.bottom)
 	.append("g")
@@ -420,20 +435,22 @@ function renderLinechart(selector, countries, size) {
 
     var vis = container.select('.vis');
 
-    vis.append("rect")
+    // set red-ish background for part of linechart that means more women
+    visEnter.append("rect")
 	    .attr("height", y(50))
 	    .attr("x", 0)
 	    .attr("width", width)
 	    .attr("class", "chart-background")
-	    .style("fill", "#fde0ef");
+	    .style("fill", "#8e0152");
 
-	vis.append("rect")
+    // set blue-ish background for part of linechart that means more women
+	visEnter.append("rect")
 	    .attr("height", height-y(50))
 	    .attr("y", y(50))
 	    .attr("x", 0)
 	    .attr("width", width)
 	    .attr("class", "chart-background")
-	    .style("fill", "#d1e5f0");
+	    .style("fill", "#053061");
 
     visEnter.append("g")
     	.attr('class', 'axis x-axis')
@@ -459,7 +476,7 @@ function renderLinechart(selector, countries, size) {
 
 	vis.selectAll('.country-line-path')
 		.attr("d", function(d) { return line(d.values); })
-		.attr('stroke', function(d) { return colorScale(d.key); });
+		.attr('stroke', function(d) { if (d.key === 999) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
 
 	countryLineEnter.append("text")
 	    .attr("class", "legend")
@@ -469,7 +486,7 @@ function renderLinechart(selector, countries, size) {
 	    .attr("y", function(d) {return y(_.last(d.values).value)+2 + 
 	                                   (countryLabelPositionDeltas[selector][d.key] || 0)}) // +2 to correct visual appearance
 	    .text(function(d) {return d.name; })
-	    .style("fill", function(d) { return colorScale(d.key)}); // TODO: is being overwritten
+	    .style("fill", function(d) { if (d.key === 999) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
 
 }
 
