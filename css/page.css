@@ -40,6 +40,10 @@ textarea:-moz-placeholder { color:#a9a9a9; }
 .controls, .intro, section, figure {margin:0 auto;text-align: center;}
 
 .controls select, .controls button {display:inline;}
+
+.controls button, .controls button:focus {background: none; border:none;outline: none;}
+.controls button img {width: 50px;height:50px;}
+
 .intro {max-width: 800px;}
 
 header {
@@ -74,16 +78,26 @@ aside {float:left;}
 
 .controls {max-width: 300px;}
 
+hr {width:100px;margin:30px auto;}
+
+.la h3, .la p {max-width: 800px;text-align: left;padding-left:11%;float: left;}
+
+.footnote {color: gray;text-align:center;margin:0 auto;font-size: 80%;}
+
 
 /* Typography styles!
 -------------------------------------------------------------------------------*/
 
-h1 {font-size: 400%;font-weight: bold;margin-bottom: 60px;margin-top: 40px;line-height: 26px;}
+h1 {font-size: 400%;font-weight: bold;margin-bottom: 30px;margin-top: 40px;line-height: 110%;}
 h2 {font-size: 250%;font-weight: bold;margin-bottom: 20px;margin-top: 40px;line-height: 26px;}
 h3 {font-size: 140%;font-weight: bold;margin-bottom: 16px;margin-top: 40px;line-height: 26px;}
 h4 {font-size: 120%;font-weight: bold;margin-bottom: 16px;}
 
+.lede {}
+
 .intro p {font-size: 140%;line-height: 140%;}
+p.datatext {font-size: 120%; line-height: 120%;}
+
 
 .byline {font-style: italic;font-size: 120%;}
 

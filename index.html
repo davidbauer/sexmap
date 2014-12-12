@@ -15,86 +15,92 @@
 	<article id="content">
 		
 		<section class="intro">
-			<h1>World Sex Map</h1>
-			<p>Women live longer, but in total, there are more men on this planet. The data from all countries over the past 50 years reveals some astonishing geographical patterns and striking developments over time.</p>
+			<h1>Drinkers, genocide and no country for young women</h1>
+			<p class="lede">Women live longer, but in total, there are more men on this planet. The data from all countries over the past 50 years reveals some astonishing geographical patterns and striking developments over time.</p>
 		
-			<p class="datatext">In <span class="currentYear datapoint">2013</span>, <span class="currentTotalPercentage datapoint">49.59</span>% of the global population were women.<br/> <span class="currentFemaleCountries datapoint">118</span> countries had <span class="max-f">more women</span>, <span class="currentMaleCountries datapoint">76</span> countries had <span class="max-m">more men.</span></p>
+			<hr>
+
+			<p class="datatext">In <span class="currentYear datapoint">2013</span>, <span class="currentTotalPercentage datapoint">49.59</span>% of the global population were women.<br/> <span class="currentFemaleCountries datapoint">111</span> countries had <span class="max-f">more women</span>, <span class="currentMaleCountries datapoint">64</span> countries had <span class="max-m">more men</span>, <span class="currentEvenCountries datapoint">18</span> were <span class="even">balanced</span>.<sup>*</sup></p>
 
 		</section>
 		
 		<section class="controls">
-			<button class="play">Play</button>
+			<button class="play"><img src="/img/play.png"/></button>
 			<div id="menu"></div>	
 		</section>
 
 		<figure id="map"></figure>
+		<div class="footnote"><sup>*</sup> no data available for <span class="currentNoDataCountries">19</span> countries, balanced defined as both genders between 49.9% and 50.1% of total population.</div>
 		
-		<section>
+		<hr>
+
+		<section class="intro">
 			<h2>A closer look</h2>
 			<p>Let's now how have a closer look at some individual countries and how gender ratios have developed over the years. We'll see some striking developments and reminders of devastating periods.</p>
 		</section>
 
-		<section>
+		<section class="la">
 			<h3>Switzerland and its neighbors</h3>
 			<p>some intro text askdsadna dna sdn asd asd asd ajsdbjsahbdjhbjhbjkhas dk askd asbd has dhas dhj askhjd jahsdb.</p>
 			<figure class="linechart chart-1"></figure>
 		</section>
 
-		<section>
+		<section class="la">
 			<h3>BRICS states</h3>
 			<p>some intro text askdsadna dna sdn asd asd asd ajsdbjsahbdjhbjhbjkhas dk askd asbd has dhas dhj askhjd jahsdb.</p>
 			<figure class="linechart chart-2"></figure>
-		</section>
+		</section class="la">
 
-		<section>
+		<section class="la">
 			<h3>The arab peninsula</h3>
 			<p>some intro text askdsadna dna sdn asd asd asd ajsdbjsahbdjhbjhbjkhas dk askd asbd has dhas dhj askhjd jahsdb.</p>
 			<figure class="linechart chart-3"></figure>
 		</section>
 
-		<section>
+		<section class="la">
 			<h3>Strongest trend towards women</h3>
 			<p>some intro text askdsadna dna sdn asd asd asd ajsdbjsahbdjhbjhbjkhas dk askd asbd has dhas dhj askhjd jahsdb.</p>
 			<figure class="linechart chart-4"></figure>
 		</section>
 
-		<section>
+		<section class="la">
 			<h3>Many ways to the perfect 50/50</h3>
 			<p>some intro text askdsadna dna sdn asd asd asd ajsdbjsahbdjhbjhbjkhas dk askd asbd has dhas dhj askhjd jahsdb.</p>
 			<figure class="linechart chart-5"></figure>
 		</section>
 
-		<section>
+		<section class="la">
 			<h3>Where war and genocide shows in the data</h3>
 			<p>some intro text askdsadna dna sdn asd asd asd ajsdbjsahbdjhbjhbjkhas dk askd asbd has dhas dhj askhjd jahsdb.</p>
 			<figure class="linechart chart-6"></figure>
 		</section>
 
-		<section>
+		<section class="la">
 			<h3>The Soviet U(nion)</h3>
 			<p>some intro text askdsadna dna sdn asd asd asd ajsdbjsahbdjhbjhbjkhas dk askd asbd has dhas dhj askhjd jahsdb.</p>
 			<figure class="linechart chart-7"></figure>
 		</section>
 		
-		<section>
+		<section class="intro">
 			<h2>Explore the data yourself</h2>
 			<p>This last chart is yours. Choose two countries to compare.</p>
 			<div class="userinput"></div>
 			<figure class="linechart chart-8"></figure>
 		</section>
+		
 
 	</article>
 
-<footer>
+	<footer>
 
-<p>Designed and built by David Bauer, using <a href="http://www.d3js.org">D3.js</a> and with generous help from the guys at <a href="http://www.interactivethings.com/" target="_blank"> Interactive Things</a>.</p>
+	<p>Designed and built by David Bauer. Generous help from the guys at <a href="http://www.interactivethings.com/" target="_blank">Interactive Things</a>. Icons CC BY 3.0 by <a href="http://thenounproject.com/pbatalier/" target="_blank">Percy Batalier</a> and <a href="http://thenounproject.com/SylvainAmatoury" target="_blank">Sylvain Amatoury</a> from the Noun Project.</p>
 
-<p>Data source: The United Nations Population Division's World Population Prospects, via <a href="http://data.worldbank.org/indicator/SP.POP.TOTL.FE.ZS/countries/1W?display=default" target="_blank"> World Bank (2014)</a>.</p>
+	<p>Data source: The United Nations Population Division's World Population Prospects, via <a href="http://data.worldbank.org/indicator/SP.POP.TOTL.FE.ZS/countries/1W?display=default" target="_blank"> World Bank (2014)</a>.</p>
 
-<p>Additional reads:</p>
-</footer>
+	<p>Additional reads:</p>
+	</footer>
 
-</div>	
+</div>	<!-- wrapper -->
 
 	<!-- d3 must be loaded after all the other elements -->
 	<script src="http://underscorejs.org/underscore-min.js" charset="utf-8"></script>

@@ -8,6 +8,7 @@ QUESTIONS:
 
 TODO:
 - analysis: strongest 5-year changes (in spreadsheet?)
+- optimise page styles (font, mobile styles)
 - refactor manual repositioning of labels in linecharts
 - better colors for linecharts 
 - fallback images for all charts (place in html to be overwritten once charts load)
@@ -18,6 +19,7 @@ TODO:
 // CONFIG
 var config = { 
 	years: d3.range(1961,2014), // maximum value not included, so produces range 1961-2013
+	timelineSpeed : 800, // after 0.8 seconds, next year appears
 	color : d3.scale.threshold() // define steps for color changes in map
     		.domain([40,45,48,49,49.9,50.1,51,52,55,60])
 			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]),
@@ -27,7 +29,7 @@ var config = {
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
 		"mostrising": [999,344,144,524], //Hong Kong, Sri Lanka, Nepal
 		"mostbalanced": [120,218,834,434], // Cameroon, Ecuador, Tanzania, Libya
-		"warridden": [646,191,320,760,180,368], // Rwanda ,Croatia, Guatemala, Syria, Dem. Rep. Congo, Iraq	
+		"warridden": [646,320,760,180,368], // Rwanda ,Guatemala, Syria, Dem. Rep. Congo, Iraq	
 		"soviet": [643,804,112,233,428] // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
 		}
 	} 
@@ -71,7 +73,7 @@ var actions = {
 			clearInterval(state.timelineInterval);
 			state.timelineInterval = null;
 			console.log("timeline " + state.timeline);
-			d3.select('.play').text("Resume");
+			d3.select('.play').html('<img src="/img/play.png"/>');
 			return;
 		}
 
@@ -83,12 +85,12 @@ var actions = {
 	},
 	playTimeline : function() {
 		
-		d3.select('.play').text("Pause");
+		d3.select('.play').html('<img src="/img/pause.png"/>');
 		
 		state.timelineInterval = setInterval(function(){
 			
 			if (state.currentYear == d3.max(config.years)) {
-				d3.select('.play').text("Play again");
+				d3.select('.play').html('<img src="/img/replay.png"/>');
 				state.timeline = "ready";
 			}
 
@@ -98,7 +100,7 @@ var actions = {
 			}
 
 			else return;
-		},800)
+		},config.timelineSpeed)
 	},
 	updateUserinput : function() {
 		state.userselected[0] = d3.select(".userinput-0").node().value; 
@@ -111,9 +113,10 @@ var actions = {
 
 
 // RENDERING
+// make one render() function and call all functions to render sub-elements within
 
-function render() { // make one render() function and call all functions to render sub-elements within 	
-	renderMenu();
+function render() {  	
+	// renderMenu(); // dropdown menu to let user switch between years manually
 	renderDatatext();
 	if (state.world && state.countries.length > 0) renderMap();
 	renderKey(); // map legend
@@ -161,13 +164,19 @@ function renderDatatext() {
 
 	var sexcount = _.countBy(state.countries, function(country) {
 		if (country[state.currentYear]) {
-  			return country[state.currentYear] > 50 ? 'female': 'male';
+  			
+			if (country[state.currentYear] > 50.1) {return 'female'}
+			else if (country[state.currentYear] < 49.9) {return 'male'}
+			else {return 'even'}
   		}
+
+  		else {return 'nodata'}
 	});
 
 	d3.select('.currentMaleCountries').text(sexcount['male']);
 	d3.select('.currentFemaleCountries').text(sexcount['female']);
-
+	d3.select('.currentEvenCountries').text(sexcount['even']);
+	d3.select('.currentNoDataCountries').text(sexcount['nodata']);
 }
 
 function renderMap() {

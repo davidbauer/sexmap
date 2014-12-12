@@ -6,7 +6,7 @@
 .stroke {
   fill: none;
   stroke: #000;
-  stroke-width: 3px;
+  stroke-width: 1px;
 }
 
 .fill {
@@ -69,12 +69,14 @@
 -------------------------------------------------------------------------------*/
 .max-m {color:#4393c3;}
 .max-f {color:#de77ae;}
+.even {color: #c2d9bb;}
+
 
 
 /* Line charts
 -------------------------------------------------------------------------------*/
 
-.linechart {width: 100%;max-width: 600px;}
+.linechart {width: 100%;max-width: 800px;}
 
 .country-line-path {
   fill: none;
