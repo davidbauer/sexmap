@@ -1,18 +1,19 @@
 /*
 
 QUESTIONS:
-- tooltip accuracy
+- tooltip accuracy (need a topojson with country center points)
 - show above 60 color in legend to keep symmetry, even though it it not used in the map?
 - add all colour steps as a legend along y-axis in linechart?
 
 
 TODO:
 - analysis: strongest 5-year changes (in spreadsheet?)
-- order in dropdown
 - optimise page styles (font, mobile styles)
-- refactor manual repositioning of labels in linecharts
 - better colors for linecharts 
+- tooltips for linecharts
 - fallback images for all charts (place in html to be overwritten once charts load)
+
+- refactor manual repositioning of labels in linecharts
 - autocomplete for user input: http://www.brightpointinc.com/clients/brightpointinc.com/library/autocomplete/download.html
 */
 
@@ -39,6 +40,7 @@ var config = {
 // store all input parameters for the visualisation in state so that we always know what state the visualisation is in
 
 var state = {
+	active : null,
 	currentYear:d3.max(config.years), 
 	countries: [],
 	total: {},
@@ -108,6 +110,21 @@ var actions = {
 		state.userselected[1] = d3.select(".userinput-1").node().value;
 
 		renderLinechart(".chart-8",state.userselected,"normal");
+	},
+	zoomIn : function(d) {
+	  if (state.active === d) return reset();
+	  svg.selectAll(".active").classed("active", false);
+	  d3.select(this).classed("active", state.active = d);
+
+	  var b = path.bounds(d);
+	  svg.transition().duration(750).attr("transform",
+	      "translate(" + projection.translate() + ")"
+	      + "scale(" + .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height) + ")"
+	      + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
+	},
+	reset : function() {
+	  svg.selectAll(".active").classed("active", state.active = false);
+	  svg.transition().duration(750).attr("transform", "");
 	}
 }
 
@@ -215,12 +232,10 @@ function renderMap() {
 
 	var svg = map.selectAll('svg').data([0]);
 
-
 	var svgEnter = svg.enter()
 		.append("svg")
 	    .attr("width", width)
 	    .attr("height", height);
-
 
 	svgEnter.append("defs").append("path")
 	    .datum({type: "Sphere"})
@@ -249,6 +264,7 @@ function renderMap() {
 	    .attr("title", function(d) { return d.name;})
 	    .attr("id", function(d) { return "country-" + d.id;})
 	    .attr("d", path);
+	    // .on('click', zoomIn()); TODO make zooming in work, see http://techslides.com/d3-world-maps-tooltips-zooming-and-queue
 
 	svgEnter.insert("path", ".graticule")
       .datum(topojson.mesh(state.world, state.world.objects.countries, function(a, b) { return a !== b; }))
@@ -573,11 +589,27 @@ d3.csv('data/data.csv')
 		actions.updateData(rows);
 	});
 
-//render(); // start rendering
-
-d3.select('.play').on("click", actions.toggleTimeline); // TODO: what's a good place to put this?
+d3.select('.play').on("click", actions.toggleTimeline);
 
 console.log("timeline " + state.timeline);
+
+// function zoomIn(d) {
+//   if (state.active === d) return reset();
+//   g.selectAll(".active").classed("active", false);
+//   d3.select(this).classed("active", active = d);
+
+//   var b = path.bounds(d);
+//   g.transition().duration(750).attr("transform",
+//       "translate(" + projection.translate() + ")"
+//       + "scale(" + .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height) + ")"
+//       + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
+// }
+
+// function reset() {
+//   g.selectAll(".active").classed("active", active = false);
+//   g.transition().duration(750).attr("transform", "");
+// }
+
 
 
 // it's the end of the code as we know it
