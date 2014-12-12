@@ -91,7 +91,7 @@
 }
 
 .axis text, .linechart .legend {
-  font: 10px sans-serif;
+  font: 10px 'Droid Serif', serif;;
 }
 
 .chart-background {

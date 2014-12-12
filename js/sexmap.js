@@ -374,7 +374,7 @@ function renderLinechart(selector, countries, size) {
 			
 		}
 	};
-	var margin = {top: 20, right: 70, bottom: 20, left: 50};
+	var margin = {top: 20, right: 75, bottom: 20, left: 50};
 	var width = d3.select(selector).node().offsetWidth - margin.left - margin.right,
 	    height = size == "normal" ? d3.select(selector).node().offsetWidth/2 - margin.top - margin.bottom : d3.select(selector).node().offsetWidth - margin.top - margin.bottom;
 
