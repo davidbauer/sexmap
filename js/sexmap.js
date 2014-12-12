@@ -548,12 +548,12 @@ d3.json("data/world-110m.json", function(error, world) {
 });
 
 //load the data for all countries and prepare it
-d3.csv('data/sexratios_inclworld.csv')
+d3.csv('data/data.csv')
 	.row(function(d) { // go through all rows and make sure values are saved as numbers
 		
 		var row = { // save values for all columns that we need
 			id: +d.ISO, 
-			name: d['Country Name']
+			name: d['countryname']
 		}
 
 		config.years.forEach(function(year){ // save value for each year in a property with the year's name
