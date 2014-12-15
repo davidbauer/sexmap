@@ -31,7 +31,8 @@ var config = {
 		"mostrising": [999,344,144,524], //Hong Kong, Sri Lanka, Nepal
 		"mostbalanced": [120,218,834,434], // Cameroon, Ecuador, Tanzania, Libya
 		"warridden": [646,320,760,180,368], // Rwanda ,Guatemala, Syria, Dem. Rep. Congo, Iraq	
-		"soviet": [643,804,112,233,428] // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
+		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
+		"mensworld": [356,156,586,999] // India, China, Pakistan, World
 		}
 	} 
 
@@ -144,7 +145,8 @@ function render() {
 	renderLinechart(".chart-5", config.countryGroups.mostbalanced, "normal");
 	renderLinechart(".chart-6", config.countryGroups.warridden, "normal");
 	renderLinechart(".chart-7", config.countryGroups.soviet, "normal");
-	renderLinechart(".chart-8",state.userselected,"normal");
+	renderLinechart(".chart-8", config.countryGroups.mensworld,"normal");
+	renderLinechart(".chart-9", state.userselected,"normal");
 	renderUserinput();
 } 
 
