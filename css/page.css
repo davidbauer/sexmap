@@ -9,7 +9,7 @@
 /* A Linux- and Windows-friendly sans-serif font stack: http://prospects.mhurrell.co.uk/post/updating-the-helvetica-font-stack */
 body {font: 16px; font-family: 'Droid Serif', serif;}
 
-p {margin-bottom: 20px;}
+p {line-height: 200%;margin-bottom: 20px;}
 
 /* Using local fonts? Check out Font Squirrel's webfont generator: http://www.fontsquirrel.com/tools/webfont-generator */
 
@@ -67,7 +67,7 @@ nav ol a:hover li  {background-color: rgba(0,130,72,0.2);}
 img.share {margin: -4px 5px 0 0;}
 img.totop {position:fixed;left:20px;bottom:30px;z-index: 1000;}
 
-#content {padding: 60px 10px;margin: 0 auto;}
+#content {padding: 20px 10px;margin: 0 auto;}
 
 footer {padding: 0 10px; margin-bottom: 50px;clear:both;color: #7c7c7c;text-align: center;}
 
