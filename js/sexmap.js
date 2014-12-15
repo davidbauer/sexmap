@@ -109,7 +109,7 @@ var actions = {
 		state.userselected[0] = d3.select(".userinput-0").node().value; 
 		state.userselected[1] = d3.select(".userinput-1").node().value;
 
-		renderLinechart(".chart-8",state.userselected,"normal");
+		renderLinechart(".chart-9",state.userselected,"normal");
 	},
 	zoomIn : function(d) {
 	  if (state.active === d) return reset();
@@ -391,6 +391,10 @@ function renderLinechart(selector, countries, size) {
 			
 		},
 		'.chart-8': {
+			
+		},
+
+		'.chart-9': {
 			
 		}
 	};
