@@ -30,7 +30,7 @@ var config = {
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
 		"mostrising": [999,344,144,524], //Hong Kong, Sri Lanka, Nepal
 		"mostbalanced": [120,218,834,434], // Cameroon, Ecuador, Tanzania, Libya
-		"warridden": [646,320,180,368], // Rwanda ,Guatemala, Dem. Rep. Congo, Iraq	
+		"warridden": [646,320,180,368,434], // Rwanda ,Guatemala, Dem. Rep. Congo, Iraq, Libya
 		"soviet": [643,804,112,233,428,999], // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
 		"mensworld": [356,156,586,50,999] // India, China, Pakistan, World
 		}
