@@ -7,11 +7,10 @@ QUESTIONS:
 
 
 TODO:
-- analysis: strongest 5-year changes (in spreadsheet?)
-- optimise page styles (font, mobile styles)
 - better colors for linecharts 
 - tooltips for linecharts
 - fallback images for all charts (place in html to be overwritten once charts load)
+- add userselected countries to url and read them from url if present (for sharing)
 
 - refactor manual repositioning of labels in linecharts
 - autocomplete for user input: http://www.brightpointinc.com/clients/brightpointinc.com/library/autocomplete/download.html
