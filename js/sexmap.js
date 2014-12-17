@@ -23,7 +23,8 @@ var config = {
 	timelineSpeed : 800, // after 0.8 seconds, next year appears
 	color : d3.scale.threshold() // define steps for color changes in map
     		.domain([40,45,48,49,49.9,50.1,51,52,55,60])
-			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]),
+			//.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]),
+			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#f7f7f7", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]),
 			//.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#ffffbf", "#d9f0d3", "#a6dba0", "#5aae61", "#1b7837", "#00441b"]),
 			// rgb(222, 119, 119) rostrot
 	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
