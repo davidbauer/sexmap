@@ -1,17 +1,24 @@
 /*
 
 QUESTIONS:
-- tooltip accuracy (need a topojson with country center points)
+
 - show above 60 color in legend to keep symmetry, even though it it not used in the map?
 - add all colour steps as a legend along y-axis in linechart?
-
 
 TODO:
 - better colors for linecharts 
 - tooltips for linecharts
+- include aggregates to data (use column type to distinguish)
 - fallback images for all charts (place in html to be overwritten once charts load)
 - add userselected countries to url and read them from url if present (for sharing)
 
+finish
+- update chart numbering to reflect order
+- manually correct positioning of country labels
+- delete unnecessary code
+
+nice to have
+- tooltip accuracy (need a topojson with country center points)
 - refactor manual repositioning of labels in linecharts
 - autocomplete for user input: http://www.brightpointinc.com/clients/brightpointinc.com/library/autocomplete/download.html
 */
@@ -33,7 +40,7 @@ var config = {
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
 		"mostrising": [999,344,144,524], //Hong Kong, Sri Lanka, Nepal
 		"mostbalanced": [120,218,834,434], // Cameroon, Ecuador, Tanzania, Libya
-		"warridden": [646,320,180,368,434], // Rwanda ,Guatemala, Dem. Rep. Congo, Iraq, Libya
+		"warridden": [646,320,368,434, 116], // Rwanda ,Guatemala, Iraq, Libya, Cambodia
 		"soviet": [643,804,112,233,428,999], // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
 		"mensworld": [356,156,586,50,999] // India, China, Pakistan, World
 		}
