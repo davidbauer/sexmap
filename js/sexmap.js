@@ -11,6 +11,7 @@ TODO:
 - include aggregates to data (use column type to distinguish)
 - fallback images for all charts (place in html to be overwritten once charts load)
 - add userselected countries to url and read them from url if present (for sharing)
+- add large current year number to lower part of the map
 
 finish
 - update chart numbering to reflect order
