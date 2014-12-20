@@ -38,6 +38,12 @@
   shape-rendering: crispEdges;
 }
 
+.mapyear {
+  fill: gray;
+  text-anchor:middle;
+  fill-opacity: 0.3;
+  font-size: 200px;
+}
 
 .d3-tip {
   line-height: 1;

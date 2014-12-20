@@ -1,17 +1,16 @@
 /*
 
 QUESTIONS:
-
-- show above 60 color in legend to keep symmetry, even though it it not used in the map?
 - add all colour steps as a legend along y-axis in linechart?
 
 TODO:
+- make key and mapyear position responsive
 - better colors for linecharts 
 - tooltips for linecharts
 - include aggregates to data (use column type to distinguish)
 - fallback images for all charts (place in html to be overwritten once charts load)
 - add userselected countries to url and read them from url if present (for sharing)
-- add large current year number to lower part of the map
+
 
 finish
 - update chart numbering to reflect order
@@ -32,8 +31,8 @@ var config = {
 	color : d3.scale.threshold() // define steps for color changes in map
     		.domain([40,45,48,49,49.5,50.5,51,52,55,60])
 			//.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]), // blue, pink, green
-			//.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#f7f7f7", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]),
-			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]),
+			//.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#f6e8c3", "#dfc27d", "#bf812d", "#8c510a", "#543005"]), // green, blue, brown
+			.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]), // green, blue, red
 	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
 		"neighbors": [999,756,276,250,380,40], // Switzerland, Germany, France, Italy, Austria	
 		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
@@ -66,6 +65,7 @@ var actions = {
 		state.currentYear = +year; // + turns strings into numbers
 		renderMap();
 		renderDatatext();
+		actions.updateMapyear();
 	},
 	updateData : function(rows) {
 		state.total = _.findWhere(rows, {name: "World average"});
@@ -122,21 +122,25 @@ var actions = {
 
 		renderLinechart(".chart-9",state.userselected,"normal");
 	},
-	zoomIn : function(d) {
-	  if (state.active === d) return reset();
-	  svg.selectAll(".active").classed("active", false);
-	  d3.select(this).classed("active", state.active = d);
+	// zoomIn : function(d) {
+	//   if (state.active === d) return reset();
+	//   svg.selectAll(".active").classed("active", false);
+	//   d3.select(this).classed("active", state.active = d);
 
-	  var b = path.bounds(d);
-	  svg.transition().duration(750).attr("transform",
-	      "translate(" + projection.translate() + ")"
-	      + "scale(" + .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height) + ")"
-	      + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
-	},
-	reset : function() {
-	  svg.selectAll(".active").classed("active", state.active = false);
-	  svg.transition().duration(750).attr("transform", "");
+	//   var b = path.bounds(d);
+	//   svg.transition().duration(750).attr("transform",
+	//       "translate(" + projection.translate() + ")"
+	//       + "scale(" + .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height) + ")"
+	//       + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
+	// },
+	// reset : function() {
+	//   svg.selectAll(".active").classed("active", state.active = false);
+	//   svg.transition().duration(750).attr("transform", "");
+	// },
+	updateMapyear : function() {
+		d3.select(".mapyear").text(state.currentYear);
 	}
+
 }
 
 
@@ -149,6 +153,7 @@ function render() {
 	renderDatatext();
 	if (state.world && state.countries.length > 0) renderMap();
 	renderKey(); // map legend
+	renderMapyear();
 	renderLinechart(".chart-1", config.countryGroups.neighbors, "normal"); // where to place, what data to use
 	renderLinechart(".chart-2", config.countryGroups.brics, "normal");
 	renderLinechart(".chart-3", config.countryGroups.arab, "large");
@@ -357,6 +362,7 @@ function renderKey() {
 	    .attr("class", "caption")
 	    .attr("y", -6)
 	    .text("Percentage of women in population");
+
 }
 
 function renderLinechart(selector, countries, size) {
@@ -563,6 +569,15 @@ function renderUserinput() {
 		actions.updateUserinput();
 	})
 
+}
+
+function renderMapyear() {
+	var t = d3.select("#map").select("svg").append("text")
+	.attr("height", 200)
+	.attr("width", 250)
+	.text(state.currentYear)
+	.attr("class", "mapyear")
+	.attr("transform", "translate(400,700)"); // TODO make responsive
 }
 
 
