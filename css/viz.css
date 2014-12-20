@@ -26,7 +26,7 @@
 
 .boundary {
   fill: none;
-  stroke: #fff;
+  stroke: gray;
   stroke-width: .5px;
 }
 
@@ -68,7 +68,7 @@
 /* Gender colors
 -------------------------------------------------------------------------------*/
 .max-m {color:#4393c3;}
-.max-f {color:#de77ae;}
+.max-f {color:#d6604d;}
 .even {color: #c2d9bb;}
 
 
