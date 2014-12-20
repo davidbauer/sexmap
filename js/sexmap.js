@@ -30,7 +30,7 @@ var config = {
 	years: d3.range(1961,2014), // maximum value not included, so produces range 1961-2013
 	timelineSpeed : 800, // after 0.8 seconds, next year appears
 	color : d3.scale.threshold() // define steps for color changes in map
-    		.domain([40,45,48,49,49.9,50.1,51,52,55,60])
+    		.domain([40,45,48,49,49.5,50.5,51,52,55,60])
 			//.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]),
 			.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#f7f7f7", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]),
 			//.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#ffffbf", "#d9f0d3", "#a6dba0", "#5aae61", "#1b7837", "#00441b"]),
@@ -196,8 +196,8 @@ function renderDatatext() {
 	var sexcount = _.countBy(state.countries, function(country) {
 		if (country[state.currentYear]) {
   			
-			if (country[state.currentYear] > 50.1) {return 'female'}
-			else if (country[state.currentYear] < 49.9) {return 'male'}
+			if (country[state.currentYear] > 50.5) {return 'female'}
+			else if (country[state.currentYear] < 49.5) {return 'male'}
 			else {return 'even'}
   		}
 
