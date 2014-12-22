@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="css/reset.css">
 <link rel="stylesheet" type="text/css" href="css/page.css">
 <link rel="stylesheet" type="text/css" href="css/viz.css">
+<link rel="stylesheet" type="text/css" href="js/bigfoot/bigfoot-default.css">
 <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,700' rel='stylesheet' type='text/css'>
 
 <body>
@@ -26,7 +27,7 @@
 		
 		<section class="mapvis">
 			<h2>The global view</h2><br/>
-			<p class="datatext">In <span class="currentYear datapoint">2013</span>, <span class="currentTotalPercentage datapoint">49.59</span>% of the global population were women.<br/> <span class="currentFemaleCountries datapoint">111</span> countries had <span class="max-f">more women</span>, <span class="currentMaleCountries datapoint">64</span> countries had <span class="max-m">more men</span>, <span class="currentEvenCountries datapoint">18</span> were <span class="even">balanced</span>.<sup>*</sup></p>
+			<p class="datatext">In <span class="currentYear datapoint">2013</span>, <span class="currentTotalPercentage datapoint">49.59</span>% of the global population were women.<br/> <span class="currentFemaleCountries datapoint">111</span> countries had <span class="max-f">more women</span>, <span class="currentMaleCountries datapoint">64</span> countries had <span class="max-m">more men</span>, <span class="currentEvenCountries datapoint">18</span> were <span class="even">balanced</span>.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
 
 			<div class="controls">
 				<button class="play"><img src="/img/play.png"/></button>
@@ -34,7 +35,6 @@
 			</div>
 
 			<figure id="map"></figure>
-			<div class="footnote"><sup>*</sup> no data available for <span class="currentNoDataCountries">19</span> countries, balanced defined as both genders between 49.5% and 50.5% of total population.</div>
 		
 		</section>
 		
@@ -46,7 +46,7 @@
 		</section>
 		
 		<section class="la">
-			<p>Left to nature alone, the population on earth would be give or take 50 percent men and 50 percent women. The fact that women generally live longer (XX vs YY years in 2013) is compensated by more boys than girls being born (107 boys per 100 girls in 2013). In 1961, the earliest year the World Bank provides data for, the world was within 0.09 percentage points of a perfectly equal distribution. Ever since, the gap has widened, now men outnumber women on the planet by almost 60 million.
+			<p>Left to nature alone, the population on earth would be give or take 50 percent men and 50 percent women. The fact that women generally live longer <sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> is compensated by more boys than girls being born (107 boys per 100 girls in 2013). In 1961, the earliest year the World Bank provides data for, the world was within 0.09 percentage points of a perfectly equal distribution. Ever since, the gap has widened, now men outnumber women on the planet by almost 60 million.
 
 			<p>Of course, the number for the whole world levels out regional differences. Female population ranges from 23 to 55 percent, some countries have seen a change of 19 percentage points over the past 5 decades, others have had notable ups or downs in relatively short periods.</p>
 
@@ -57,7 +57,6 @@
 			<li></li>
 			<li></li>
 		</p>
-
 
 		</section>
 	
@@ -140,7 +139,19 @@
 
 		<p>Data source: The United Nations Population Division's World Population Prospects, via <a href="http://data.worldbank.org/indicator/SP.POP.TOTL.FE.ZS/countries/1W?display=default" target="_blank"> World Bank (2014)</a>.</p>
 
-		<p>Additional reads:</p>
+		
+
+		<div class="footnotes">
+			<ol>
+			    <li class="footnote" id="fn:1">
+			        <p>no data available for <span class="currentNoDataCountries">19</span> countries, balanced defined as both genders between 49.5% and 50.5% of total population.<a href="#fnref:1" title="return to article"> ↩</a><p>
+			    </li>
+			    <li class="footnote" id="fn:2">
+			        <p>72.3 years for women vs. 67.8 for men years according to the <a href="http://esa.un.org/wpp/Documentation/pdf/WPP2012_Volume-I_Comprehensive-Tables.pdf" target="_blank">WHO's World Population Prospects: The 2012 Revision</a> (PDF, page 259)<a href="#fnref:2" title="return to article"> ↩</a><p>
+			    </li>
+			</ol>
+		</div>
+
 	</footer>
 
 </div>	<!-- wrapper -->
@@ -151,5 +162,10 @@
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
 	<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 	<script type="text/javascript" src="js/sexmap.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bigfoot/bigfoot.js"></script>
+	<script type="text/javascript">
+	    $.bigfoot();
+	</script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 TODO:
 - tooltips for linecharts?
 - fallback images for all charts (place in html to be overwritten once charts load)
+- mobile fixes (fonts, line-heights)
 
 finish
 - update chart numbering to reflect order
