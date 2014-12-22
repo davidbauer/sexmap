@@ -158,7 +158,7 @@ function render() {
 	renderLinechart(".chart-2", config.countryGroups.brics, "normal");
 	renderLinechart(".chart-3", config.countryGroups.arab, "large");
 	renderLinechart(".chart-4", config.countryGroups.mostrising, "normal");
-	renderLinechart(".chart-5", config.countryGroups.mostbalanced, "normal");
+	// renderLinechart(".chart-5", config.countryGroups.mostbalanced, "normal");
 	renderLinechart(".chart-6", config.countryGroups.warridden, "normal");
 	renderLinechart(".chart-7", config.countryGroups.soviet, "normal");
 	renderLinechart(".chart-8", config.countryGroups.mensworld,"normal");
@@ -441,7 +441,10 @@ function renderLinechart(selector, countries, size) {
 		d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); })
 	];
 
-	var colorScale = d3.scale.category10();
+	//var colorScale = d3.scale.category20();
+	var colorScale = d3.scale.ordinal()
+		.domain([4,894]) // domain from min to max country ISO id
+		.range(["#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#49006a"]); // color range, see http://bl.ocks.org/mbostock/5577023
 
 	// scale values on axes
 	var x = d3.scale.linear()
@@ -481,22 +484,30 @@ function renderLinechart(selector, countries, size) {
 
     var vis = container.select('.vis');
 
-    // set red-ish background for part of linechart that means more women
-    visEnter.append("rect")
-	    .attr("height", y(50))
-	    .attr("x", 0)
-	    .attr("width", width)
-	    .attr("class", "chart-background")
-	    .style("fill", "#8e0152");
+    // set background for part of linechart that means more women
+    // visEnter.append("rect")
+	   //  .attr("height", y(50))
+	   //  .attr("x", 0)
+	   //  .attr("width", 8)
+	   //  .attr("class", "chart-background")
+	   //  .style("fill", "#b2182b");
 
-    // set blue-ish background for part of linechart that means more women
-	visEnter.append("rect")
-	    .attr("height", height-y(50))
-	    .attr("y", y(50))
+	// set background for part of linechart that means balanced
+    visEnter.append("rect")
+    	.attr("y", y(50.5))
+	    .attr("height", y(49.5)-y(50.5))
 	    .attr("x", 0)
 	    .attr("width", width)
-	    .attr("class", "chart-background")
-	    .style("fill", "#053061");
+	    .attr("class", "chart-background");
+
+    // set background for part of linechart that means more women
+	// visEnter.append("rect")
+	//     .attr("height", height-y(50))
+	//     .attr("y", y(50))
+	//     .attr("x", 0)
+	//     .attr("width", 8)
+	//     .attr("class", "chart-background")
+	//     .style("fill", "#01665e");
 
     visEnter.append("g")
     	.attr('class', 'axis x-axis')
@@ -522,7 +533,7 @@ function renderLinechart(selector, countries, size) {
 
 	vis.selectAll('.country-line-path')
 		.attr("d", function(d) { return line(d.values); })
-		.attr('stroke', function(d) { if (d.key === 999) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
+		.attr('stroke', function(d) {if (d.key === 999) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
 
 	countryLineEnter.append("text")
 	    .attr("class", "legend")
