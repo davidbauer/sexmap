@@ -1,11 +1,6 @@
 /*
-
-QUESTIONS:
-- add all colour steps as a legend along y-axis in linechart?
-
 TODO:
-- make key and mapyear position responsive
-- tooltips for linecharts
+- tooltips for linecharts?
 - fallback images for all charts (place in html to be overwritten once charts load)
 
 finish
@@ -47,6 +42,7 @@ var config = {
 // store all input parameters for the visualisation in state so that we always know what state the visualisation is in
 
 var state = {
+	mapwidth : d3.select("#map").node().offsetWidth, // .node().offsetWidth reads width of element #map, needed for responsive positioning
 	active : null,
 	currentYear:d3.max(config.years), 
 	countries: [],
@@ -55,6 +51,8 @@ var state = {
 	timeline: "ready",
 	userselected: window.location.hash ? window.location.hash.substring(2,window.location.hash.length-1).split(",").map(Number) : [32, 56, 999] // user either ids in URL or preset to argentina, belgium and world
 };
+
+console.log(state.mapwidth);
 
 console.log("Selected countries by user: " + state.userselected);
 
@@ -198,7 +196,7 @@ function renderDatatext() {
 
 function renderMap() {
 	
-	var width = d3.select("#map").node().offsetWidth, // .node().offsetWidth reads width of element #map
+	var width = state.mapwidth,
     height = width;
 
 	var projection = d3.geo.azimuthalEqualArea()
@@ -322,7 +320,7 @@ function renderKey() {
 
     var g = d3.select("#map").selectAll('svg').append("g")
 	    .attr("class", "key")
-	    .attr("transform", "translate(250,30)"); // position within the svg space 250 to the right, 700 from top, TODO: make responsive
+	    .attr("transform", "translate(" + (state.mapwidth-300)/2 + ",30)"); // position within the svg space
 
 	g.selectAll("rect")
 	    .data(config.color.range().map(function(d, i) {
@@ -570,7 +568,7 @@ function renderMapyear() {
 	.attr("width", 250)
 	.text(state.currentYear)
 	.attr("class", "mapyear")
-	.attr("transform", "translate(400,700)"); // TODO make responsive
+	.attr("transform", "translate("+ state.mapwidth/2 + "," + state.mapwidth*0.9 + ")");
 }
 
 
