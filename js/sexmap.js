@@ -475,7 +475,9 @@ function renderLinechart(selector, countries, size) {
 	   //  .style("fill", "#b2182b");
 
 	// set background for part of linechart that means balanced
-    visEnter.append("rect")
+    vis.selectAll(".chart-background").remove();
+
+    vis.append("rect")
     	.attr("y", y(50.5))
 	    .attr("height", y(49.5)-y(50.5))
 	    .attr("x", 0)
