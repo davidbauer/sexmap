@@ -5,22 +5,20 @@ QUESTIONS:
 
 TODO:
 - make key and mapyear position responsive
-- better colors for linecharts 
 - tooltips for linecharts
-- include aggregates to data (use column type to distinguish)
 - fallback images for all charts (place in html to be overwritten once charts load)
-- add userselected countries to url and read them from url if present (for sharing)
-
 
 finish
 - update chart numbering to reflect order
 - manually correct positioning of country labels
 - delete unnecessary code
+- add sharing metadata
 
 nice to have
 - tooltip accuracy (need a topojson with country center points)
 - refactor manual repositioning of labels in linecharts
-- autocomplete for user input: http://www.brightpointinc.com/clients/brightpointinc.com/library/autocomplete/download.html
+- include aggregates to data (use column type to distinguish)
+
 */
 
 
@@ -55,8 +53,10 @@ var state = {
 	total: {},
 	world: null,
 	timeline: "ready",
-	userselected: [32, 56, 999] // preset to argentina and belgium and world average
+	userselected: window.location.hash ? window.location.hash.substring(2,window.location.hash.length-1).split(",").map(Number) : [32, 56, 999] // user either ids in URL or preset to argentina, belgium and world
 };
+
+console.log("Selected countries by user: " + state.userselected);
 
 // ACTIONS
 
@@ -119,16 +119,13 @@ var actions = {
 	updateUserinput : function() {
 		state.userselected[0] = d3.select(".userinput-0").node().value; 
 		state.userselected[1] = d3.select(".userinput-1").node().value;
-
+		window.location.hash = "[" + state.userselected + "]";
 		renderLinechart(".chart-9",state.userselected,"normal");
 	},
 	updateMapyear : function() {
 		d3.select(".mapyear").text(state.currentYear);
 	}
-
 }
-
-
 
 // RENDERING
 // make one render() function and call all functions to render sub-elements within
