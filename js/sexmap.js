@@ -3,9 +3,11 @@ TODO:
 - tooltips for linecharts?
 - fallback images for all charts (place in html to be overwritten once charts load)
 - mobile fixes (fonts, line-heights)
+- reduce number of ticks in line charts on mobile
 
 finish
 - update chart numbering to reflect order
+- update footnote numbering to reflect order
 - manually correct positioning of country labels
 - delete unnecessary code
 - add sharing metadata
@@ -33,8 +35,9 @@ var config = {
 		"mostrising": [999,344,144,524], //Hong Kong, Sri Lanka, Nepal
 		"mostbalanced": [120,218,834,434], // Cameroon, Ecuador, Tanzania, Libya
 		"warridden": [646,320,368,434, 116], // Rwanda ,Guatemala, Iraq, Libya, Cambodia
-		"soviet": [643,804,112,233,428,999], // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
-		"mensworld": [356,156,586,50,999] // India, China, Pakistan, World
+		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
+		"mensworld": [356,156,586,50,999], // India, China, Pakistan, Bangladesh, World
+		"northamerica" : [840, 124, 484, 999] // USA, Canada, Mexico, World
 		}
 	} 
 
@@ -138,7 +141,7 @@ function render() {
 	renderLinechart(".chart-2", config.countryGroups.brics, "normal");
 	renderLinechart(".chart-3", config.countryGroups.arab, "large");
 	renderLinechart(".chart-4", config.countryGroups.mostrising, "normal");
-	// renderLinechart(".chart-5", config.countryGroups.mostbalanced, "normal");
+	renderLinechart(".chart-5", config.countryGroups.northamerica, "normal");
 	renderLinechart(".chart-6", config.countryGroups.warridden, "normal");
 	renderLinechart(".chart-7", config.countryGroups.soviet, "normal");
 	renderLinechart(".chart-8", config.countryGroups.mensworld,"normal");
