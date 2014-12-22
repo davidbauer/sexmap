@@ -122,21 +122,6 @@ var actions = {
 
 		renderLinechart(".chart-9",state.userselected,"normal");
 	},
-	// zoomIn : function(d) {
-	//   if (state.active === d) return reset();
-	//   svg.selectAll(".active").classed("active", false);
-	//   d3.select(this).classed("active", state.active = d);
-
-	//   var b = path.bounds(d);
-	//   svg.transition().duration(750).attr("transform",
-	//       "translate(" + projection.translate() + ")"
-	//       + "scale(" + .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height) + ")"
-	//       + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
-	// },
-	// reset : function() {
-	//   svg.selectAll(".active").classed("active", state.active = false);
-	//   svg.transition().duration(750).attr("transform", "");
-	// },
 	updateMapyear : function() {
 		d3.select(".mapyear").text(state.currentYear);
 	}
@@ -441,7 +426,7 @@ function renderLinechart(selector, countries, size) {
 		d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); })
 	];
 
-	//var colorScale = d3.scale.category20();
+	//var colorScale = d3.scale.category20(); // automatically pick colors for lines
 	var colorScale = d3.scale.ordinal()
 		.domain([4,894]) // domain from min to max country ISO id
 		.range(["#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#49006a"]); // color range, see http://bl.ocks.org/mbostock/5577023
@@ -559,8 +544,6 @@ function renderUserinput() {
 		.data(state.countries.filter(function(datum) { 
 			return _.some(config.years, function(y) { return !isNaN(datum[y]); }); // filters all countries that have values for at least one (_.some) years
 		})); 
-
-		
 	 
 	options.enter()
 		.append('option');
@@ -634,24 +617,6 @@ d3.csv('data/data.csv')
 d3.select('.play').on("click", actions.toggleTimeline);
 
 console.log("timeline " + state.timeline);
-
-// function zoomIn(d) {
-//   if (state.active === d) return reset();
-//   g.selectAll(".active").classed("active", false);
-//   d3.select(this).classed("active", active = d);
-
-//   var b = path.bounds(d);
-//   g.transition().duration(750).attr("transform",
-//       "translate(" + projection.translate() + ")"
-//       + "scale(" + .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height) + ")"
-//       + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
-// }
-
-// function reset() {
-//   g.selectAll(".active").classed("active", active = false);
-//   g.transition().duration(750).attr("transform", "");
-// }
-
 
 
 // it's the end of the code as we know it
