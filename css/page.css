@@ -85,7 +85,7 @@ hr {width:100px;margin:30px auto;}
 /* Typography styles!
 -------------------------------------------------------------------------------*/
 
-h1 {font-size: 400%;font-weight: bold;margin-bottom: 30px;margin-top: 40px;line-height: 110%;}
+h1 {font-size: 400%;font-weight: bold;margin-bottom: 30px;margin-top: 0px;line-height: 110%;}
 h2 {font-size: 250%;font-weight: bold;margin-bottom: 20px;margin-top: 40px;line-height: 26px;}
 h3 {font-size: 140%;font-weight: bold;margin-bottom: 16px;margin-top: 40px;line-height: 26px;}
 h4 {font-size: 120%;font-weight: bold;margin-bottom: 16px;}
@@ -97,6 +97,7 @@ p.datatext {font-size: 120%; line-height: 120%;}
 
 
 .byline {font-style: italic;font-size: 120%;}
+.dateline {text-transform: uppercase;font-size: 95% !important;margin: 50px auto 0;}
 
 span.datapoint {font-weight: bold;font-size: 120%;}
 

@@ -10,10 +10,9 @@ finish
 - add sharing metadata
 
 nice to have
-- tooltip accuracy (need a topojson with country center points)
+- improved tooltip accuracy (need a topojson with country center points)
 - refactor manual repositioning of labels in linecharts
 - include aggregates to data (use column type to distinguish)
-
 */
 
 
