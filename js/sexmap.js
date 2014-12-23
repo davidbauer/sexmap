@@ -14,6 +14,7 @@ finish
 nice to have
 - improved tooltip accuracy (need a topojson with country center points)
 - refactor manual repositioning of labels in linecharts
+- localisation
 */
 
 
@@ -317,7 +318,7 @@ function renderKey() {
 	var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
-    .tickSize(9)
+    .tickSize(8)
     .tickValues([40,45,48,49,51,52,55,60]); // left out two middle values for space, to generate tick values dynamically: config.color.domain()
 
     var g = d3.select("#map").selectAll('svg').append("g")
@@ -352,48 +353,35 @@ function renderLinechart(selector, countries, size) {
 	// manual label position corrections (refactor to come as a param)
 	var countryLabelPositionDeltas = {
 		'.chart-1': {
-			
 		},
 		'.chart-2': {
 			356: -3,
 			156: +3
-
 		},
 		'.chart-3': {
-			
 		},
-		'.chart-4': {
-
-			
+		'.chart-4': {	
 		},
 		'.chart-5': {
-
 			834: -10,
 			218: +10,
 			434: +20
-			
 		},
 		'.chart-6': {
 			320:-10,
-			646: +8
-
-			
+			646: +8			
 		}
 		,
 		'.chart-7': {
 			804: -3,
 			643: +7,
 			112: +5,
-			643: +3
-
-			
+			643: +3	
 		},
 		'.chart-8': {
-			
 		},
 
 		'.chart-9': {
-			
 		}
 	};
 	var margin = {top: 20, right: 75, bottom: 20, left: 50};
@@ -443,15 +431,21 @@ function renderLinechart(selector, countries, size) {
 	    .y(function(d) { return y(d.value); })
 	    .interpolate("basis");
 
+	// define number of axis ticks based on screen size
+	var ticknumberX = state.mapwidth <= 480 ? 5 : 10;
+	var ticknumberY = state.mapwidth <= 480 ? 4 : 8;
+
 	// draw the axes
 	var xAxis = d3.svg.axis()
 		.scale(x)
 		.orient('bottom')
-		.tickFormat(function(d) { return +d; });
+		.tickFormat(function(d) { return +d; })
+		.ticks(ticknumberX);
 
 	var yAxis = d3.svg.axis()
 		.scale(y)
-		.orient('left');
+		.orient('left')
+		.ticks(ticknumberY);
 
 	var container = d3.select(selector);
 
