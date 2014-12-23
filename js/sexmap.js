@@ -1,7 +1,6 @@
 /*
 TODO:
 - tooltips for linecharts?
-- fallback images for all charts (place in html to be overwritten once charts load)
 - mobile fixes (fonts, line-heights)
 - reduce number of ticks in line charts on mobile
 
@@ -11,6 +10,7 @@ finish
 - manually correct positioning of country labels
 - delete unnecessary code
 - add sharing metadata
+- fallback images for all charts (place in html to be overwritten once charts load)
 
 nice to have
 - improved tooltip accuracy (need a topojson with country center points)
@@ -29,7 +29,8 @@ var config = {
 			//.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#f6e8c3", "#dfc27d", "#bf812d", "#8c510a", "#543005"]), // green, blue, brown
 			.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]), // green, blue, red
 	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
-		"neighbors": [999,756,276,250,380,40], // Switzerland, Germany, France, Italy, Austria	
+		"heighincome": [999,997], // High Income, World	
+		"centraleurope": [756,276,250,380,40,999], // Switzerland, Germany, France, Italy, Austria, World	
 		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
 		"mostrising": [999,344,144,524], //Hong Kong, Sri Lanka, Nepal
@@ -49,13 +50,12 @@ var state = {
 	active : null,
 	currentYear:d3.max(config.years), 
 	countries: [],
+	aggregates: [],
 	total: {},
 	world: null,
 	timeline: "ready",
 	userselected: window.location.hash ? window.location.hash.substring(2,window.location.hash.length-1).split(",").map(Number) : [32, 56, 999] // user either ids in URL or preset to argentina, belgium and world
 };
-
-console.log(state.mapwidth);
 
 console.log("Selected countries by user: " + state.userselected);
 
@@ -69,8 +69,9 @@ var actions = {
 		actions.updateMapyear();
 	},
 	updateData : function(rows) {
+		state.countries = _.where(rows, {entity: "country"});
+		state.aggregates = _.where(rows, {entity: "aggregate"});
 		state.total = _.findWhere(rows, {name: "World average"});
-		state.countries = _.without(rows, _.findWhere(rows, {name: "World average"}));
 		render();
 	},
 	toggleTimeline : function () {
@@ -137,7 +138,7 @@ function render() {
 	if (state.world && state.countries.length > 0) renderMap();
 	renderKey(); // map legend
 	renderMapyear();
-	renderLinechart(".chart-1", config.countryGroups.neighbors, "normal"); // where to place, what data to use
+	renderLinechart(".chart-1", config.countryGroups.heighincome, "normal"); // where to place, what data to use
 	renderLinechart(".chart-2", config.countryGroups.brics, "normal");
 	renderLinechart(".chart-3", config.countryGroups.arab, "large");
 	renderLinechart(".chart-4", config.countryGroups.mostrising, "normal");
@@ -403,7 +404,7 @@ function renderLinechart(selector, countries, size) {
 
 	var data = countries.map(function(id) { // take input countries and prepare the data
 		
-		var countryData = id === 999 ? state.total : _.findWhere(state.countries, {id: +id});
+		var countryData = id >= 991 ? _.findWhere(state.aggregates, {id: +id}) : _.findWhere(state.countries, {id: +id});
 
 		return {
 			key: +id,
@@ -593,7 +594,8 @@ d3.csv('data/data.csv')
 		
 		var row = { // save values for all columns that we need
 			id: +d.ISO, 
-			name: d['countryname']
+			name: d['countryname'],
+			entity : d ['entity']
 		}
 
 		config.years.forEach(function(year){ // save value for each year in a property with the year's name
