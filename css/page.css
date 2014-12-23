@@ -80,6 +80,7 @@ hr {width:100px;margin:30px auto;}
 .la {max-width: 800px;text-align: left;}
 
 .footnote {color: gray;text-align:center;margin:0 auto;font-size: 80%;}
+.todo {background-color: rgba(255, 255, 0, 0.3);}
 
 
 /* Typography styles!
