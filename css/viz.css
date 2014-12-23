@@ -114,7 +114,8 @@
 -------------------------------------------------------------------------------*/
 
 @media screen and (max-width: 480px) {
-  .userinput-0 {margin-right:0px;margin-bottom: 5px;}   
+  .userinput-0 {margin-right:0px;margin-bottom: 5px;}
+  .mapyear {font-size: 500%;fill-opacity:0.3;}  
 }
 
 

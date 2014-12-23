@@ -28,7 +28,7 @@ var config = {
 			//.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#f6e8c3", "#dfc27d", "#bf812d", "#8c510a", "#543005"]), // green, blue, brown
 			.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]), // green, blue, red
 	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
-		"heighincome": [999,997], // High Income, World	
+		"heighincome": [999,997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
 		"centraleurope": [756,276,250,380,40,999], // Switzerland, Germany, France, Italy, Austria, World	
 		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
