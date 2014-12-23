@@ -16,7 +16,7 @@ p {line-height: 170%;margin-bottom: 20px;}
 /* We like off-black for text. */
 body, select, input, textarea {color: #333;}
 
-a {color: #008148;}
+a {color: #168dd9;}
 a:hover {text-decoration: none;}
 
 /* Custom text-selection colors (remove any text shadows: http://twitter.com/miketaylr/status/12228805301) 
