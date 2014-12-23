@@ -254,6 +254,10 @@
   line-height: normal;
 }
 
+.bigfoot-footnote__content p {
+  margin-bottom: 0px;
+}
+
 .bigfoot-footnote__content img {
   max-width: 100%;
 }
