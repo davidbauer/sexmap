@@ -109,3 +109,13 @@
 /* Userinput */
 
 .userinput-0 {margin-right:10px;}
+
+/* Mobile styles
+-------------------------------------------------------------------------------*/
+
+@media screen and (max-width: 480px) {
+  .userinput-0 {margin-right:0px;margin-bottom: 5px;}   
+}
+
+
+

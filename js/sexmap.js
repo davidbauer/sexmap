@@ -1,8 +1,6 @@
 /*
 TODO:
-- tooltips for linecharts?
-- mobile fixes (fonts, line-heights)
-- reduce number of ticks in line charts on mobile
+-
 
 finish
 - update chart numbering to reflect order
@@ -12,6 +10,8 @@ finish
 - fallback images for all charts (place in html to be overwritten once charts load)
 
 nice to have
+- tooltips for linecharts?
+- find better solution than hash to store userselected countries (could interfere with footnotes)
 - improved tooltip accuracy (need a topojson with country center points)
 - refactor manual repositioning of labels in linecharts
 - localisation
@@ -53,7 +53,7 @@ var state = {
 	total: {},
 	world: null,
 	timeline: "ready",
-	userselected: window.location.hash ? window.location.hash.substring(2,window.location.hash.length-1).split(",").map(Number) : [32, 56, 999] // user either ids in URL or preset to argentina, belgium and world
+	userselected: window.location.hash ? window.location.hash.substring(2,window.location.hash.length-1).split(",").map(Number) : [392, 120, 999] // user either ids in URL or preset to japan, cameroon and world
 };
 
 console.log("Selected countries by user: " + state.userselected);
@@ -425,12 +425,6 @@ function renderLinechart(selector, countries, size) {
 		.range([height, 0])
 		.nice(2);
 
-	// draw the line
-	var line = d3.svg.line()
-		.x(function(d) { return x(d.year); })
-	    .y(function(d) { return y(d.value); })
-	    .interpolate("basis");
-
 	// define number of axis ticks based on screen size
 	var ticknumberX = state.mapwidth <= 480 ? 5 : 10;
 	var ticknumberY = state.mapwidth <= 480 ? 4 : 8;
@@ -485,6 +479,12 @@ function renderLinechart(selector, countries, size) {
 	//     .attr("width", 8)
 	//     .attr("class", "chart-background")
 	//     .style("fill", "#01665e");
+
+	// draw the line
+	var line = d3.svg.line()
+		.x(function(d) { return x(d.year); })
+	    .y(function(d) { return y(d.value); })
+	    .interpolate("basis");
 
     visEnter.append("g")
     	.attr('class', 'axis x-axis')

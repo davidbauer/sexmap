@@ -86,8 +86,8 @@ hr {width:100px;margin:30px auto;}
 -------------------------------------------------------------------------------*/
 
 h1 {font-size: 400%;font-weight: bold;margin-bottom: 30px;margin-top: 0px;line-height: 110%;}
-h2 {font-size: 250%;font-weight: bold;margin-bottom: 20px;margin-top: 40px;line-height: 26px;}
-h3 {font-size: 140%;font-weight: bold;margin-bottom: 16px;margin-top: 40px;line-height: 26px;}
+h2 {font-size: 250%;font-weight: bold;margin-bottom: 20px;margin-top: 40px;line-height: 110%;}
+h3 {font-size: 140%;font-weight: bold;margin-bottom: 16px;margin-top: 40px;line-height: 110%;}
 h4 {font-size: 120%;font-weight: bold;margin-bottom: 16px;}
 
 .lede {}
@@ -106,8 +106,6 @@ span.datapoint {font-weight: bold;font-size: 120%;}
 -------------------------------------------------------------------------------*/
 @media print {
 
-
-
 }
 
 
@@ -120,5 +118,6 @@ span.datapoint {font-weight: bold;font-size: 120%;}
 }
 
 @media screen and (max-width: 480px) {
-	#logo {width:160px;padding: 16px 10px;}		
+	h1 {font-size: 250%;}
+	h2 {font-size: 200%;}		
 }
