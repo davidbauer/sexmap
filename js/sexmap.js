@@ -34,7 +34,7 @@ var config = {
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
 		"mostrising": [999,344,144,524], //Hong Kong, Sri Lanka, Nepal
 		"mostbalanced": [120,218,834,434], // Cameroon, Ecuador, Tanzania, Libya
-		"warridden": [646,320,368,434, 116], // Rwanda ,Guatemala, Iraq, Libya, Cambodia
+		"warridden": [646,320,368,434,116], // Rwanda ,Guatemala, Iraq, Libya, Cambodia
 		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
 		"mensworld": [356,156,586,50,999], // India, China, Pakistan, Bangladesh, World
 		"northamerica" : [840, 124, 484, 999] // USA, Canada, Mexico, World
@@ -375,10 +375,9 @@ function renderLinechart(selector, countries, size) {
 			
 		},
 		'.chart-6': {
-			320: -2,
-			646: +4,
-			760: +3,
-			4: +3
+			320:-10,
+			646: +8
+
 			
 		}
 		,
@@ -386,7 +385,7 @@ function renderLinechart(selector, countries, size) {
 			804: -3,
 			643: +7,
 			112: +5,
-			643: -5
+			643: +3
 
 			
 		},
@@ -518,7 +517,7 @@ function renderLinechart(selector, countries, size) {
 
 	vis.selectAll('.country-line-path')
 		.attr("d", function(d) { return line(d.values); })
-		.attr('stroke', function(d) {if (d.key === 999) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
+		.attr('stroke', function(d) {if (d.key >= 990) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
 
 	countryLineEnter.append("text")
 	    .attr("class", "legend")
@@ -528,7 +527,7 @@ function renderLinechart(selector, countries, size) {
 	    .attr("y", function(d) {return y(_.last(d.values).value)+2 + 
 	                                   (countryLabelPositionDeltas[selector][d.key] || 0)}) // +2 to correct visual appearance
 	    .text(function(d) {return d.name; })
-	    .style("fill", function(d) { if (d.key === 999) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
+	    .style("fill", function(d) { if (d.key >= 990) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
 
 }
 
