@@ -7,7 +7,6 @@ TODO:
 finish
 - update chart numbering to reflect order
 - update footnote numbering to reflect order
-- manually correct positioning of country labels
 - delete unnecessary code
 - add sharing metadata
 - fallback images for all charts (place in html to be overwritten once charts load)
@@ -15,7 +14,6 @@ finish
 nice to have
 - improved tooltip accuracy (need a topojson with country center points)
 - refactor manual repositioning of labels in linecharts
-- include aggregates to data (use column type to distinguish)
 */
 
 
