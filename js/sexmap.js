@@ -1,13 +1,13 @@
 /*
 TODO:
--
+- determine wording re: sex vs. gender
 
 finish
 - update chart numbering to reflect order
 - update footnote numbering to reflect order
 - delete unnecessary code
-- add sharing metadata
-- fallback images for all charts (place in html to be overwritten once charts load)
+- add sharing metadata (if standalone piece)
+- add fallback images for all charts (place png in html to be overwritten once charts load)
 
 nice to have
 - tooltips for linecharts?
