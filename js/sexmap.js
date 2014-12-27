@@ -1,6 +1,7 @@
 /*
 TODO:
 - determine wording re: sex vs. gender
+- include WWII mention in text somewhere
 
 finish
 - update chart numbering to reflect order
