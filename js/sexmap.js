@@ -30,11 +30,11 @@ var config = {
 	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
 		"heighincome": [999,997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
 		"centraleurope": [756,276,250,380,40,999], // Switzerland, Germany, France, Italy, Austria, World	
-		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
+		"brics": [76,643,356,156,710,999], // Brazil, Russia, India, China, South Africa
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
-		"mostrising": [999,344,144,524], //Hong Kong, Sri Lanka, Nepal
+		"mostrising": [999,344,144,524,434], //Hong Kong, Sri Lanka, Nepal, Libya
 		"mostbalanced": [120,218,834,434], // Cameroon, Ecuador, Tanzania, Libya
-		"warridden": [646,320,368,434,116], // Rwanda ,Guatemala, Iraq, Libya, Cambodia
+		"warridden": [646,320,368,116], // Rwanda ,Guatemala, Iraq, Cambodia
 		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
 		"mensworld": [356,156,586,50,999], // India, China, Pakistan, Bangladesh, World
 		"northamerica" : [840, 124, 484, 999] // USA, Canada, Mexico, World
