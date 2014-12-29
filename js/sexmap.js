@@ -1,7 +1,7 @@
 /*
 TODO:
 - determine wording re: sex vs. gender
-- include WWII mention in text somewhere
+- add section on seemingly balanced africa?
 
 finish
 - update chart numbering to reflect order
@@ -9,6 +9,7 @@ finish
 - delete unnecessary code
 - add sharing metadata (if standalone piece)
 - add fallback images for all charts (place png in html to be overwritten once charts load)
+- add fallback gif for map
 
 nice to have
 - tooltips for linecharts?
