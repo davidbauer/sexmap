@@ -631,7 +631,7 @@ var throttleRender = throttle(fm.resize, 250);
 
 $(document).ready(function () {
   $(window).resize(throttleRender);  
-  // $.bigfoot()
+  //$.bigfoot();
   init()
 });
 
