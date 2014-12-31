@@ -10,6 +10,7 @@ TODO:
 - check tooltips map
 - pass hash through iframe
 - charts full width
+- determine sex vs. gender
 
 finish
 - update chart numbering to reflect order
