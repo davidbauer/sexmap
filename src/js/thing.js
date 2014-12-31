@@ -67,10 +67,10 @@ console.log("Selected countries by user: " + state.userselected);
 // ACTIONS
 
 var actions = {
-	updateSizes : function() { // TODO: needs to be triggered on resize
+	updateSizes : function() { 
 		state.mapwidth = d3.select("#map").node().offsetWidth;
 		console.log("width:" + state.mapwidth)
-		render();
+		// TODO: render stuff that should be rendered anew
 	},
 	updateYear : function(year) {
 		state.currentYear = +year; // + turns strings into numbers
@@ -230,14 +230,6 @@ function renderMap() {
 	    .projection(projection);
 
 	var graticule = d3.geo.graticule();
-
-	// var λ = d3.scale.linear()
- //    .domain([0, width])
- //    .range([-180, 180]);
-
-	// var φ = d3.scale.linear()
- //    .domain([0, height])
- //    .range([90, -90]);
 
 	var map = d3.select("#map");
 
@@ -631,6 +623,7 @@ var throttleRender = throttle(fm.resize, 250);
 
 $(document).ready(function () {
   $(window).resize(throttleRender);  
+  $(window).resize(actions.updateSizes);  
   //$.bigfoot();
   init()
 });
