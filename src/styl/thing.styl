@@ -6,6 +6,7 @@
 
 #interactive-content
 	width 100%
+	max-width 940px
 	margin-left auto
 	margin-right auto
 	
@@ -21,8 +22,12 @@
 -------------------------------------------------------------------------------*/
 
 p 
-	line-height 170%
-	margin-bottom 20px
+	max-width 640px
+	margin-right auto
+	margin-left auto
+	
+.intro
+	font-family $qz-sans
 
 body, select, input, textarea 
 	color #333
@@ -61,7 +66,7 @@ textarea:-moz-placeholder
 #wrapper 
 	width 100% margin 0 auto
 
-.controls, .intro, section, figure 
+.controls, section, figure 
 	margin 0 auto
 	text-align center
 
@@ -76,8 +81,62 @@ textarea:-moz-placeholder
 	width 50px
 	height 50px
 
-.intro 
-	max-width 900px
+.topper
+	top 50px
+	
+	.kicker
+		text-transform uppercase
+		font-family $qz-sans-bold
+		color #006AA4
+		font-size .75em
+		text-align center
+		display block
+	
+	h1 
+		text-align center
+		line-height 1.2
+		margin-top 0
+	
+	p
+		margin 0 auto
+		padding 0
+		font-family $qz-sans
+		text-align left
+		max-width 550px
+		
+	* + *,
+	p + p
+		margin 0.5em auto
+		
+	.item-meta
+		*
+			color $qz-body-black
+			line-height 1.2
+		a
+			text-decoration none
+		a:hover
+			text-decoration underline
+		a.author-name
+			color $qz-body-link-blue
+		a.twitter-handle:before
+			content "@"
+			position relative
+			top -.15em
+		font-size 0.75em
+		font-family $qz-sans
+		background 0 0
+		margin 01em 0
+		text-align center
+		border-right 1px solid #e7e7e7
+		div
+			margin 0
+			padding 0
+		h5
+			margin 0
+			padding 0
+			font-weight normal
+			font-family $qz-sans
+			font-size 1em
 
 #content 
 	padding 20px 10px margin 0 auto
@@ -116,45 +175,6 @@ hr
 /* Typography styles!
 -------------------------------------------------------------------------------*/
 
-h1 
-	font-size 400%
-	font-weight bold
-	margin-bottom 30px
-	margin-top 0px
-	line-height 110%
-h2 
-	font-size 250%
-	font-weight bold
-	margin-bottom 20px
-	margin-top 40px
-	line-height 110%
-h3 
-	font-size 140%
-	font-weight bold
-	margin-bottom 16px
-	margin-top 40px
-	line-height 110%
-h4 
-	font-size 120%
-	font-weight bold
-	margin-bottom 16px
-
-.lede 
-
-.intro p 
-	font-size 140%
-	line-height 140%
-p.datatext 
-	font-size 120%
-	line-height 120%
-
-.byline 
-	font-style italic
-	font-size 120%
-.dateline 
-	text-transform uppercase
-	font-size 95% !important
-	margin 50px auto 10px
 
 span.datapoint 
 	font-weight bold
@@ -175,14 +195,7 @@ span.datapoint
 	.bigscreen 
 		displaynone
 	nav ol li 
-		padding 13px 0 13px 5px
-
-
-@media screen and (max-width 480px) 
-	h1 
-		font-size 250%
-	h2 
-		font-size 200%		
+		padding 13px 0 13px 5px	
 
 #map
 	margin0 auto

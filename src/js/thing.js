@@ -2,6 +2,30 @@ var fm = require('./fm');
 var throttle = require('./throttle');
 var features = require('./detectFeatures')();
 
+qz_blue_1 = "#51b2e5";
+qz_blue_2 = "#168dd9";
+qz_blue_3 = "#00609f";
+qz_blue_4 = "#154866";
+
+//Purples
+qz_purp_1 = "#d190b6";
+qz_purp_2 = "#d365ba";
+qz_purp_3 = "#ab5787";
+qz_purp_4 = "#703c5c";
+
+
+// Grays
+qz_gray_1 = "#c4c4c4";
+qz_gray_2 = "#969696";
+qz_gray_3 = "#666666";
+
+//Other colors
+qz_ora_1 = "#E5A451";
+qz_ora_2 = "#9F5C00";
+
+qz_gre_1 = "#94D365";
+qz_gre_2 = "#3C703C";
+
 /*
 TODO:
 - make site fully responsive
@@ -36,6 +60,7 @@ var config = {
 			//.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]), // blue, pink, green
 			//.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#f6e8c3", "#dfc27d", "#bf812d", "#8c510a", "#543005"]), // green, blue, brown
 			.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]), // green, blue, red
+			// .range([qz_blue_4, qz_blue_3, qz_blue_2, qz_blue_1, "#000", qz_gray_1, qz_purp_1, qz_purp_2, qz_purp_3, qz_purp_4]),
 	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
 		"heighincome": [999,997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
 		"centraleurope": [756,276,250,380,40,999], // Switzerland, Germany, France, Italy, Austria, World	
@@ -419,7 +444,7 @@ function renderLinechart(selector, countries, size) {
 	//var colorScale = d3.scale.category20(); // automatically pick colors for lines
 	var colorScale = d3.scale.ordinal()
 		.domain([4,894]) // domain from min to max country ISO id
-		.range(["#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#49006a"]); // color range, see http://bl.ocks.org/mbostock/5577023
+		.range([qz_blue_4, qz_blue_3, qz_blue_2, qz_blue_1, qz_purp_1, qz_purp_2, qz_purp_3, qz_purp_4]); // color range, see http://bl.ocks.org/mbostock/5577023
 
 	// scale values on axes
 	var x = d3.scale.linear()
@@ -518,7 +543,7 @@ function renderLinechart(selector, countries, size) {
 
 	vis.selectAll('.country-line-path')
 		.attr("d", function(d) { return line(d.values); })
-		.attr('stroke', function(d) {if (d.key >= 990) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
+		.attr('stroke', function(d) {if (d.key >= 990) {return qz_gray_2} else {return colorScale(d.key); }}); // grey for world average
 
 	countryLineEnter.append("text")
 	    .attr("class", "legend")
@@ -528,7 +553,7 @@ function renderLinechart(selector, countries, size) {
 	    .attr("y", function(d) {return y(_.last(d.values).value)+2 + 
 	                                   (countryLabelPositionDeltas[selector][d.key] || 0)}) // +2 to correct visual appearance
 	    .text(function(d) {return d.name; })
-	    .style("fill", function(d) { if (d.key >= 990) {return "#c7c7c7"} else {return colorScale(d.key); }}); // grey for world average
+	    .style("fill", function(d) { if (d.key >= 990) {return qz_gray_2} else {return colorScale(d.key); }}); // grey for world average
 
 }
 
