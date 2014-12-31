@@ -1,3 +1,7 @@
+var fm = require('./fm');
+var throttle = require('./throttle');
+var features = require('./detectFeatures')();
+
 /*
 TODO:
 -
@@ -87,7 +91,7 @@ var actions = {
 			clearInterval(state.timelineInterval);
 			state.timelineInterval = null;
 			console.log("timeline " + state.timeline);
-			d3.select('.play').html('<img src="/img/play.png"/>');
+			d3.select('.play').html('<img src="assets/play.png"/>');
 			return;
 		}
 
@@ -99,12 +103,12 @@ var actions = {
 	},
 	playTimeline : function() {
 		
-		d3.select('.play').html('<img src="/img/pause.png"/>');
+		d3.select('.play').html('<img src="assets/pause.png"/>');
 		
 		state.timelineInterval = setInterval(function(){
 			
 			if (state.currentYear == d3.max(config.years)) {
-				d3.select('.play').html('<img src="/img/replay.png"/>');
+				d3.select('.play').html('<img src="assets/replay.png"/>');
 				clearInterval(state.timelineInterval);
 				state.timeline = "ready";
 			}
@@ -418,7 +422,7 @@ function renderLinechart(selector, countries, size) {
 	// scale values on axes
 	var x = d3.scale.linear()
 		.domain(d3.extent(config.years))
-		.range([0, width]);
+		.range([margin.left, width]);
 
 	var y = d3.scale.linear()
 		.domain(valueExtent)
@@ -434,12 +438,14 @@ function renderLinechart(selector, countries, size) {
 		.scale(x)
 		.orient('bottom')
 		.tickFormat(function(d) { return +d; })
-		.ticks(ticknumberX);
+		.ticks(ticknumberX)
+		.tickSize(height);
 
 	var yAxis = d3.svg.axis()
 		.scale(y)
 		.orient('left')
-		.ticks(ticknumberY);
+		.ticks(ticknumberY)
+		.tickSize(width);
 
 	var container = d3.select(selector);
 
@@ -449,7 +455,7 @@ function renderLinechart(selector, countries, size) {
 		.attr('height', height + margin.top + margin.bottom)
 	.append("g")
 		.attr('class', 'vis')
-    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    	.attr("transform", "translate(" + 0 + "," + margin.top + ")")
 
     var vis = container.select('.vis');
 
@@ -467,8 +473,8 @@ function renderLinechart(selector, countries, size) {
     vis.append("rect")
     	.attr("y", y(50.5))
 	    .attr("height", y(49.5)-y(50.5))
-	    .attr("x", 0)
-	    .attr("width", width)
+	    .attr("x", margin.left)
+	    .attr("width", width - margin.left)
 	    .attr("class", "chart-background");
 
     // set background for part of linechart that means more women
@@ -484,7 +490,7 @@ function renderLinechart(selector, countries, size) {
 	var line = d3.svg.line()
 		.x(function(d) { return x(d.year); })
 	    .y(function(d) { return y(d.value); })
-	    .interpolate("basis");
+	    //.interpolate("basis");
 
     visEnter.append("g")
     	.attr('class', 'axis x-axis')
@@ -567,49 +573,59 @@ function renderMapyear() {
 }
 
 
-// START
+function init() {
+	// START
 
-// load the world
-d3.json("data/world-110m.json", function(error, world) {
-	  
-	if (error) {
-		console.error(error);
-		return;
-	}
-
-	state.world = world;
-});
-
-//load the data for all countries and prepare it
-d3.csv('data/data.csv')
-	.row(function(d) { // go through all rows and make sure values are saved as numbers
-		
-		var row = { // save values for all columns that we need
-			id: +d.ISO, 
-			name: d['countryname'],
-			entity : d ['entity']
-		}
-
-		config.years.forEach(function(year){ // save value for each year in a property with the year's name
-			var v = d[year];
-			row[year] = (v!=null && v.length > 0 ? +v : NaN);
-		})
-
-		return row;
-
-	}) 
-    .get(function(error, rows){
+	// load the world
+	d3.json("data/world-110m.json", function(error, world) {
+		  
 		if (error) {
 			console.error(error);
 			return;
 		}
 
-		actions.updateData(rows);
+		state.world = world;
 	});
 
-d3.select('.play').on("click", actions.toggleTimeline);
+	//load the data for all countries and prepare it
+	d3.csv('data/data.csv')
+		.row(function(d) { // go through all rows and make sure values are saved as numbers
+			
+			var row = { // save values for all columns that we need
+				id: +d.ISO, 
+				name: d['countryname'],
+				entity : d ['entity']
+			}
 
-console.log("timeline " + state.timeline);
+			config.years.forEach(function(year){ // save value for each year in a property with the year's name
+				var v = d[year];
+				row[year] = (v!=null && v.length > 0 ? +v : NaN);
+			})
 
+			return row;
+
+		}) 
+	    .get(function(error, rows){
+			if (error) {
+				console.error(error);
+				return;
+			}
+
+			actions.updateData(rows);
+		});
+
+	d3.select('.play').on("click", actions.toggleTimeline);
+
+	console.log("timeline " + state.timeline);
+}
+
+
+var throttleRender = throttle(fm.resize, 250);
+
+$(document).ready(function () {
+  $(window).resize(throttleRender);
+  // $.bigfoot()
+  init()
+});
 
 // it's the end of the code as we know it

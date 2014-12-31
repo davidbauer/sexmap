@@ -1,0 +1,61 @@
+// Default breakpoints. Change at will.
+$width-xsmall = 320px
+$width-small  = 480px
+$width-tablet = 650px // qz.com goes single-column at 600px
+$width-medium = 1024px
+$width-large  = 1200px
+
+@media only screen and (max-width: $width-xsmall)
+  // Old iPhones, iPhone Retina
+  #interactive-content
+    font-size 16px\/26px $qz-serif
+    h1
+      font-size 40px
+      line-height 28px
+    h2
+      font-size 20px
+      line-height 20px
+
+@media only screen and (min-width: $width-small) and (max-width: $width-tablet)
+// Extra-small devices, phones
+  #interactive-content
+    font 16px\/26px $qz-serif
+    h1
+      font-size 30px
+      line-height 28px
+    h2
+      font-size 20px
+      line-height 20px
+
+@media only screen and (min-width: $width-tablet) and (max-width: $width-medium)
+  // Small devices, tablets
+  #interactive-content
+    font 20px\/30px $qz-serif
+    h1
+      font-size 40px
+      line-height 28px
+    h2
+      font-size 24px
+      line-height 24px
+
+@media only screen and (min-width: $width-medium) and (max-width: $width-large)
+  // Medium devices, desktops
+  #interactive-content
+    font 20px\/30px $qz-serif
+    h1
+      font-size 40px
+      line-height 50px
+    h2
+      font-size 24px
+      line-height 24px
+
+@media only screen and (min-width: $width-large)
+  // Large devices, wide screens
+  #interactive-content
+    font 20px\/30px $qz-serif
+    h1
+      font-size 48px
+      line-height 58px
+    h2
+      font-size 24px
+      line-height 24px

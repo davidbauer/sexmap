@@ -1,0 +1,32 @@
+{
+  "name": "qz-thing-template",
+  "version": "0.0.4",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nikhil Sonnad",
+  "license": "ISC",
+  "dependencies": {
+    "bigfoot": "^1.1.22",
+    "d3": "^3.5.3"
+  },
+  "devDependencies": {
+    "browser-sync": "1.x.x",
+    "browserify": "^3.44.2",
+    "del": "^0.1.2",
+    "gulp": "^3.6.2",
+    "gulp-changed": "^0.4.0",
+    "gulp-jade": "^0.5.0",
+    "gulp-notify": "^1.2.5",
+    "gulp-preprocess": "^1.0.1",
+    "gulp-shell": "^0.2.5",
+    "gulp-stylus": "^1.0.0",
+    "nomnom": "^1.8.0",
+    "nib": "^1.0.2",
+    "npmlog": "0.0.6",
+    "uglifyify": "^2.4.0",
+    "vinyl-source-stream": "^0.1.1"
+  }
+}

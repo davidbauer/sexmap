@@ -1,0 +1,295 @@
+doctype html
+html.no-js
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    title qz-sexmap
+    meta(name='description', content='')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='css/main.css')
+    <!-- @if GULP_ENV='prod' -->
+    script(src="../../js/lib/modernizr/modernizr-2.6.1.min.js")
+    <!-- @endif -->
+
+  body
+    div.item-body
+      div#interactive-content
+          article#content
+            section.intro
+              p.dateline World Gender Map
+              h1 A story of drinkers, genocide and unborn girls
+              p.lede
+                | Women live longer, but in total, there are more men on this planet. The data from all countries over the past 50 years reveals some astonishing geographical patterns and striking developments over time.
+              p.byline by David Bauer
+              hr
+            section.mapvis
+              h2 The global view
+              br
+              p.datatext
+                | In 
+                span.currentYear.datapoint 2013
+                | , 
+                span.currentTotalPercentage.datapoint 49.59
+                | % of the global population were women.
+                br
+                span.currentFemaleCountries.datapoint 111 
+                | countries had 
+                span.max-f more women
+                | , 
+                span.currentMaleCountries.datapoint 64 
+                | countries had 
+                span.max-m more men 
+                | , 
+                span.currentEvenCountries.datapoint 18 
+                |  were 
+                span.even balanced 
+                | .
+                sup(id="fnref:1")
+                  a(href='(id="fn:1")', rel='footnote') 1
+              .controls
+                button.play
+                  img(src='assets/play.png')
+                #menu
+              figure#map
+            hr
+            section.intro
+              h2 A closer look
+              p
+                | Let's now take a closer look at specific countries and groups of countries that share certain characteristics. We will see the various reasons for gender imbalance manifest themselves in the data and how differently countries' gender ratios have developed over time.
+            section.la
+              p
+                | Left to nature alone, the population on earth would be give or take 50 percent men and 50 percent women. The fact that women generally live longer
+                sup(id="fnref:2")
+                  a(href='(id="fn:2")', rel='footnote') 2
+                | is compensated by more boys than girls being born
+                sup(id="fnref:3")
+                  a(href='(id="fn:3")', rel='footnote') 3
+                | . In 1961, the earliest year the World Bank provides data for, the world was within 0.09 percentage points of a perfectly equal distribution. Ever since, the gap has widened, now men outnumber women on the planet by almost 60 million.
+              p
+                | Of course, the number for the whole world levels out regional differences. Female population ranges from 23 to 55 percent, some countries have seen a change of 19 percentage points over the past 5 decades, others have had notable ups or downs in relatively short periods.
+              p
+            section.la
+              h4 The missing girls in China and India
+              p
+                | In 2013, men outnumbered women on the planet by roughly 58 million
+                sup(id="fnref:4")
+                  a(href='(id="fn:4")', rel='footnote') 4
+                | . What makes this possible, even though a majority of countries has more men than women, is the fact that the most populous countries in the world are also highly imblanced China has nearly 50 million more men than women, India 42 million. At a distant third is Pakistan, which has a surplus of around 5 million men. Pakistan used to be even more imbalanced than China and India, but has been catching up over the past decades.
+              p
+                | Gender imbalance starts at birth in these countries. Both China and India have birth sex ratios that are well off the worldwide average. In 2013, China had 1.11 boys born per girl, India 1.12, as compared to 1.07 worldwide
+                sup(id="fnref:5")
+                  a(href='(id="fn:5")', rel='footnote') 5
+                | . Both countries are infamous for widespread gender selective abortions and female infanticide. The availability of prenatal diagnostic techniques has only worsened the situation, which is why India has legally banned sex determination before birth in 1994.
+                sup(id="fnref:6")
+                  a(href='(id="fn:6")', rel='footnote') 6
+                | .
+              p
+                | Two other countries from the region with a similar population structure, Pakistan and Bangladesh, have seen quite siginicant changes over the past decades.
+                span.todo TODO: WHY IS THAT?
+              figure.linechart.chart-8
+            section.la
+              h4 Guest workers on the Arabian Peninsula
+              p
+                | The most gender imbalanced states in 2013 are all found on the Arabian Peninsula, Qatar being the most extreme. Less than 1/4 of all people who lived in Qatar in 2013 were women. The main driver behind this development is that those countries have attracted a lot of guest workers, especially after oil prices started rising in the 1970s. Millions of men, mostly from South Asia, came to work on the Arabian Peninsula, but weren't allowed to bring their women or children with them, thus throwing gender ratios off balance.
+              figure.linechart.chart-3
+            section.la
+              h4 Heavy drinking in Russia
+              p
+                | The former Soviet states are notorious for their men's short life expectancy, largely attributed to alcohol-related deaths
+                sup(id="fnref:7")
+                  a(href='(id="fn:7")', rel='footnote') 7
+                | . According to the WHO, women in Russia live – on average – 12 years longer than men, a larger difference than anywhere else in the world
+                sup(id="fnref:8")
+                  a(href='(id="fn:8")', rel='footnote') 8
+                | . The only countries that come close are other former states of the Soviet Union. It is this difference in life expectancy that makes the population in those states particularly «female».
+              p
+                | There is, however, another striking development to be observed with the former Soviet states. Their populations had moved towards more gender balance, up until the point when the Soviet Union dissolved, when the trend reversed again.
+                span.todo TODO: emigration? confirmation or other explanation needed
+              figure.linechart.chart-7
+            section.la
+              h4 War and genocide in Rwanda, Cambodia and Iraq
+              p
+                | Not only long-term developments become visible in the data. Disruptive events such as wars and genocides show as well. Since they tend to claim more men's lives than women's, the population's sex ratio usually shifts towards female.
+              p
+                | It has to be noted at this point that the data, provided by the World Bank, based on the United Nations Population Division's World Population Prospects, uses interpolation between five-year periods to obtain annual data. Events that caused a significant change within a relatively short time might thus be reflected in the data with a delay and appear more linear than they have in fact been.
+              p
+                | As you can see in the following chart, both the Iraq-Iran war in the 1980s and the genocide in Rwanda in 1994 left those countries with a significantly more female population than before. Even more staggering is the effect of the mass killings by the Khmer Rouge in Cambodia from 1975 to 1978, when around a quarter of the whole population died.
+              p.todo TODO: whats up with GUATEMALA? (why rise *after* the genocide)?
+              p
+                | The most dramatic changes can be seen in Libya, though. Female population rose from less than 47 percent in 1985 – one of the lowest in the world – to 50 percent in 2013.
+                span.todo TODO: RESEARCH REASONS, EMIGRATION?
+              figure.linechart.chart-6
+            section.la
+              h4 The homogenous top
+              p
+                | One of the strongest predictors of a country's sex ratio is how developed it is. Highly developed countries tend to have more women in their population. 13 of the top 15 countries in the Human Development Index and 29 of 31 high-income OECD states (as defined by the World Bank) have a female population above 50%
+                sup(id="fnref:9")
+                  a(href='(id="fn:9")', rel='footnote') 9
+                | .
+              p
+                | What most of these countries have in common – and what is certainly true for the average of all of them – is that over the past decades there is a trend towards a more balanced population. One of the main drivers behind this trend is that after 1990, men's life expencancy has risen more significantly than women's, narrowing the difference from 7.8 years to 6.8 years
+                sup(id="fnref:10")
+                  a(href='(id="fn:10")', rel='footnote') 10
+                | .
+              p
+                | Included in the chart are the current top 3 nations from the Human Development Index, Norway, Australia and Switzerland.
+              figure.linechart.chart-1
+            section.la
+              h4 The diverse BRICS states
+              p
+                | We've seen that highly developed countries are quite homogenous in terms of gender ratios. In contrast, the five big emerging economies of the BRICS states strikingly fall into three groups. China and India, as seen before, strongly imbalanced towards men, Russia even more strongly imbalanced towards women, while Brazil and South Africa both have a balanced population, with a slight trend toward more women.
+              figure.linechart.chart-2
+            section.la
+              h4 Strongest trend towards women
+              p
+                | Hong Kong, Sri Lanka and Nepal are the countries that have seen the strongest move towards a more female population over the past five decades
+                sup(id="fnref:11")
+                  a(href='(id="fn:11")', rel='footnote') 11
+                | . The most striking development has taken place in Hong Kong over the past 35 years. The share of women in Hong Kong's population has skyrocketed from below 48 percent in 1980 to over 53 percent in 2013.
+              p.todo
+                | TODO: research reasons for this development and find out if they are similar to what happeded in the other countries.
+              figure.linechart.chart-4
+            section.la
+              h4 The US and its neighbors
+              p
+                | Looking at five decades of sex ratios in North America, Mexicos development stands out. What you can clearly see in the chart is how mass emigration from Mexico to USA starting in the 1990s
+                sup(id="fnref:12")
+                  a(href='(id="fn:11")', rel='footnote') 12
+                | significantly changed the sex ratio in Mexico. Since more more men than women left Mexico, the ratio of females in the Mexican population rose sharply.
+                span.todo TODO: find source to back this up
+                | .
+              p
+                | Mexico is exemplary for a general trend here. Since historically, significantly more men than women have migrated, migration has had an effect on sex ratios, especially in countries with a high net migration rate, either positive or  negative. As women's share in migration is rising, the effect is becoming weaker, though
+                sup(id="fnref:13")
+                  a(href='(id="fn:13")', rel='footnote') 13
+                | .
+              p.todo TODO: explain US and Canada developments
+              figure.linechart.chart-5
+            section.intro
+              h2 Explore the data yourself
+              p This last chart is yours. Choose two countries to compare.
+              .userinput
+              br
+              p(style='font-size:100%;') When you share the page, your selection is saved.
+              figure.linechart.chart-9
+          footer
+            p
+              | Designed, built and written by 
+              a(href='http://www.davidbauer.ch') David Bauer
+              | . Generous help from the guys at 
+              a(href='http://www.interactivethings.com/', target='_blank') Interactive Things 
+              | . Icons CC BY 3.0 by 
+              a(href='http://thenounproject.com/pbatalier/', target='_blank') Percy Batalier 
+              | and 
+              a(href='http://thenounproject.com/SylvainAmatoury', target='_blank') Sylvain Amatoury
+              |  from the Noun Project.
+            p
+              | Main data source: The United Nations Population Division's World Population Prospects, via
+              a(href='http://data.worldbank.org/indicator/SP.POP.TOTL.FE.ZS/countries/1W?display=default', target='_blank')  World Bank (2014)
+              | .
+            .footnotes
+              ol
+                li(id="fn:1").footnote
+                  p
+                    | no data available for
+                    span.currentNoDataCountries 19
+                    | countries, balanced defined as both genders between 49.5% and 50.5% of total population.
+                    a(href='(id="fnref:1")', title='return to article')  ↩
+                  p
+                li(id="fn:2").footnote
+                  p
+                    | 72.3 years for women vs. 67.8 for men years according to the
+                    a(href='http://esa.un.org/wpp/Documentation/pdf/WPP2012_Volume-I_Comprehensive-Tables.pdf', target='_blank') WHO's World Population Prospects: The 2012 Revision
+                    | (PDF, page 259).
+                    a(href='(id="fnref:2")', title='return to article')  ↩
+                  p
+                li(id="fn:3").footnote
+                  p
+                    | 107 boys per 100 girls in 2013 according to the
+                    a(href='https://www.cia.gov/library/publications/the-world-factbook/fields/2018.html', target='_blank') CIA World Fact Book
+                    | .
+                    a(href='(id="fnref:3")', title='return to article')  ↩
+                  p
+                li(id="fn:4").footnote
+                  p
+                    | 2013 data from the United Nations Population Division's World Population Prospects, compiled by the World Bank.
+                    a(href='http://data.worldbank.org/indicator/SP.POP.TOTL', target='_blank') Get the data set
+                    | .
+                    a(href='(id="fnref:4")', title='return to article')  ↩
+                  p
+                li(id="fn:5").footnote
+                  p
+                    | Data according to the
+                    a(href='https://www.cia.gov/library/publications/the-world-factbook/fields/2018.html', target='_blank') CIA World Factbook
+                    | .
+                    a(href='(id="fnref:5")', title='return to article')  ↩
+                  p
+                li(id="fn:6").footnote
+                  p
+                    | The
+                    a(href='https://en.wikipedia.org/wiki/Pre-Conception_and_Pre-Natal_Diagnostic_Techniques_Act,_1994', target='_blank') The Pre-Conception and Pre-Natal Diagnostic Techniques Act
+                    | prohibits sex selection, before or after conception, and regulates prenatal diagnostic techniques.
+                    a(href='(id="fnref:6")', title='return to article')  ↩
+                  p
+                li(id="fn:7").footnote
+                  p
+                    | «Overall, a quarter of Russian men die before reaching 55. The life expectancy for men in Russia is 64 years, placing it among the lowest 50 countries in the world in that category.» Quoted from an AP article published by The Guardian:
+                    a(href='http://www.theguardian.com/world/2014/jan/31/russian-men-losing-years-to-vodka', target='_blank') Russian men losing years to vodka
+                    | .
+                    a(href='(id="fnref:7")', title='return to article')  ↩
+                  p
+                li(id="fn:8").footnote
+                  p
+                    a(href='http://apps.who.int/gho/data/view.main.61360?lang=en', target='_blank') Data set and interactive graph
+                    | by the WHO's Global Health Observatory Data Repository.
+                    a(href='(id="fnref:8")', title='return to article')  ↩
+                  p
+                li(id="fn:9").footnote
+                  p
+                    | Iceland (49.66% women) and Norway (49.93% women) being the exceptions in both rankings.
+                    a(href='(id="fnref:9")', title='return to article')  ↩
+                  p
+                li(id="fn:10").footnote
+                  p
+                    | In «more developed regions, women had an average life expectancy of 78 years between 1985-1990, compared to 70.2 for men. Between 2010-2015, it's 81.1 vs. 74.3 years.
+                    a(href='http://esa.un.org/wpp/Documentation/pdf/WPP2012_Volume-I_Comprehensive-Tables.pdf', target='_blank') View the data set (page 258)
+                    a(href='(id="fnref:10")', title='return to article')  ↩
+                  p
+                li(id="fn:11").footnote
+                  p
+                    | In fact, West-Pacific island state Guam has an even stronger trend towards female, as have a couple of other tiny states. They are not included in the chart since their small populations are more prone to random effects.
+                    a(href='(id="fnref:11")', title='return to article')  ↩
+                  p
+                li(id="fn:12").footnote
+                  p
+                    | Between 1990 and 2010,
+                    a(href='http://www.migrationpolicy.org/article/mexican-immigrants-united-states', target='_blank') more than 7.5 million Mexican immigrants
+                    | crossed the border to the USA.
+                    a(href='(id="fnref:12")', title='return to article')  ↩
+                  p
+                li(id="fn:13").footnote
+                  p
+                    | According the United Nations, the percentage of females in the worldwide migrant population rose from 47.4% in 1975 to 49.6% in 2005.
+                    a(href='http://www.pewhispanic.org/2006/07/05/ii-migration-and-gender/', target='_blank') Migration and Gender (PewHispanic)
+                    a(href='(id="fnref:13")', title='return to article')  ↩
+                  p
+
+    script(src="http://underscorejs.org/underscore-min.js")
+    script(src="js/libs/qz-d3.js")
+    script(src="http://d3js.org/topojson.v1.min.js")
+    script(src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js")
+    script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
+    script(type="text/javascript" src="js/bigfoot.js")
+
+    script(src='js/main.js')
+
+
+    //- Google Analytics: change UA-XXXXX-X to be your site's ID.
+    //-
+      script
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-34597163-1', 'auto');
+       ga('send', 'pageview');
