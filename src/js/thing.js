@@ -4,7 +4,12 @@ var features = require('./detectFeatures')();
 
 /*
 TODO:
--
+- make site fully responsive
+- fix bigfoot, better bigfoot trigger icon
+- add 50% line and show where more women are
+- check tooltips map
+- pass hash through iframe
+- charts full width
 
 finish
 - update chart numbering to reflect order
@@ -15,10 +20,7 @@ finish
 
 nice to have
 - tooltips for linecharts?
-- find better solution than hash to store userselected countries (could interfere with footnotes)
 - improved tooltip accuracy (need a topojson with country center points)
-- refactor manual repositioning of labels in linecharts
-- localisation
 */
 
 
@@ -65,6 +67,11 @@ console.log("Selected countries by user: " + state.userselected);
 // ACTIONS
 
 var actions = {
+	updateSizes : function() { // TODO: needs to be triggered on resize
+		state.mapwidth = d3.select("#map").node().offsetWidth;
+		console.log("width:" + state.mapwidth)
+		render();
+	},
 	updateYear : function(year) {
 		state.currentYear = +year; // + turns strings into numbers
 		renderMap();
@@ -623,7 +630,7 @@ function init() {
 var throttleRender = throttle(fm.resize, 250);
 
 $(document).ready(function () {
-  $(window).resize(throttleRender);
+  $(window).resize(throttleRender);  
   // $.bigfoot()
   init()
 });
