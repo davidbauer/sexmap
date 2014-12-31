@@ -11,7 +11,7 @@ TODO:
 - pass hash through iframe
 - charts full width
 - determine sex vs. gender
-- include WWII mention in text somewhere
+- add section on seemingly balanced africa?
 
 finish
 - update chart numbering to reflect order
@@ -19,6 +19,7 @@ finish
 - delete unnecessary code
 - add sharing metadata
 - fallback images for all charts (place in html to be overwritten once charts load)
+- add fallback gif for map
 
 nice to have
 - tooltips for linecharts?
