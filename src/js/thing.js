@@ -98,7 +98,7 @@ var actions = {
 	updateSizes : function() { 
 		state.mapwidth = d3.select("#map").node().offsetWidth;
 		console.log("width:" + state.mapwidth)
-		// TODO: render stuff that should be rendered anew
+		render();// TODO: render stuff that should be rendered anew
 	},
 	updateYear : function(year) {
 		state.currentYear = +year; // + turns strings into numbers
@@ -237,7 +237,7 @@ function renderDatatext() {
 }
 
 function renderMap() {
-	
+
 	var width = state.mapwidth,
     height = width;
 
@@ -295,20 +295,11 @@ function renderMap() {
 	    .attr("title", function(d) { return d.name;})
 	    .attr("id", function(d) { return "country-" + d.id;})
 	    .attr("d", path);
-	    // .on('click', zoomIn()); TODO make zooming in work, see http://techslides.com/d3-world-maps-tooltips-zooming-and-queue
 
 	svgEnter.insert("path", ".graticule")
       .datum(topojson.mesh(state.world, state.world.objects.countries, function(a, b) { return a !== b; }))
       .attr("class", "boundary")
       .attr("d", path);
-
-      // rotate the globe on mouseover 
-
-	// svg.on("mousemove", function() {
- // 	 		var p = d3.mouse(this);
- // 	 		projection.rotate([λ(p[0]), φ(p[1])]);
- // 		 	svg.selectAll("path").attr("d", path);
-	// });
 
 	var tip = d3.tip()
 	  .attr('class', 'd3-tip')
@@ -352,11 +343,16 @@ function renderKey() {
     .tickSize(8)
     .tickValues([40,45,48,49,51,52,55,60]); // left out two middle values for space, to generate tick values dynamically: config.color.domain()
 
-    var g = d3.select("#map").selectAll('svg').append("g")
+    var svg = d3.select("#map").selectAll('svg');
+
+    var g = svg.selectAll('g').data([0]);
+
+    var gEnter = g.enter()
+    	.append("g")
 	    .attr("class", "key")
 	    .attr("transform", "translate(" + (state.mapwidth-300)/2 + ",30)"); // position within the svg space
 
-	g.selectAll("rect")
+	gEnter.selectAll("rect")
 	    .data(config.color.range().map(function(d, i) {
 	      return {
 	        x0: i ? x(config.color.domain()[i - 1]) : x.range()[0],
@@ -372,16 +368,15 @@ function renderKey() {
 	    // .attr("x", function(d,i) { return i*(x.range()[1]/ config.color.domain().length) }) // alternative with all rects same size
 	    // .attr("width", x.range()[1]/ config.color.domain().length)
 
-	g.call(xAxis).append("text")
+	gEnter.call(xAxis).append("text")
 	    .attr("class", "caption")
 	    .attr("y", -6)
 	    .text("Percentage of women in population");
-
 }
 
 function renderLinechart(selector, countries, size) {
 
-	// manual label position corrections (refactor to come as a param)
+	// manual label position corrections
 	var countryLabelPositionDeltas = {
 		'.chart-1': {
 		},
@@ -591,12 +586,18 @@ function renderUserinput() {
 }
 
 function renderMapyear() {
+	
+	d3.selectAll(".mapyear").remove();
+
+	console.log("mapwidth:" + state.mapwidth);
+
 	var t = d3.select("#map").select("svg").append("text")
 	.attr("height", 200)
 	.attr("width", 250)
 	.text(state.currentYear)
 	.attr("class", "mapyear")
-	.attr("transform", "translate("+ state.mapwidth/2 + "," + state.mapwidth*0.9 + ")");
+	.attr("transform", "translate("+ state.mapwidth/2 + "," + state.mapwidth*0.9 + ")")
+	.style("font-size", state.mapwidth/4);
 }
 
 
