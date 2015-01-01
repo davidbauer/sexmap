@@ -55,11 +55,11 @@ html.no-js
                 #menu
               figure#map
   
-            section.intro
+            section
               h2 A closer look
               p
                 | Let’s now take a closer look at specific countries and groups of countries that share certain characteristics. We will see the various reasons for gender imbalance manifest themselves in the data and how differently countries’ sex ratios have developed over time.
-            section.la
+            section
               p
                 | Left to nature alone, the population on earth would be give or take 50 percent men and 50 percent women
                 sup(id='fnref:15')
@@ -74,7 +74,7 @@ html.no-js
               p
                 | Of course, the number for the whole world levels out regional differences. Female population ranges from 23 to 55 percent, some countries have seen a change of 19 percentage points over the past 5 decades, others have had notable ups or downs in relatively short periods.
               p
-            section.la
+            section
               h4 The missing girls in China and India
               p
                 | In 2013, men outnumbered women on the planet by roughly 58 million
@@ -99,7 +99,7 @@ html.no-js
                 | Two other countries from the region with a similar population structure, Pakistan and Bangladesh, have seen quite siginicant changes over the past decades.
                 span.todo TODO: WHY IS THAT?
               figure.linechart.chart-8
-            section.la
+            section
               h4 Guest workers on the Arabian Peninsula
               p
                 | The most gender imbalanced states in 2013 are all found on the Arabian Peninsula, Qatar being the most extreme. Less than one quarter of all people who lived in Qatar in 2013 were women. The main driver behind this development is that those countries have attracted a lot of guest workers for male-dominated industries, especially after oil prices started rising in the 1970s. Millions of men, mostly from South Asia, came to work on the Arabian Peninsula, but weren&apos;t allowed to bring their spouses and children with them, thus throwing gender ratios off balance
@@ -107,7 +107,7 @@ html.no-js
                   a(href='#fn:17', rel='footnote') 17
                 | .
               figure.linechart.chart-3
-            section.la
+            section
               h4 Heavy drinking in Russia
               p
                 | The former Soviet states are notorious for their men&apos;s short life expectancy, largely attributed to alcohol-related deaths
@@ -125,7 +125,7 @@ html.no-js
                 span.todo
                   | TODO: why the rebound? emigration? or falling life expectancy? from 1991-64, fell 6 years for men, 3 for women. http://www.nytimes.com/2009/01/16/world/europe/16europe.html?_r=0, https://en.wikipedia.org/wiki/Demographics_of_Russia, confirmation or other explanation needed
             figure.linechart.chart-7
-            section.la
+            section
               h4 War and genocide in Rwanda, Cambodia and Iraq
               p
                 | Not only long-term developments become visible in the data. Disruptive events such as wars and genocides show as well. Since they tend to claim more men's lives than women's, the population's sex ratio usually shifts towards female.
@@ -135,7 +135,7 @@ html.no-js
                 | As you can see in the following chart, both the Iraq-Iran war in the 1980s and the genocide in Rwanda in 1994 left those countries with a significantly more female population than before. Even more staggering is the effect of the mass killings by the Khmer Rouge in Cambodia from 1975 to 1978, when around a quarter of the whole population died.
               p.todo TODO: whats up with GUATEMALA? (why rise *after* the genocide)?
               figure.linechart.chart-6
-            section.la
+            section
               h4 The homogenous top
               p
                 | One of the strongest predictors of a country's sex ratio is how developed it is. Highly developed countries tend to have more women in their population. 13 of the top 15 countries in the Human Development Index and 29 of 31 high-income OECD states (as defined by the World Bank) have a female population above 50%
@@ -150,12 +150,12 @@ html.no-js
               p
                 | Included in the chart are the current top 3 nations from the Human Development Index, Norway, Australia and Switzerland.
               figure.linechart.chart-1
-            section.la
+            section
               h4 The diverse BRICS states
               p
                 | We've seen that highly developed countries are quite homogenous in terms of gender ratios. In contrast, the five big emerging economies of the BRICS states strikingly fall into three groups. China and India, as seen before, strongly imbalanced towards men, Russia even more strongly imbalanced towards women, while Brazil and South Africa both have a balanced population, with a slight trend toward more women.
               figure.linechart.chart-2
-            section.la
+            section
               h4 Strongest trend towards women
               p
                 | Hong Kong, Sri Lanka and Nepal are the countries that have seen the strongest move towards a more female population over the past five decades
@@ -168,7 +168,7 @@ html.no-js
                 | Another interesting case is the one of Libya. Its female population rose from less than 47 percent in 1985 &ndash; one of the lowest in the world &ndash; to 50 percent in 2013. 
                 span.todo TODO: RESEARCH REASONS, EMIGRATION?
               figure.linechart.chart-4
-            section.la
+            section
               h4 The US and its neighbors
               p
                   | Looking at five decades of sex ratios in North America, Mexicos development stands out. What you can clearly see in the chart is how mass emigration from Mexico to USA starting in the 1990s significantly changed the sex ratio in Mexico
@@ -334,17 +334,6 @@ html.no-js
     script(src="http://d3js.org/topojson.v1.min.js")
     script(src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js")
     script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
-    script(type="text/javascript" src="js/bigfoot.js")
+    script(type="text/javascript" src="js/libs/bigfoot.js")
 
     script(src='js/main.js')
-
-
-    //- Google Analytics: change UA-XXXXX-X to be your site's ID.
-    //-
-      script
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-       ga('create', 'UA-34597163-1', 'auto');
-       ga('send', 'pageview');
