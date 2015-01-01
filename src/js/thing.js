@@ -30,7 +30,6 @@ qz_gre_2 = "#3C703C";
 TODO:
 - make site fully responsive
 - fix bigfoot, better bigfoot trigger icon
-- add 50% line and show where more women are
 - charts full width
 
 finish
@@ -334,7 +333,7 @@ function renderKey() {
 	var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
-    .tickSize(8)
+    .tickSize(0)
     .tickValues([40,45,48,49,51,52,55,60]); // left out two middle values for space, to generate tick values dynamically: config.color.domain()
 
     var svg = d3.select("#map").selectAll('svg');
@@ -355,7 +354,7 @@ function renderKey() {
 	      };
 	    }))
 	  .enter().append("rect")
-	    .attr("height", 8)
+	    .attr("height", 10)
 	    .attr("x", function(d) { return d.x0; })
 	    .attr("width", function(d) { return d.x1 - d.x0; })
 	    .style("fill", function(d) { return d.z; });
