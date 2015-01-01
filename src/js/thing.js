@@ -87,7 +87,7 @@ var state = {
 	total: {},
 	world: null,
 	timeline: "ready",
-	userselected: window.location.hash ? window.location.hash.substring(2,window.location.hash.length-1).split(",").map(Number) : [392, 120, 999] // user either ids in URL or preset to japan, cameroon and world
+	userselected: parent.window.location.hash ? parent.window.location.hash.substring(2,parent.window.location.hash.length-1).split(",").map(Number) : [392, 120, 999] // user either ids in URL or preset to japan, cameroon and world
 };
 
 console.log("Selected countries by user: " + state.userselected);
@@ -97,7 +97,7 @@ console.log("Selected countries by user: " + state.userselected);
 var actions = {
 	updateSizes : function() { 
 		state.mapwidth = d3.select("#map").node().offsetWidth;
-		console.log("width:" + state.mapwidth)
+		console.log("current mapwidth: " + state.mapwidth)
 		render();// TODO: render stuff that should be rendered anew
 	},
 	updateYear : function(year) {
@@ -159,7 +159,7 @@ var actions = {
 	updateUserinput : function() {
 		state.userselected[0] = d3.select(".userinput-0").node().value; 
 		state.userselected[1] = d3.select(".userinput-1").node().value;
-		window.location.hash = "[" + state.userselected + "]";
+		parent.window.location.hash = "[" + state.userselected + "]";
 		renderLinechart(".chart-9",state.userselected,"normal");
 	},
 	updateMapyear : function() {
@@ -589,8 +589,6 @@ function renderMapyear() {
 	
 	d3.selectAll(".mapyear").remove();
 
-	console.log("mapwidth:" + state.mapwidth);
-
 	var t = d3.select("#map").select("svg").append("text")
 	.attr("height", 200)
 	.attr("width", 250)
@@ -653,7 +651,7 @@ var throttleRender = throttle(fm.resize, 250);
 $(document).ready(function () {
   $(window).resize(throttleRender);  
   $(window).resize(actions.updateSizes);  
-  $.bigfoot();
+  //$.bigfoot();
   init();
 });
 
