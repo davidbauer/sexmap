@@ -35,8 +35,6 @@ TODO:
 finish
 - update chart numbering to reflect order
 - update footnote numbering to reflect order
-- delete unnecessary code
-- add sharing metadata
 - fallback images for all charts (place in html to be overwritten once charts load)
 - add fallback gif for map
 
@@ -56,16 +54,15 @@ var config = {
 			.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]), // green, blue, red
 			// .range([qz_blue_4, qz_blue_3, qz_blue_2, qz_blue_1, "#000", qz_gray_1, qz_purp_1, qz_purp_2, qz_purp_3, qz_purp_4]),
 	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
-		"heighincome": [999,997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
-		"centraleurope": [756,276,250,380,40,999], // Switzerland, Germany, France, Italy, Austria, World	
-		"brics": [76,643,356,156,710,999], // Brazil, Russia, India, China, South Africa
+		"indiachina": [356,156,586,50,999], // India, China, Pakistan, Bangladesh, World
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
-		"mostrising": [999,344,144,524,434], //Hong Kong, Sri Lanka, Nepal, Libya
-		"mostbalanced": [120,218,834,434], // Cameroon, Ecuador, Tanzania, Libya
+		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia
 		"warridden": [646,320,368,116], // Rwanda ,Guatemala, Iraq, Cambodia
-		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia	
-		"mensworld": [356,156,586,50,999], // India, China, Pakistan, Bangladesh, World
-		"northamerica" : [840, 124, 484, 999] // USA, Canada, Mexico, World
+		"highincome": [999,997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
+		"brics": [76,643,356,156,710,999], // Brazil, Russia, India, China, South Africa
+		"northamerica" : [840, 124, 484, 999], // USA, Canada, Mexico, World
+		"mostrising": [999,344,144,524,434], //Hong Kong, Sri Lanka, Nepal, Libya
+		"centraleurope": [756,276,250,380,40,999] // Switzerland, Germany, France, Italy, Austria, World	
 		}
 	} 
 
@@ -154,7 +151,7 @@ var actions = {
 		state.userselected[0] = d3.select(".userinput-0").node().value; 
 		state.userselected[1] = d3.select(".userinput-1").node().value;
 		parent.window.location.hash = "[" + state.userselected + "]";
-		renderLinechart(".chart-9",state.userselected,"normal");
+		renderLinechart(".chart-usergenerated",state.userselected,"normal");
 	},
 	updateMapyear : function() {
 		d3.select(".mapyear").text(state.currentYear);
@@ -170,15 +167,15 @@ function render() {
 	if (state.world && state.countries.length > 0) renderMap();
 	renderKey(); // map legend
 	renderMapyear();
-	renderLinechart(".chart-1", config.countryGroups.heighincome, "normal"); // params: where, data, size
-	renderLinechart(".chart-2", config.countryGroups.brics, "normal");
-	renderLinechart(".chart-3", config.countryGroups.arab, "large");
-	renderLinechart(".chart-4", config.countryGroups.mostrising, "normal");
-	renderLinechart(".chart-5", config.countryGroups.northamerica, "normal");
-	renderLinechart(".chart-6", config.countryGroups.warridden, "normal");
-	renderLinechart(".chart-7", config.countryGroups.soviet, "normal");
-	renderLinechart(".chart-8", config.countryGroups.mensworld,"normal");
-	renderLinechart(".chart-9", state.userselected,"normal");
+	renderLinechart(".chart-1", config.countryGroups.indiachina, "normal"); // params: where, data, size
+	renderLinechart(".chart-2", config.countryGroups.arab, "large");
+	renderLinechart(".chart-3", config.countryGroups.soviet, "normal");
+	renderLinechart(".chart-4", config.countryGroups.warridden, "normal");
+	renderLinechart(".chart-5", config.countryGroups.highincome, "normal");
+	renderLinechart(".chart-6", config.countryGroups.brics, "normal");
+	renderLinechart(".chart-7", config.countryGroups.northamerica, "normal");
+	renderLinechart(".chart-8", config.countryGroups.mostrising,"normal");
+	renderLinechart(".chart-usergenerated", state.userselected,"normal");
 	renderUserinput();
 } 
 
@@ -378,8 +375,13 @@ function renderLinechart(selector, countries, size) {
 			156: +3
 		},
 		'.chart-3': {
+			804: -3,
+			643: +7,
+			112: +5,
+			643: +3
 		},
-		'.chart-4': {	
+		'.chart-4': {
+
 		},
 		'.chart-5': {
 			834: -10,
@@ -387,20 +389,18 @@ function renderLinechart(selector, countries, size) {
 			434: +20
 		},
 		'.chart-6': {
-			320:-10,
-			646: +8			
+					
 		}
 		,
 		'.chart-7': {
-			804: -3,
-			643: +7,
-			112: +5,
-			643: +3	
+				
 		},
 		'.chart-8': {
+			320:-10,
+			646: +8	
 		},
 
-		'.chart-9': {
+		'.chart-usergenerated': {
 		}
 	};
 	var margin = {top: 20, right: 75, bottom: 20, left: 50};
@@ -480,8 +480,6 @@ function renderLinechart(selector, countries, size) {
 	   //  .attr("width", 8)
 	   //  .attr("class", "chart-background")
 	   //  .style("fill", "#b2182b");
-
-	
 
 	// set background for part of linechart that means balanced
     vis.selectAll(".chart-background").remove();
