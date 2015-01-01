@@ -31,11 +31,7 @@ TODO:
 - make site fully responsive
 - fix bigfoot, better bigfoot trigger icon
 - add 50% line and show where more women are
-- check tooltips map
-- pass hash through iframe
 - charts full width
-- determine sex vs. gender
-- add section on seemingly balanced africa?
 
 finish
 - update chart numbering to reflect order
@@ -47,7 +43,6 @@ finish
 
 nice to have
 - tooltips for linecharts?
-- improved tooltip accuracy (need a topojson with country center points)
 */
 
 
@@ -98,7 +93,7 @@ var actions = {
 	updateSizes : function() { 
 		state.mapwidth = d3.select("#map").node().offsetWidth;
 		console.log("current mapwidth: " + state.mapwidth)
-		render();// TODO: render stuff that should be rendered anew
+		render();
 	},
 	updateYear : function(year) {
 		state.currentYear = +year; // + turns strings into numbers
@@ -176,7 +171,7 @@ function render() {
 	if (state.world && state.countries.length > 0) renderMap();
 	renderKey(); // map legend
 	renderMapyear();
-	renderLinechart(".chart-1", config.countryGroups.heighincome, "normal"); // where to place, what data to use
+	renderLinechart(".chart-1", config.countryGroups.heighincome, "normal"); // params: where, data, size
 	renderLinechart(".chart-2", config.countryGroups.brics, "normal");
 	renderLinechart(".chart-3", config.countryGroups.arab, "large");
 	renderLinechart(".chart-4", config.countryGroups.mostrising, "normal");
@@ -221,7 +216,6 @@ function renderDatatext() {
 
 	var sexcount = _.countBy(state.countries, function(country) {
 		if (country[state.currentYear]) {
-  			
 			if (country[state.currentYear] > 50.5) {return 'female'}
 			else if (country[state.currentYear] < 49.5) {return 'male'}
 			else {return 'even'}
@@ -436,10 +430,9 @@ function renderLinechart(selector, countries, size) {
 		d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); })
 	];
 
-	//var colorScale = d3.scale.category20(); // automatically pick colors for lines
 	var colorScale = d3.scale.ordinal()
 		.domain([4,894]) // domain from min to max country ISO id
-		.range([qz_blue_4, qz_blue_3, qz_blue_2, qz_blue_1, qz_purp_1, qz_purp_2, qz_purp_3, qz_purp_4]); // color range, see http://bl.ocks.org/mbostock/5577023
+		.range([qz_blue_4, qz_blue_3, qz_blue_2, qz_blue_1, qz_purp_1, qz_purp_2, qz_purp_3, qz_purp_4]); // color range
 
 	// scale values on axes
 	var x = d3.scale.linear()
@@ -455,7 +448,7 @@ function renderLinechart(selector, countries, size) {
 	var ticknumberX = state.mapwidth <= 480 ? 5 : 10;
 	var ticknumberY = state.mapwidth <= 480 ? 4 : 8;
 
-	// draw the axes
+	// define the axes
 	var xAxis = d3.svg.axis()
 		.scale(x)
 		.orient('bottom')
@@ -488,6 +481,8 @@ function renderLinechart(selector, countries, size) {
 	   //  .attr("width", 8)
 	   //  .attr("class", "chart-background")
 	   //  .style("fill", "#b2182b");
+
+	
 
 	// set background for part of linechart that means balanced
     vis.selectAll(".chart-background").remove();
@@ -524,6 +519,13 @@ function renderLinechart(selector, countries, size) {
     	.attr('class', 'axis y-axis');
 
 	vis.select('.y-axis').call(yAxis);
+
+	vis.append("line")          
+	    .style("stroke", "black")
+	    .attr("x1", 30)     
+	    .attr("y1", y(50))      
+	    .attr("x2", width)     
+	    .attr("y2", y(50));
 
     var countryLine = vis.selectAll('.country-line')
     	.data(data, function(d) { return d.key; });
