@@ -401,7 +401,7 @@ function renderLinechart(selector, countries, size) {
 	var margin = {top: 20, right: 75, bottom: 20, left: 50};
 	var width = d3.select(selector).node().offsetWidth - margin.left - margin.right,
 	    height = size == "normal" ? d3.select(selector).node().offsetWidth/2 - margin.top - margin.bottom : d3.select(selector).node().offsetWidth - margin.top - margin.bottom;
-
+	var overtick = {top: 15, bottom: 18};
 	var data = countries.map(function(id) { // take input countries and prepare the data
 		
 		var countryData = id >= 991 ? _.findWhere(state.aggregates, {id: +id}) : _.findWhere(state.countries, {id: +id});
@@ -448,7 +448,7 @@ function renderLinechart(selector, countries, size) {
 		.orient('bottom')
 		.tickFormat(function(d) { return +d; })
 		.ticks(ticknumberX)
-		.tickSize(height);
+		.tickSize(height + overtick.top + overtick.bottom);
 
 	var yAxis = d3.svg.axis()
 		.scale(y)
@@ -461,7 +461,7 @@ function renderLinechart(selector, countries, size) {
 	var svg = container.selectAll('svg').data([0]);
 	var visEnter = svg.enter().append('svg') // visEnter is used for appending everything that should only be appended once
 		.attr('width', width + margin.left + margin.right)
-		.attr('height', height + margin.top + margin.bottom)
+		.attr('height', height + margin.top + margin.bottom + overtick.top + overtick.bottom)
 	.append("g")
 		.attr('class', 'vis')
     	.attr("transform", "translate(" + 0 + "," + margin.top + ")")
@@ -486,7 +486,7 @@ function renderLinechart(selector, countries, size) {
 
     visEnter.append("g")
     	.attr('class', 'axis x-axis')
-    	.attr("transform", "translate(" + 0 + "," + height + ")");
+    	.attr("transform", "translate(" + 0 + "," + (height - margin.bottom + overtick.top) + ")");
 
 	vis.select('.x-axis').call(xAxis);
 
@@ -495,15 +495,11 @@ function renderLinechart(selector, countries, size) {
 
 	vis.select('.y-axis').call(yAxis);
 
-	vis.selectAll(".fiftyline").remove();
+	vis.selectAll(".fiftyline").classed("fiftyline",false);
 
-	vis.append("line")
-		.attr("class", "fiftyline")          
-	    .style("stroke", "black")
-	    .attr("x1", 30)     
-	    .attr("y1", y(50))      
-	    .attr("x2", width)     
-	    .attr("y2", y(50));
+	vis.selectAll(".y-axis .tick").filter(function(d){return d == 50})
+		.selectAll("line")
+		.classed("fiftyline",true)
 
     var countryLine = vis.selectAll('.country-line')
     	.data(data, function(d) { return d.key; });
