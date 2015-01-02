@@ -153,6 +153,20 @@ var actions = {
 	}
 }
 
+var help = {
+	exactTicks: function(extent,numTicks) {
+		var t = []
+		numTicks = numTicks - 1
+		t.push(extent[0])
+		range = extent[1] - extent[0]
+		for (var i = 1; i < numTicks; i++) {
+			t.push(extent[0] + (range / numTicks * i))
+		};
+		t.push(extent[1])
+		return t
+	}
+};
+
 // RENDERING
 // make one render() function and call all functions to render sub-elements within
 
@@ -420,8 +434,8 @@ function renderLinechart(selector, countries, size) {
 
 	// extract range from values to define y-axis range
 	var valueExtent = [
-		d3.min(data, function(countryData) { return d3.min(countryData.values, function(d) { return d.value; }); }),
-		d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); })
+		Math.floor(d3.min(data, function(countryData) { return d3.min(countryData.values, function(d) { return d.value; }); })),
+		Math.ceil(d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); }))
 	];
 
 	var colorScale = d3.scale.ordinal()
@@ -430,31 +444,38 @@ function renderLinechart(selector, countries, size) {
 
 	// scale values on axes
 	var x = d3.scale.linear()
-		.domain(d3.extent(config.years))
+		.domain([1960,2013])
 		.range([margin.left, width]);
 
 	var y = d3.scale.linear()
 		.domain(valueExtent)
 		.range([height, 0])
-		.nice(2);
+		// .nice(2);
 
 	// define number of axis ticks based on screen size
 	var ticknumberX = state.mapwidth <= 480 ? 5 : 10;
-	var ticknumberY = state.mapwidth <= 480 ? 4 : 8;
+	var ticknumberY = valueExtent[1] - valueExtent[0] + 1
+
+	if(ticknumberY > 6) {
+		ticknumberY = (ticknumberY-1) / 2 + 1
+	}
 
 	// define the axes
 	var xAxis = d3.svg.axis()
 		.scale(x)
 		.orient('bottom')
-		.tickFormat(function(d) { return +d; })
+		.tickFormat(function(d) { return "’" + String(d).substring(2,4); })
 		.ticks(ticknumberX)
 		.tickSize(height + overtick.top + overtick.bottom);
 
 	var yAxis = d3.svg.axis()
 		.scale(y)
 		.orient('left')
-		.ticks(ticknumberY)
-		.tickSize(width);
+		.tickValues(help.exactTicks(valueExtent,ticknumberY))
+		.tickSize(width)
+		.tickFormat(function(d,i) {
+			return d == valueExtent[1] ? Math.round(d*10)/10 + "% female population" : Math.round(d*10)/10
+		});
 
 	var container = d3.select(selector);
 
@@ -495,11 +516,24 @@ function renderLinechart(selector, countries, size) {
 
 	vis.select('.y-axis').call(yAxis);
 
+	//remove all fiftyline classes
 	vis.selectAll(".fiftyline").classed("fiftyline",false);
 
+	//add fiftyline class to any tick line that has a data point of exactly 50
 	vis.selectAll(".y-axis .tick").filter(function(d){return d == 50})
 		.selectAll("line")
 		.classed("fiftyline",true)
+
+	//add "% women to the top axis label"
+	// vis.selectAll(".y-axis").each(function(){
+	// 	var this_axis = d3.select(this)
+	// 	var maxTickVal = -Infinity
+
+	// 	this_axis.selectAll(".tick text")
+	// 		.each(function(d){ maxTickVal = Math.max(d,maxTickVal)})
+	// 		.text(function(d){return d != maxTickVal ? d : d + "% female population"})
+	// })
+
 
     var countryLine = vis.selectAll('.country-line')
     	.data(data, function(d) { return d.key; });
