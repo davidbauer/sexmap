@@ -564,11 +564,16 @@ function renderLinechart(selector, countries, size) {
 
 function renderUserinput() {
 
-	var userinput = d3.select('.userinput').selectAll('select').data([0,1]);
+	var userinput_wrap = d3.select('.userinput').selectAll('div.qz-select').data([0,1]);
 
-	userinput.enter()
+	var userinput = userinput_wrap
+		.enter()
+		.append("div")
+		.attr("class","qz-select")
 		.append('select')
 		.attr('class', function(d) {return 'userinput-' + d});
+
+	userinput_wrap.append("div").attr("class","clearfix")
 
 	var options = userinput.selectAll('option')
 		.data(state.countries.filter(function(datum) { 
