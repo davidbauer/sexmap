@@ -26,6 +26,8 @@ qz_ora_2 = "#9F5C00";
 qz_gre_1 = "#94D365";
 qz_gre_2 = "#3C703C";
 
+color_progression = [qz_purp_3,qz_blue_1,qz_purp_4,qz_blue_2,qz_purp_1,qz_blue_3,qz_purp_2,qz_blue_1] //,qz_gray_1, qz_gray_3, qz_gray_2]
+
 /*
 TODO:
 - make site fully responsive
@@ -143,8 +145,8 @@ var actions = {
 		},config.timelineSpeed)
 	},
 	updateUserinput : function() {
-		state.userselected[0] = d3.select(".userinput-0").node().value; 
-		state.userselected[1] = d3.select(".userinput-1").node().value;
+		state.userselected[1] = d3.select(".userinput-0").node().value; 
+		state.userselected[0] = d3.select(".userinput-1").node().value;
 		parent.window.location.hash = "[" + state.userselected + "]";
 		renderLinechart(".chart-usergenerated",state.userselected,"normal");
 	},
@@ -440,7 +442,7 @@ function renderLinechart(selector, countries, size) {
 
 	var colorScale = d3.scale.ordinal()
 		.domain([4,894]) // domain from min to max country ISO id
-		.range([qz_blue_4, qz_blue_3, qz_blue_2, qz_blue_1, qz_purp_1, qz_purp_2, qz_purp_3, qz_purp_4]); // color range
+		.range(color_progression); // color range
 
 	// scale values on axes
 	var x = d3.scale.linear()
