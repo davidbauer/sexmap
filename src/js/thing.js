@@ -29,17 +29,12 @@ qz_gre_2 = "#3C703C";
 /*
 TODO:
 - make site fully responsive
-- fix bigfoot, better bigfoot trigger icon
 - charts full width
 
 finish
-- update chart numbering to reflect order
 - update footnote numbering to reflect order
 - fallback images for all charts (place in html to be overwritten once charts load)
 - add fallback gif for map
-
-nice to have
-- tooltips for linecharts?
 */
 
 
@@ -117,7 +112,7 @@ var actions = {
 			clearInterval(state.timelineInterval);
 			state.timelineInterval = null;
 			console.log("timeline " + state.timeline);
-			d3.select('.play').html('<img src="assets/play.png"/>');
+			d3.select('.play').html('<img src="assets/play.png" alt="Resume animation" title="Resume animation"/>');
 			return;
 		}
 
@@ -129,12 +124,12 @@ var actions = {
 	},
 	playTimeline : function() {
 		
-		d3.select('.play').html('<img src="assets/pause.png"/>');
+		d3.select('.play').html('<img src="assets/pause.png" alt="Pause animation" title="Pause animation"/>');
 		
 		state.timelineInterval = setInterval(function(){
 			
 			if (state.currentYear == d3.max(config.years)) {
-				d3.select('.play').html('<img src="assets/replay.png"/>');
+				d3.select('.play').html('<img src="assets/replay.png" alt="Replay animation" title="Replay animation"/>');
 				clearInterval(state.timelineInterval);
 				state.timeline = "ready";
 			}
@@ -473,14 +468,6 @@ function renderLinechart(selector, countries, size) {
 
     var vis = container.select('.vis');
 
-    // set background for part of linechart that means more women
-    // visEnter.append("rect")
-	   //  .attr("height", y(50))
-	   //  .attr("x", 0)
-	   //  .attr("width", 8)
-	   //  .attr("class", "chart-background")
-	   //  .style("fill", "#b2182b");
-
 	// set background for part of linechart that means balanced
     vis.selectAll(".chart-background").remove();
 
@@ -491,16 +478,7 @@ function renderLinechart(selector, countries, size) {
 	    .attr("width", width - margin.left)
 	    .attr("class", "chart-background");
 
-    // set background for part of linechart that means more women
-	// visEnter.append("rect")
-	//     .attr("height", height-y(50))
-	//     .attr("y", y(50))
-	//     .attr("x", 0)
-	//     .attr("width", 8)
-	//     .attr("class", "chart-background")
-	//     .style("fill", "#01665e");
-
-	// draw the line
+	// define the country line
 	var line = d3.svg.line()
 		.x(function(d) { return x(d.year); })
 	    .y(function(d) { return y(d.value); })
@@ -517,7 +495,10 @@ function renderLinechart(selector, countries, size) {
 
 	vis.select('.y-axis').call(yAxis);
 
-	vis.append("line")          
+	vis.selectAll(".fiftyline").remove();
+
+	vis.append("line")
+		.attr("class", "fiftyline")          
 	    .style("stroke", "black")
 	    .attr("x1", 30)     
 	    .attr("y1", y(50))      
