@@ -628,34 +628,36 @@ function init() {
 		}
 
 		state.world = world;
+
+		//load the data for all countries and prepare it
+		d3.csv('data/data.csv')
+			.row(function(d) { // go through all rows and make sure values are saved as numbers
+				
+				var row = { // save values for all columns that we need
+					id: +d.ISO, 
+					name: d['countryname'],
+					entity : d ['entity']
+				}
+
+				config.years.forEach(function(year){ // save value for each year in a property with the year's name
+					var v = d[year];
+					row[year] = (v!=null && v.length > 0 ? +v : NaN);
+				})
+
+				return row;
+
+			}) 
+		    .get(function(error, rows){
+				if (error) {
+					console.error(error);
+					return;
+				}
+
+				actions.updateData(rows);
+			});
 	});
 
-	//load the data for all countries and prepare it
-	d3.csv('data/data.csv')
-		.row(function(d) { // go through all rows and make sure values are saved as numbers
-			
-			var row = { // save values for all columns that we need
-				id: +d.ISO, 
-				name: d['countryname'],
-				entity : d ['entity']
-			}
 
-			config.years.forEach(function(year){ // save value for each year in a property with the year's name
-				var v = d[year];
-				row[year] = (v!=null && v.length > 0 ? +v : NaN);
-			})
-
-			return row;
-
-		}) 
-	    .get(function(error, rows){
-			if (error) {
-				console.error(error);
-				return;
-			}
-
-			actions.updateData(rows);
-		});
 
 	d3.select('.play').on("click", actions.toggleTimeline);
 
