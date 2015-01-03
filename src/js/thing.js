@@ -434,6 +434,7 @@ function renderLinechart(selector, countries, size) {
 		};
 	});
 
+
 	// extract range from values to define y-axis range
 	var valueExtent = [
 		Math.floor(d3.min(data, function(countryData) { return d3.min(countryData.values, function(d) { return d.value; }); })),
@@ -489,17 +490,28 @@ function renderLinechart(selector, countries, size) {
 		.attr('class', 'vis')
     	.attr("transform", "translate(" + 0 + "," + margin.top + ")")
 
+    //create blends
+    // svg.append("defs")
+    // 	.append("filter")
+    // 	.attr("id","f_multiply")
+    // 	.attr("filterUnits","objectBoundingBox")
+    // 	.attr("x","0%")
+    // 	.attr("y","0%")
+    // 	.attr("width","100%")
+    // 	.attr("height","100%")
+    // 	.selectAll("feBlend")
+    // 	.data([0,0])
+    // 	.enter()
+    // 	.append("feBlend")
+    // 		.attr("in","a")
+    // 		.attr("in2","b")
+    // 		.attr("result","ab")
+    // 		.attr("mode","multiply")
+
+
     var vis = container.select('.vis');
 
-	// set background for part of linechart that means balanced
-    vis.selectAll(".chart-background").remove();
 
-    vis.append("rect")
-    	.attr("y", y(50.5))
-	    .attr("height", y(49.5)-y(50.5))
-	    .attr("x", margin.left)
-	    .attr("width", width - margin.left)
-	    .attr("class", "chart-background");
 
 	// define the country line
 	var line = d3.svg.line()
@@ -535,6 +547,17 @@ function renderLinechart(selector, countries, size) {
 	// 		.each(function(d){ maxTickVal = Math.max(d,maxTickVal)})
 	// 		.text(function(d){return d != maxTickVal ? d : d + "% female population"})
 	// })
+
+	// set background for part of linechart that means balanced
+    vis.selectAll(".chart-background").remove();
+
+    vis.append("rect")
+    	.attr("y", y(50.5))
+	    .attr("height", y(49.5)-y(50.5))
+	    .attr("x", margin.left)
+	    .attr("width", width - margin.left)
+	    .attr("class", "chart-background")
+	    // .attr("filter","url(#f_multiply)");
 
 
     var countryLine = vis.selectAll('.country-line')
