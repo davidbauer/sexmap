@@ -28,18 +28,6 @@ qz_gre_2 = "#3C703C";
 
 color_progression = [qz_purp_3,qz_blue_1,qz_purp_4,qz_blue_2,qz_purp_1,qz_blue_3,qz_purp_2,qz_blue_1] //,qz_gray_1, qz_gray_3, qz_gray_2]
 
-/*
-TODO:
-- make site fully responsive
-- charts full width
-
-finish
-- update footnote numbering to reflect order
-- fallback images for all charts (place in html to be overwritten once charts load)
-- add fallback gif for map
-*/
-
-
 // CONFIG
 var config = { 
 	years: d3.range(1961,2014), // maximum value not included, so produces range 1961-2013
@@ -54,11 +42,11 @@ var config = {
 		"indiachina": [356,156,586,50,999], // India, China, Pakistan, Bangladesh, World
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
 		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia
-		"warridden": [646,320,368,116], // Rwanda ,Guatemala, Iraq, Cambodia
-		"highincome": [999,997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
-		"brics": [76,643,356,156,710,999], // Brazil, Russia, India, China, South Africa
+		"warridden": [646,368,116], // Rwanda, Iraq, Cambodia
+		"highincome": [997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
+		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
 		"northamerica" : [840, 124, 484, 999], // USA, Canada, Mexico, World
-		"mostrising": [999,344,144,524,434], //Hong Kong, Sri Lanka, Nepal, Libya
+		"mostrising": [344,144,524,434], //Hong Kong, Sri Lanka, Nepal, Libya
 		"centraleurope": [756,276,250,380,40,999] // Switzerland, Germany, France, Italy, Austria, World	
 		}
 	} 
