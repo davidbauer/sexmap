@@ -46,7 +46,8 @@ var config = {
 		"highincome": [997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
 		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
 		"northamerica" : [840, 124, 484, 999], // USA, Canada, Mexico, World
-		"mostrising": [344,144,524,434], //Hong Kong, Sri Lanka, Nepal, Libya
+		"mostrising": [344,144,524], //Hong Kong, Sri Lanka, Nepal
+		"africa": [894,800,404,562,434], //Zambia, Uganda, Kenya, Niger, Libya
 		"centraleurope": [756,276,250,380,40,999] // Switzerland, Germany, France, Italy, Austria, World	
 		}
 	} 
@@ -173,6 +174,7 @@ function render() {
 	renderLinechart(".chart-6", config.countryGroups.brics, "normal");
 	renderLinechart(".chart-7", config.countryGroups.northamerica, "normal");
 	renderLinechart(".chart-8", config.countryGroups.mostrising,"normal");
+	renderLinechart(".chart-9", config.countryGroups.africa,"normal");
 	renderLinechart(".chart-usergenerated", state.userselected,"normal");
 	renderUserinput();
 } 
@@ -397,7 +399,9 @@ function renderLinechart(selector, countries, size) {
 			320:-10,
 			646: +8	
 		},
-
+		'.chart-9': {
+				
+		},
 		'.chart-usergenerated': {
 		}
 	};
