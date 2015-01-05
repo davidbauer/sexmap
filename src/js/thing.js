@@ -73,7 +73,6 @@ console.log("Selected countries by user: " + state.userselected);
 var actions = {
 	updateSizes : function() { 
 		state.mapwidth = d3.select("#map").node().offsetWidth;
-		console.log("current mapwidth: " + state.mapwidth)
 		render();
 	},
 	updateYear : function(year) {
