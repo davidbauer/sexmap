@@ -133,8 +133,8 @@ var actions = {
 		},config.timelineSpeed)
 	},
 	updateUserinput : function() {
-		state.userselected[1] = d3.select(".userinput-0").node().value; 
-		state.userselected[0] = d3.select(".userinput-1").node().value;
+		state.userselected[0] = d3.select(".userinput-0").node().value; 
+		state.userselected[1] = d3.select(".userinput-1").node().value;
 		parent.window.location.hash = "[" + state.userselected + "]";
 		renderLinechart(".chart-usergenerated",state.userselected,"normal");
 	},
@@ -367,45 +367,6 @@ function renderKey() {
 function renderLinechart(selector, countries, size) {
 
 	// manual label position corrections
-	var countryLabelPositionDeltas = {
-		'.chart-1': {
-		},
-		'.chart-2': {
-			356: -3,
-			156: +3
-		},
-		'.chart-3': {
-			804: -3,
-			643: +7,
-			112: +5,
-			643: +3
-		},
-		'.chart-4': {
-
-		},
-		'.chart-5': {
-			834: -10,
-			218: +10,
-			434: +20
-		},
-		'.chart-6': {
-					
-		}
-		,
-		'.chart-7': {
-				
-		},
-		'.chart-8': {
-			320:-10,
-			646: +8	
-		},
-		'.chart-9': {
-				
-		},
-		'.chart-usergenerated': {
-		}
-	};
-
 	var labelPositioning = {
 		'.chart-1': {
 		// "indiachina": [
@@ -604,7 +565,7 @@ function renderLinechart(selector, countries, size) {
 				"anchor":"middle"
 			},
 			999:{ //World
-				"dy":-0.4,
+				"dy":1,
 				"x":2013,
 				"anchor":"end"
 			}
@@ -669,8 +630,11 @@ function renderLinechart(selector, countries, size) {
 		}
 	}
 
-	var margin = {top: 20, right: 0, bottom: 20, left: 50};
-	var width = d3.select(selector).node().offsetWidth - margin.left - margin.right,
+	var pxFontSize = Number(getComputedStyle(document.getElementsByTagName("section")[3], "").fontSize.match(/(\d*(\.\d*)?)px/)[1]);
+	var size_ratio = pxFontSize/20
+
+	var margin = {top: 20*size_ratio, right: 20*size_ratio, bottom: 20*size_ratio, left: 40*size_ratio};
+	var width = $(selector).width() - margin.left - margin.right,
 	    height = size == "normal" ? d3.select(selector).node().offsetWidth/2 - margin.top - margin.bottom : d3.select(selector).node().offsetWidth - margin.top - margin.bottom;
 	var overtick = {top: 15, bottom: 18};
 	var data = countries.map(function(id) { // take input countries and prepare the data
@@ -692,8 +656,8 @@ function renderLinechart(selector, countries, size) {
 
 	// extract range from values to define y-axis range
 	var valueExtent = [
-		Math.floor(d3.min(data, function(countryData) { return d3.min(countryData.values, function(d) { return d.value; }); })),
-		Math.ceil(d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); }))
+		Math.floor(d3.min(data, function(countryData) { return d3.min(countryData.values, function(d) { return d.value; }); })-0.5),
+		Math.ceil(d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); })+0.5)
 	];
 
 	var colorScale = d3.scale.ordinal()
@@ -703,7 +667,7 @@ function renderLinechart(selector, countries, size) {
 	// scale values on axes
 	var x = d3.scale.linear()
 		.domain([1960,2013])
-		.range([margin.left, width]);
+		.range([margin.left, width + margin.left]);
 
 	var y = d3.scale.linear()
 		.domain(valueExtent)
@@ -730,7 +694,7 @@ function renderLinechart(selector, countries, size) {
 		.scale(y)
 		.orient('left')
 		.tickValues(help.exactTicks(valueExtent,ticknumberY))
-		.tickSize(width)
+		.tickSize(width + margin.left)
 		.tickFormat(function(d,i) {
 			return d == valueExtent[1] ? Math.round(d*10)/10 + "% female population" : Math.round(d*10)/10
 		});
@@ -744,24 +708,6 @@ function renderLinechart(selector, countries, size) {
 	.append("g")
 		.attr('class', 'vis')
     	.attr("transform", "translate(" + 0 + "," + margin.top + ")")
-
-    //create blends
-    // svg.append("defs")
-    // 	.append("filter")
-    // 	.attr("id","f_multiply")
-    // 	.attr("filterUnits","objectBoundingBox")
-    // 	.attr("x","0%")
-    // 	.attr("y","0%")
-    // 	.attr("width","100%")
-    // 	.attr("height","100%")
-    // 	.selectAll("feBlend")
-    // 	.data([0,0])
-    // 	.enter()
-    // 	.append("feBlend")
-    // 		.attr("in","a")
-    // 		.attr("in2","b")
-    // 		.attr("result","ab")
-    // 		.attr("mode","multiply")
 
 
     var vis = container.select('.vis');
@@ -810,7 +756,7 @@ function renderLinechart(selector, countries, size) {
     	.attr("y", y(50.5))
 	    .attr("height", y(49.5)-y(50.5))
 	    .attr("x", margin.left)
-	    .attr("width", width - margin.left)
+	    .attr("width", width)
 	    .attr("class", "chart-background")
 	    // .attr("filter","url(#f_multiply)");
 
@@ -828,7 +774,7 @@ function renderLinechart(selector, countries, size) {
 
 	vis.selectAll('.country-line-path')
 		.attr("d", function(d) { return line(d.values); })
-		.attr('stroke', function(d) {if (d.key >= 990) {return qz_gray_2} else {return colorScale(d.key); }}); // grey for world average
+		.attr('stroke', function(d) { return d.key >= 990 ? qz_gray_2 : colorScale(d.key) }); // grey for world average
 
 	countryLineEnter.append("text")
 	    .attr("class", "legend")
@@ -843,8 +789,8 @@ function renderLinechart(selector, countries, size) {
 				console.log(data)
 				d.pos = {
 					"dy":-0.4,
-					"x": d.key == 999 ? 0 :(i != 0 ? 2013 : 1961),
-					"anchor": i != 0 ? "end" : "start"
+					"x": d.key != 999 ? 2013 : 1961,
+					"anchor": d.key != 999 ? "end" : "start"
 				}
 			}
 			
