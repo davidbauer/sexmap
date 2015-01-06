@@ -405,7 +405,271 @@ function renderLinechart(selector, countries, size) {
 		'.chart-usergenerated': {
 		}
 	};
-	var margin = {top: 20, right: 75, bottom: 20, left: 50};
+
+	var labelPositioning = {
+		'.chart-1': {
+		// "indiachina": [
+			356:{ //India
+				"dy":1,
+				"x":1970,
+				"anchor":"end"
+			},
+			156:{ //China
+				"dy":1,
+				"x":2013,
+				"anchor":"end"
+			},
+			586:{ //Pakistan
+				"dy":1,
+				"x":1961,
+				"anchor":"start"
+			},
+			50:{ //Banladesh
+				"dy":-0.3,
+				"x":2008,
+				"anchor":"end"
+			},
+			999:{ //world
+				"dy":-0.4,
+				"x":2013,
+				"anchor":"end"
+			}
+
+		},
+		'.chart-2': {
+		// "arab": [
+			999:{ //world
+				"dy":-0.3,
+				"x":2013,
+				"anchor":"end"
+			},
+			682:{ //Saudi
+				"dy":-0.3,
+				"x":2000,
+				"anchor":"middle"
+			},
+			48:{ // Bahrain
+				"dy":1,
+				"x":2007,
+				"anchor":"end"
+			},
+			512:{ // Oman
+				"dy":0.8,
+				"x":2013,
+				"anchor":"end"
+			},
+			784:{ //UAE
+				"dy":-0.3,
+				"x":2013,
+				"anchor":"end"
+			},
+			634:{ //Qatar
+				"dy":0.8,
+				"x":2013,
+				"anchor":"end"
+			},
+			414:{ //Kuwait
+				"dy":1,
+				"x":1968,
+				"anchor":"start"
+			}
+			// ], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
+
+		},
+		'.chart-3': {
+		// "soviet": [
+			643:{ //Russia
+				"dy":-0.4,
+				"x":1995,
+				"anchor":"middle"
+			},
+			804:{ // Ukraine
+				"dy":-0.2,
+				"x":1975,
+				"anchor":"start"
+			},
+			112:{ //Belarus
+				"dy":1,
+				"x":2005,
+				"anchor":"start"
+			},
+			233:{ //Estonia
+				"dy":-0.3,
+				"x":1964,
+				"anchor":"start"
+			},
+			428:{ //Latvia
+				"dy":-0.4,
+				"x":2013,
+				"anchor":"end"
+			}
+			// ], // Russian Federation, Ukraine, Belarus, Estonia, Latvia
+
+
+		},
+		'.chart-4': {
+		// "warridden": [
+			646:{ //Rwanda
+				"dy":1,
+				"x":2013,
+				"anchor":"end"
+			},
+			368:{ //Iraq
+				"dy":1.1,
+				"x":2013,
+				"anchor":"end"
+			},
+			116:{ //Cambodia
+				"dy":-0.7,
+				"x":2013,
+				"anchor":"end"
+			}
+			// ], // Rwanda, Iraq, Cambodia
+
+
+		},
+		'.chart-5': {
+		// "highincome": [
+			997:{ //High Income
+				"dy":-0.3,
+				"x":1980,
+				"anchor":"middle"
+			},
+			578:{ //Norway
+				"dy":-0.4,
+				"x":1990,
+				"anchor":"middle"
+			},
+			36:{ // Australia
+				"dy":1,
+				"x":1975,
+				"anchor":"start"
+			},
+			756:{ // Switzerland
+				"dy":1,
+				"x":1970,
+				"anchor":"middle"
+			}
+			// ], // High Income, World, Norway, Australia, Switzerland	
+
+
+		},
+		'.chart-6': {
+		// "brics": [
+			76:{ //Brazil
+				"dy":1.2,
+				"x":2013,
+				"anchor":"end"
+			},
+			643:{ //Russia
+				"dy":-0.3,
+				"x":2013,
+				"anchor":"end"
+			},
+			356:{ // India
+				"dy":-0.3,
+				"x":2013,
+				"anchor":"end"
+			},
+			156:{ //China
+				"dy":-0.3,
+				"x":1965,
+				"anchor":"start"
+			},
+			710:{ //South Africa
+				"dy":-0.3,
+				"x":2013,
+				"anchor":"end"
+			}
+			// ], // Brazil, Russia, India, China, South Africa
+
+					
+		}
+		,
+		'.chart-7': {
+		// "northamerica" : [
+			840:{ //USA
+				"dy":-0.3,
+				"x":2013,
+				"anchor":"end"
+			},
+			124:{ // Canada
+				"dy":1,
+				"x":2013,
+				"anchor":"end"
+			},
+			484:{ //Mexico
+				"dy":-0.2,
+				"x":2005,
+				"anchor":"middle"
+			},
+			999:{ //World
+				"dy":-0.4,
+				"x":2013,
+				"anchor":"end"
+			}
+			// ], // USA, Canada, Mexico, World
+
+				
+		},
+		'.chart-8': {
+		// "mostrising": [
+			344:{ // HK
+				"dy":-0.4,
+				"x":2013,
+				"anchor":"end"
+			},
+			144:{ //Sri Lanka
+				"dy":1,
+				"x":1961,
+				"anchor":"start"
+			},
+			524:{ //Nepal
+				"dy":-0.3,
+				"x":2013,
+				"anchor":"end"
+			}
+			// ], //Hong Kong, Sri Lanka, Nepal
+
+
+		},
+		'.chart-9': {
+		// "africa": [
+			894:{ //Zambia
+				"dy":-0.3,
+				"x":2013,
+				"anchor":"end"
+			},
+			800:{ //Uganda
+				"dy":-0.4,
+				"x":1961,
+				"anchor":"start"
+			},
+			404:{ //Kenya
+				"dy":1,
+				"x":1961,
+				"anchor":"start"
+			},
+			562:{ //Niger
+				"dy":-0.4,
+				"x":1990,
+				"anchor":"middle"
+			},
+			434:{ //Libya
+				"dy":1,
+				"x":1961,
+				"anchor":"start"
+			}
+			// ], //Zambia, Uganda, Kenya, Niger, Libya
+
+				
+		},
+		'.chart-usergenerated': {
+
+		}
+	}
+
+	var margin = {top: 20, right: 0, bottom: 20, left: 50};
 	var width = d3.select(selector).node().offsetWidth - margin.left - margin.right,
 	    height = size == "normal" ? d3.select(selector).node().offsetWidth/2 - margin.top - margin.bottom : d3.select(selector).node().offsetWidth - margin.top - margin.bottom;
 	var overtick = {top: 15, bottom: 18};
@@ -571,8 +835,35 @@ function renderLinechart(selector, countries, size) {
 	    .attr("x", width + 3)
 
 	countryLine.select('.legend')
-	    .attr("y", function(d) {return y(_.last(d.values).value)+2 + 
-	                                   (countryLabelPositionDeltas[selector][d.key] || 0)}) // +2 to correct visual appearance
+		.each(function(d,i){
+			if(selector != '.chart-usergenerated') {
+				d.pos = labelPositioning[selector][d.key]
+			}
+			else {
+				console.log(data)
+				d.pos = {
+					"dy":-0.4,
+					"x": d.key == 999 ? 0 :(i != 0 ? 2013 : 1961),
+					"anchor": i != 0 ? "end" : "start"
+				}
+			}
+			
+		})
+	    .attr("y", function(d) {
+
+	    	for (var i = d.values.length - 1; i >= 0; i--) {
+	    		var val = d.values[i]
+	    		if(val.year == d.pos.x) {
+	    			return y(val.value)
+	    		}
+	    	};
+
+	    	return 0
+
+	    })
+	    .attr("x", function(d) {return x(d.pos.x)})
+	    .attr("dy",function(d){return d.pos.dy + "em"})
+	    .attr("text-anchor",function(d){return d.pos.anchor})
 	    .text(function(d) {return d.name; })
 	    .style("fill", function(d) { if (d.key >= 990) {return qz_gray_2} else {return colorScale(d.key); }}); // grey for world average
 
