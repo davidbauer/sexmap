@@ -481,7 +481,7 @@ function renderLinechart(selector, countries, size) {
 		// "warridden": [
 			646:{ //Rwanda
 				"dy":1,
-				"x":2013,
+				"x":1985,
 				"anchor":"end"
 			},
 			368:{ //Iraq
