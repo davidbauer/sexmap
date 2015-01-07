@@ -33,7 +33,7 @@ var config = {
 	years: d3.range(1961,2014), // maximum value not included, so produces range 1961-2013
 	timelineSpeed : 800, // after 0.8 seconds, next year appears
 	color : d3.scale.threshold() // define steps for color changes in map
-    		.domain([40,45,48,49,49.5,50.5,51,52,55,60])
+			.domain([40,45,48,49,49.5,50.5,51,52,55,60])
 			//.range(["#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#e5f5e0", "#fde0ef", "#f1b6da", "#de77ae", "#c51b7d", "#8e0152"]), // blue, pink, green
 			//.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#f6e8c3", "#dfc27d", "#bf812d", "#8c510a", "#543005"]), // green, blue, brown
 			.range(["#003c30", "#01665e", "#35978f", "#80cdc1", "#c7eae5", "#d1e5f0", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]), // green, blue, red
@@ -235,23 +235,23 @@ function renderDatatext() {
 function renderMap() {
 
 	var width = state.mapwidth,
-    height = width;
+	height = width;
 
 	var projection = d3.geo.azimuthalEqualArea()
-	    .clipAngle(180 - 1e-3)
-	    .scale(237 / 960 * width)
-	    .translate([width / 2, height / 2])
-	    .precision(.1);
+		.clipAngle(180 - 1e-3)
+		.scale(237 / 960 * width)
+		.translate([width / 2, height / 2])
+		.precision(.1);
 
 	// an alternative projection
 	// var projection = d3.geo.orthographic()
-	//     .scale(475)
-	//     .translate([width / 2, height / 2])
-	//     .clipAngle(90)
-	//     .precision(.1);
+	//	 .scale(475)
+	//	 .translate([width / 2, height / 2])
+	//	 .clipAngle(90)
+	//	 .precision(.1);
 
 	var path = d3.geo.path()
-	    .projection(projection);
+		.projection(projection);
 
 	var graticule = d3.geo.graticule();
 
@@ -263,57 +263,57 @@ function renderMap() {
 		.append("svg")
 
 	svgEnter.append("defs").append("path")
-	    .datum({type: "Sphere"})
-	    .attr("id", "sphere")
-	    
+		.datum({type: "Sphere"})
+		.attr("id", "sphere")
+		
 	d3.select("#sphere").attr("d", path);
 
 	//circle around the globe
 	svgEnter.append("use")
-	    .attr("class", "stroke")
-	    .attr("xlink:href", "#sphere");
+		.attr("class", "stroke")
+		.attr("xlink:href", "#sphere");
 
 	svgEnter.append("use")
-	    .attr("class", "fill")
-	    .attr("xlink:href", "#sphere");
+		.attr("class", "fill")
+		.attr("xlink:href", "#sphere");
 
 	var graticule = svgEnter.append("path")
-	    .datum(graticule)
-	    .attr("class", "graticule")
+		.datum(graticule)
+		.attr("class", "graticule")
 	  
 	  d3.selectAll("path.graticule").attr("d", path);
 
 	svg.attr("width", width)
-	    .attr("height", height);
+		.attr("height", height);
 
 	var countries = svg.selectAll('.country').data(topojson.feature(state.world, state.world.objects.countries).features);
 
 	countries.enter()
 	  	.insert("path", ".graticule")
-	    .attr("class", "country")
-	    .attr("title", function(d) { return d.name;})
-	    .attr("id", function(d) { return "country-" + d.id;})
-	    
+		.attr("class", "country")
+		.attr("title", function(d) { return d.name;})
+		.attr("id", function(d) { return "country-" + d.id;})
+		
 	countries.attr("d", path);
 
 	svgEnter.insert("path", ".graticule")
-      .datum(topojson.mesh(state.world, state.world.objects.countries, function(a, b) { return a !== b; }))
-      .attr("class", "boundary")
-      
-     d3.selectAll("path.boundary").attr("d", path);
+	  .datum(topojson.mesh(state.world, state.world.objects.countries, function(a, b) { return a !== b; }))
+	  .attr("class", "boundary")
+	  
+	 d3.selectAll("path.boundary").attr("d", path);
 
 	var tip = d3.tip()
 	  .attr('class', 'd3-tip')
 	  .offset([5, 0])
 	  .html(function(d) {
-	    var countryData = _.findWhere(state.countries, {id: +d.id});
-	    if (countryData) {
-	    	if (!isNaN(countryData[state.currentYear])) { // check if actual value exists
-	    		return countryData.name + ": " + d3.round(countryData[state.currentYear],2) + "% women";
-	    	}
-	    	else {return countryData.name + ": no data available";}
-	    }
-	    return 'no data available'; 
+		var countryData = _.findWhere(state.countries, {id: +d.id});
+		if (countryData) {
+			if (!isNaN(countryData[state.currentYear])) { // check if actual value exists
+				return countryData.name + ": " + d3.round(countryData[state.currentYear],2) + "% women";
+			}
+			else {return countryData.name + ": no data available";}
+		}
+		return 'no data available'; 
 	  });
 
 	d3.selectAll('.d3-tip').remove();
@@ -329,54 +329,54 @@ function renderMap() {
 		}
 		})
 		.on('mouseover', tip.show)
-      	.on('mouseout', tip.hide);
+	  	.on('mouseout', tip.hide);
 }
 
 function renderKey() {
 
 	var x = d3.scale.linear()
-    .domain([38, 62]) // range of values to be included in the legend
-    .range([0, 300]); // defines length of legend
+	.domain([38, 62]) // range of values to be included in the legend
+	.range([0, 300]); // defines length of legend
 
 	var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom")
-    .tickSize(0)
-    .tickFormat(function(d){return d == 40 ? "40%" : d})
-    .tickValues([40,45,48,49,51,52,55,60]); // left out two middle values for space, to generate tick values dynamically: config.color.domain()
+	.scale(x)
+	.orient("bottom")
+	.tickSize(0)
+	.tickFormat(function(d){return d == 40 ? "40%" : d})
+	.tickValues([40,45,48,49,51,52,55,60]); // left out two middle values for space, to generate tick values dynamically: config.color.domain()
 
-    var svg = d3.select("#map").selectAll('svg');
+	var svg = d3.select("#map").selectAll('svg');
 
-    var g = svg.selectAll('g').data([0]);
+	var g = svg.selectAll('g').data([0]);
 
-    var gEnter = g.enter()
-    	.append("g")
-	    .attr("class", "key")
+	var gEnter = g.enter()
+		.append("g")
+		.attr("class", "key")
 	  
 	 g.attr("transform", "translate(" + (state.mapwidth-300)/2 + ",30)"); // position within the svg space
 
 	gEnter.selectAll("rect")
-	    .data(config.color.range().map(function(d, i) {
-	      return {
-	        x0: i ? x(config.color.domain()[i - 1]) : x.range()[0],
-	        x1: i < config.color.domain().length ? x(config.color.domain()[i]) : x.range()[1],
-	        z: d
-	      };
-	    }))
+		.data(config.color.range().map(function(d, i) {
+		  return {
+			x0: i ? x(config.color.domain()[i - 1]) : x.range()[0],
+			x1: i < config.color.domain().length ? x(config.color.domain()[i]) : x.range()[1],
+			z: d
+		  };
+		}))
 	  .enter().append("rect")
-	    
+		
 
 	g.selectAll("rect").attr("height", 10)
-	    .attr("x", function(d) { return d.x0; })
-	    .attr("width", function(d) { return d.x1 - d.x0; })
-	    .style("fill", function(d) { return d.z; });
-	    // .attr("x", function(d,i) { return i*(x.range()[1]/ config.color.domain().length) }) // alternative with all rects same size
-	    // .attr("width", x.range()[1]/ config.color.domain().length)
+		.attr("x", function(d) { return d.x0; })
+		.attr("width", function(d) { return d.x1 - d.x0; })
+		.style("fill", function(d) { return d.z; });
+		// .attr("x", function(d,i) { return i*(x.range()[1]/ config.color.domain().length) }) // alternative with all rects same size
+		// .attr("width", x.range()[1]/ config.color.domain().length)
 
 	gEnter.call(xAxis).append("text")
-	    .attr("class", "caption")
-	    .attr("dy", "-0.5em")
-	    .text("Percentage of women in population");
+		.attr("class", "caption")
+		.attr("dy", "-0.5em")
+		.text("Percentage of women in population");
 }
 
 function renderLinechart(selector, countries, size) {
@@ -414,11 +414,6 @@ function renderLinechart(selector, countries, size) {
 		},
 		'.chart-2': {
 		// "arab": [
-			999:{ //world
-				"dy":-0.3,
-				"x":2013,
-				"anchor":"end"
-			},
 			682:{ //Saudi
 				"dy":-0.3,
 				"x":2000,
@@ -448,6 +443,11 @@ function renderLinechart(selector, countries, size) {
 				"dy":1,
 				"x":1968,
 				"anchor":"start"
+			},
+			999:{ //world
+				"dy":-0.3,
+				"x":2013,
+				"anchor":"end"
 			}
 			// ], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
 
@@ -506,11 +506,6 @@ function renderLinechart(selector, countries, size) {
 		},
 		'.chart-5': {
 		// "highincome": [
-			997:{ //High Income
-				"dy":-0.3,
-				"x":1980,
-				"anchor":"middle"
-			},
 			578:{ //Norway
 				"dy":-0.4,
 				"x":1990,
@@ -524,6 +519,11 @@ function renderLinechart(selector, countries, size) {
 			756:{ // Switzerland
 				"dy":1,
 				"x":1970,
+				"anchor":"middle"
+			},
+			997:{ //High Income
+				"dy":-0.3,
+				"x":1980,
 				"anchor":"middle"
 			}
 			// ], // High Income, World, Norway, Australia, Switzerland	
@@ -645,7 +645,7 @@ function renderLinechart(selector, countries, size) {
 
 	var margin = {top: 20*size_ratio, right: 20*size_ratio, bottom: 20*size_ratio, left: 40*size_ratio};
 	var width = $(selector).width() - margin.left - margin.right,
-	    height = size == "normal" ? $(selector).width()/2 - margin.top - margin.bottom : $(selector).width() - margin.top - margin.bottom;
+		height = size == "normal" ? $(selector).width()/2 - margin.top - margin.bottom : $(selector).width() - margin.top - margin.bottom;
 	var overtick = {top: 15, bottom: 18};
 	var data = countries.map(function(id) { // take input countries and prepare the data
 		
@@ -716,31 +716,31 @@ function renderLinechart(selector, countries, size) {
 	var visEnter = svg.enter().append('svg') // visEnter is used for appending everything that should only be appended once
 			.append("g")
 				.attr('class', 'vis')
-		    	.attr("transform", "translate(" + 0 + "," + margin.top + ")")
+				.attr("transform", "translate(" + 0 + "," + margin.top + ")")
 	svg.attr('width', (width + margin.left + margin.right) + "px")
 		.attr('height', (height + margin.top + margin.bottom + overtick.top + overtick.bottom) + "px")
 	
 
 
-    var vis = container.select('.vis');
+	var vis = container.select('.vis');
 
 
 
 	// define the country line
 	var line = d3.svg.line()
 		.x(function(d) { return x(d.year); })
-	    .y(function(d) { return y(d.value); })
-	    //.interpolate("basis");
+		.y(function(d) { return y(d.value); })
+		//.interpolate("basis");
 
-    visEnter.append("g")
-    	.attr('class', 'axis x-axis')
-    	
+	visEnter.append("g")
+		.attr('class', 'axis x-axis')
+		
 
 	vis.select('.x-axis').call(xAxis)
 		.attr("transform", "translate(" + 0 + "," + (height - margin.bottom + overtick.top) + ")");
 
-    visEnter.append("g")
-    	.attr('class', 'axis y-axis');
+	visEnter.append("g")
+		.attr('class', 'axis y-axis');
 
 	vis.select('.y-axis').call(yAxis);
 
@@ -763,42 +763,40 @@ function renderLinechart(selector, countries, size) {
 	// })
 
 	// set background for part of linechart that means balanced
-    vis.selectAll(".chart-background").remove();
+	vis.selectAll(".chart-background").remove();
 
-    vis.append("rect")
-    	.attr("y", y(50.5))
-	    .attr("height", y(49.5)-y(50.5))
-	    .attr("x", margin.left)
-	    .attr("width", width)
-	    .attr("class", "chart-background")
-	    // .attr("filter","url(#f_multiply)");
+	vis.append("rect")
+		.attr("y", y(50.5))
+		.attr("height", y(49.5)-y(50.5))
+		.attr("x", margin.left)
+		.attr("width", width)
+		.attr("class", "chart-background")
+		// .attr("filter","url(#f_multiply)");
 
+	var countryLine = vis.selectAll('.country-line')
+		.data(data, function(d) { return d.key; });
 
-    var countryLine = vis.selectAll('.country-line')
-    	.data(data, function(d) { return d.key; });
+	var countryLineEnter = countryLine.enter().append('g')
+		.attr('class', 'country-line');
 
-    var countryLineEnter = countryLine.enter().append('g')
-    	.attr('class', 'country-line');
+	countryLine.exit().remove();
 
-    countryLine.exit().remove();
-
-    countryLineEnter.append("path")
+	countryLineEnter.append("path")
 		.attr('class', 'country-line-path')
+		.attr('stroke', function(d,i) {
+			return d.key >= 990 ? qz_gray_2 : colorScale(i) 
+		}); // grey for world average
 
 	vis.selectAll('.country-line-path')
 		.attr("d", function(d) { return line(d.values); })
-		.attr('stroke', function(d,i) {
-	    	if(selector == ".chart-usergenerated") {
-	    		return d.key >= 990 ? qz_gray_2 : 
-	    			i == 0 ? colorScale(1) :
-	    			colorScale(3)
-	    	}
-	    	return d.key >= 990 ? qz_gray_2 : colorScale(i) 
-	    }); // grey for world average
+		
 
 	countryLineEnter.append("text")
-	    .attr("class", "legend")
-	    .attr("x", width + 3)
+		.attr("class", "legend")
+		.attr("x", width + 3)
+		.style("fill", function(d,i) {
+			return d.key >= 990 ? qz_gray_2 : colorScale(i) 
+		}); // grey for world average
 
 	countryLine.select('.legend')
 		.each(function(d,i){
@@ -814,30 +812,23 @@ function renderLinechart(selector, countries, size) {
 			}
 			
 		})
-	    .attr("y", function(d) {
+		.attr("y", function(d) {
 
-	    	for (var i = d.values.length - 1; i >= 0; i--) {
-	    		var val = d.values[i]
-	    		if(val.year == d.pos.x) {
-	    			return y(val.value)
-	    		}
-	    	};
+			for (var i = d.values.length - 1; i >= 0; i--) {
+				var val = d.values[i]
+				if(val.year == d.pos.x) {
+					return y(val.value)
+				}
+			};
 
-	    	return 0
+			return 0
 
-	    })
-	    .attr("x", function(d) {return x(d.pos.x)})
-	    .attr("dy",function(d){return d.pos.dy + "em"})
-	    .attr("text-anchor",function(d){return d.pos.anchor})
-	    .text(function(d) {return d.qzname; })
-	    .style("fill", function(d,i) {
-	    	if(selector == ".chart-usergenerated") {
-	    		return d.key >= 990 ? qz_gray_2 : 
-	    			i == 0 ? colorScale(1) :
-	    			colorScale(3)
-	    	}
-	    	return d.key >= 990 ? qz_gray_2 : colorScale(i) 
-	    }); // grey for world average
+		})
+		.attr("x", function(d) {return x(d.pos.x)})
+		.attr("dy",function(d){return d.pos.dy + "em"})
+		.attr("text-anchor",function(d){return d.pos.anchor})
+		.text(function(d) {return d.qzname; })
+		
 
 }
 
@@ -925,7 +916,7 @@ function init() {
 				return row;
 
 			}) 
-		    .get(function(error, rows){
+			.get(function(error, rows){
 				if (error) {
 					console.error(error);
 					return;
