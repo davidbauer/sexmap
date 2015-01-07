@@ -157,7 +157,8 @@ var help = {
 	},
 	country_to_qz_style: function(s) {
 		var correx = {
-				"United States": "US"
+				"United States": "US",
+				"United Kingdom": "UK"
 			}
 		return correx.hasOwnProperty(s) ? correx[s] : s
 	}
@@ -796,11 +797,38 @@ function renderLinechart(selector, countries, size) {
 				d.pos = labelPositioning[selector][d.key]
 			}
 			else {
-				d.pos = {
-					"dy":-0.4,
-					"x": d.key != 999 ? 2013 : 1961,
-					"anchor": d.key != 999 ? "end" : "start"
+				if(d.key == 999) {
+					d.pos = {
+						"dy":-0.4,
+						"x": d.key != 999 ? 2013 : 1961,
+						"anchor": d.key != 999 ? "end" : "start"
+					}
 				}
+				else {
+					var other_d = i == 0 ? data[i+1] : data[i-1]
+					var ends_on_top = _.last(d.values).value > _.last(other_d.values).value
+					var max_point = {value: -Infinity}
+					var min_point = {value: Infinity}
+
+					for (var i = d.values.length - 1; i >= 25; i--) {
+						//limit to the last 25 years
+						var v = d.values[i]
+						if(v.value > max_point.value) {
+							max_point = v
+						}
+
+						if(v.value < min_point.value) {
+							min_point = v
+						}
+					};
+
+					d.pos = {
+						"dy": ends_on_top ? -0.4 : 1,
+						"x":  ends_on_top ? max_point.year : min_point.year,
+						"anchor": ends_on_top ? "middle" : min_point.year == 1986 ? "start" : "middle",
+					}
+				}
+				
 			}
 			
 		})
@@ -821,6 +849,16 @@ function renderLinechart(selector, countries, size) {
 		.attr("text-anchor",function(d){return d.pos.anchor})
 		.style("stroke", "none") // grey for world average
 		.text(function(d) {return d.qzname; })
+
+		if(selector == ".chart-usergenerated") {
+			//make sure label isn't off the edge
+			vis.selectAll("text.legend").each(function(d,i) {
+				var bbox = this.getBoundingClientRect()
+				if(bbox.right > width) {
+					d3.select(this).attr("text-anchor","end")
+				}
+			})
+		}
 		
 
 }
