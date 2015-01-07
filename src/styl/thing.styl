@@ -362,11 +362,22 @@ span.datapoint
 /* Mobile styles
 -------------------------------------------------------------------------------*/
 
-@media screen and (max-width 480px) 
+@media screen and (max-width $width-small) 
 	.userinput-0 
 		margin-right 0px
 		margin-bottom 5px
 		
 	.linechart
-		font-size 0.75em	
+		font-size 0.75em
+		
+/* Custom Bigfoot styles
+-------------------------------------------------------------------------------*/
+.bigfoot-footnote
+	.bigfoot-footnote__wrapper
+		border-radius 0
+		box-shadow 0 0.5em 1em 0.5em rgba(100,100,100,0.2)
+	.bigfoot-footnote__tooltip
+		box-shadow none
+		
+
 
