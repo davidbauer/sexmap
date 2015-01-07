@@ -671,10 +671,6 @@ function renderLinechart(selector, countries, size) {
 		Math.ceil(d3.max(data, function(countryData) { return d3.max(countryData.values, function(d) { return d.value; }); })+0.5)
 	];
 
-	var colorScale = d3.scale.ordinal()
-		.domain([0,color_progression.length-1]) // domain from min to max country ISO id
-		.range(color_progression); // color range
-
 	// scale values on axes
 	var x = d3.scale.linear()
 		.domain([1960,2013])
@@ -772,9 +768,9 @@ function renderLinechart(selector, countries, size) {
 	var countryLineEnter = countryLine.enter().append('g')
 		.attr('class', 'country-line')
 		.attr('stroke', function(d,i) {
-			return d.key >= 990 ? qz_gray_2 : colorScale(i);
+			return d.key >= 990 ? qz_gray_2 : color_progression[i];
 		}).attr('fill', function(d,i) {
-			return d.key >= 990 ? qz_gray_2 : colorScale(i);
+			return d.key >= 990 ? qz_gray_2 : color_progression[i];
 		}); // grey for world average;
 
 	countryLine.exit().remove();
