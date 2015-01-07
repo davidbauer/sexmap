@@ -154,6 +154,12 @@ var help = {
 		};
 		t.push(extent[1])
 		return t
+	},
+	country_to_qz_style: function(s) {
+		var correx = {
+				"United States": "US"
+			}
+		return correx.hasOwnProperty(s) ? correx[s] : s
 	}
 };
 
@@ -653,6 +659,7 @@ function renderLinechart(selector, countries, size) {
 		return {
 			key: +id,
 			name: countryData.name,
+			qzname: countryData.qzname,
 			values: config.years.map(function(y) { 
 				return {
 					year: y,
@@ -670,7 +677,7 @@ function renderLinechart(selector, countries, size) {
 	];
 
 	var colorScale = d3.scale.ordinal()
-		.domain([4,894]) // domain from min to max country ISO id
+		.domain([0,color_progression.length-1]) // domain from min to max country ISO id
 		.range(color_progression); // color range
 
 	// scale values on axes
@@ -785,7 +792,14 @@ function renderLinechart(selector, countries, size) {
 
 	vis.selectAll('.country-line-path')
 		.attr("d", function(d) { return line(d.values); })
-		.attr('stroke', function(d) { return d.key >= 990 ? qz_gray_2 : colorScale(d.key) }); // grey for world average
+		.attr('stroke', function(d,i) {
+	    	if(selector == ".chart-usergenerated") {
+	    		return d.key >= 990 ? qz_gray_2 : 
+	    			i == 0 ? colorScale(1) :
+	    			colorScale(3)
+	    	}
+	    	return d.key >= 990 ? qz_gray_2 : colorScale(i) 
+	    }); // grey for world average
 
 	countryLineEnter.append("text")
 	    .attr("class", "legend")
@@ -797,7 +811,6 @@ function renderLinechart(selector, countries, size) {
 				d.pos = labelPositioning[selector][d.key]
 			}
 			else {
-				console.log(data)
 				d.pos = {
 					"dy":-0.4,
 					"x": d.key != 999 ? 2013 : 1961,
@@ -821,8 +834,15 @@ function renderLinechart(selector, countries, size) {
 	    .attr("x", function(d) {return x(d.pos.x)})
 	    .attr("dy",function(d){return d.pos.dy + "em"})
 	    .attr("text-anchor",function(d){return d.pos.anchor})
-	    .text(function(d) {return d.name; })
-	    .style("fill", function(d) { if (d.key >= 990) {return qz_gray_2} else {return colorScale(d.key); }}); // grey for world average
+	    .text(function(d) {return d.qzname; })
+	    .style("fill", function(d,i) {
+	    	if(selector == ".chart-usergenerated") {
+	    		return d.key >= 990 ? qz_gray_2 : 
+	    			i == 0 ? colorScale(1) :
+	    			colorScale(3)
+	    	}
+	    	return d.key >= 990 ? qz_gray_2 : colorScale(i) 
+	    }); // grey for world average
 
 }
 
@@ -898,6 +918,7 @@ function init() {
 				var row = { // save values for all columns that we need
 					id: +d.ISO, 
 					name: d['countryname'],
+					qzname: help.country_to_qz_style(d['countryname']),
 					entity : d ['entity']
 				}
 
