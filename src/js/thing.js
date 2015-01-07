@@ -56,7 +56,7 @@ var config = {
 // store all input parameters for the visualisation in state so that we always know what state the visualisation is in
 
 var state = {
-	mapwidth : d3.select("#map").node().offsetWidth, // .node().offsetWidth reads width of element #map, needed for responsive positioning
+	mapwidth : $("#map").width(), // .node().offsetWidth reads width of element #map, needed for responsive positioning
 	active : null,
 	currentYear:d3.max(config.years), 
 	countries: [],
@@ -73,7 +73,7 @@ console.log("Selected countries by user: " + state.userselected);
 
 var actions = {
 	updateSizes : function() { 
-		state.mapwidth = d3.select("#map").node().offsetWidth;
+		state.mapwidth = $("#map").width();
 		render();
 	},
 	updateYear : function(year) {
@@ -255,13 +255,12 @@ function renderMap() {
 
 	var svgEnter = svg.enter()
 		.append("svg")
-	    .attr("width", width)
-	    .attr("height", height);
 
 	svgEnter.append("defs").append("path")
 	    .datum({type: "Sphere"})
 	    .attr("id", "sphere")
-	    .attr("d", path);
+	    
+	d3.select("#sphere").attr("d", path);
 
 	//circle around the globe
 	svgEnter.append("use")
@@ -272,10 +271,14 @@ function renderMap() {
 	    .attr("class", "fill")
 	    .attr("xlink:href", "#sphere");
 
-	svgEnter.append("path")
+	var graticule = svgEnter.append("path")
 	    .datum(graticule)
 	    .attr("class", "graticule")
-	    .attr("d", path);
+	  
+	  d3.selectAll("path.graticule").attr("d", path);
+
+	svg.attr("width", width)
+	    .attr("height", height);
 
 	var countries = svg.selectAll('.country').data(topojson.feature(state.world, state.world.objects.countries).features);
 
@@ -284,12 +287,14 @@ function renderMap() {
 	    .attr("class", "country")
 	    .attr("title", function(d) { return d.name;})
 	    .attr("id", function(d) { return "country-" + d.id;})
-	    .attr("d", path);
+	    
+	countries.attr("d", path);
 
 	svgEnter.insert("path", ".graticule")
       .datum(topojson.mesh(state.world, state.world.objects.countries, function(a, b) { return a !== b; }))
       .attr("class", "boundary")
-      .attr("d", path);
+      
+     d3.selectAll("path.boundary").attr("d", path);
 
 	var tip = d3.tip()
 	  .attr('class', 'd3-tip')
@@ -331,6 +336,7 @@ function renderKey() {
     .scale(x)
     .orient("bottom")
     .tickSize(0)
+    .tickFormat(function(d){return d == 40 ? "40%" : d})
     .tickValues([40,45,48,49,51,52,55,60]); // left out two middle values for space, to generate tick values dynamically: config.color.domain()
 
     var svg = d3.select("#map").selectAll('svg');
@@ -340,7 +346,8 @@ function renderKey() {
     var gEnter = g.enter()
     	.append("g")
 	    .attr("class", "key")
-	    .attr("transform", "translate(" + (state.mapwidth-300)/2 + ",30)"); // position within the svg space
+	  
+	 g.attr("transform", "translate(" + (state.mapwidth-300)/2 + ",30)"); // position within the svg space
 
 	gEnter.selectAll("rect")
 	    .data(config.color.range().map(function(d, i) {
@@ -351,7 +358,9 @@ function renderKey() {
 	      };
 	    }))
 	  .enter().append("rect")
-	    .attr("height", 10)
+	    
+
+	g.selectAll("rect").attr("height", 10)
 	    .attr("x", function(d) { return d.x0; })
 	    .attr("width", function(d) { return d.x1 - d.x0; })
 	    .style("fill", function(d) { return d.z; });
@@ -360,7 +369,7 @@ function renderKey() {
 
 	gEnter.call(xAxis).append("text")
 	    .attr("class", "caption")
-	    .attr("y", -6)
+	    .attr("dy", "-0.5em")
 	    .text("Percentage of women in population");
 }
 
@@ -635,7 +644,7 @@ function renderLinechart(selector, countries, size) {
 
 	var margin = {top: 20*size_ratio, right: 20*size_ratio, bottom: 20*size_ratio, left: 40*size_ratio};
 	var width = $(selector).width() - margin.left - margin.right,
-	    height = size == "normal" ? d3.select(selector).node().offsetWidth/2 - margin.top - margin.bottom : d3.select(selector).node().offsetWidth - margin.top - margin.bottom;
+	    height = size == "normal" ? $(selector).width()/2 - margin.top - margin.bottom : $(selector).width() - margin.top - margin.bottom;
 	var overtick = {top: 15, bottom: 18};
 	var data = countries.map(function(id) { // take input countries and prepare the data
 		
@@ -703,11 +712,12 @@ function renderLinechart(selector, countries, size) {
 
 	var svg = container.selectAll('svg').data([0]);
 	var visEnter = svg.enter().append('svg') // visEnter is used for appending everything that should only be appended once
-		.attr('width', width + margin.left + margin.right)
-		.attr('height', height + margin.top + margin.bottom + overtick.top + overtick.bottom)
-	.append("g")
-		.attr('class', 'vis')
-    	.attr("transform", "translate(" + 0 + "," + margin.top + ")")
+			.append("g")
+				.attr('class', 'vis')
+		    	.attr("transform", "translate(" + 0 + "," + margin.top + ")")
+	svg.attr('width', (width + margin.left + margin.right) + "px")
+		.attr('height', (height + margin.top + margin.bottom + overtick.top + overtick.bottom) + "px")
+	
 
 
     var vis = container.select('.vis');
@@ -722,9 +732,10 @@ function renderLinechart(selector, countries, size) {
 
     visEnter.append("g")
     	.attr('class', 'axis x-axis')
-    	.attr("transform", "translate(" + 0 + "," + (height - margin.bottom + overtick.top) + ")");
+    	
 
-	vis.select('.x-axis').call(xAxis);
+	vis.select('.x-axis').call(xAxis)
+		.attr("transform", "translate(" + 0 + "," + (height - margin.bottom + overtick.top) + ")");
 
     visEnter.append("g")
     	.attr('class', 'axis y-axis');
@@ -916,11 +927,14 @@ function init() {
 }
 
 
-var throttleRender = throttle(fm.resize, 250);
+var throttleRender = throttle(function(){
+		fm.resize()
+		actions.updateSizes()
+	}
+	, 250);
 
 $(document).ready(function () {
   $(window).resize(throttleRender);  
-  $(window).resize(actions.updateSizes);  
   $.bigfoot();
   init();
 });
