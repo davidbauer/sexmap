@@ -47,7 +47,7 @@ var config = {
 		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
 		"northamerica" : [840, 124, 484, 999], // USA, Canada, Mexico, World
 		"mostrising": [344,144,524], //Hong Kong, Sri Lanka, Nepal
-		"africa": [894,800,404,562,434], //Zambia, Uganda, Kenya, Niger, Libya
+		"africa": [894,404,562,434], //Zambia, Kenya, Niger, Libya
 		"centraleurope": [756,276,250,380,40,999] // Switzerland, Germany, France, Italy, Austria, World	
 		}
 	} 
@@ -487,7 +487,7 @@ function renderLinechart(selector, countries, size) {
 		// "warridden": [
 			646:{ //Rwanda
 				"dy":1,
-				"x":2013,
+				"x":1985,
 				"anchor":"end"
 			},
 			368:{ //Iraq
@@ -613,11 +613,6 @@ function renderLinechart(selector, countries, size) {
 		// "africa": [
 			894:{ //Zambia
 				"dy":-0.3,
-				"x":2013,
-				"anchor":"end"
-			},
-			800:{ //Uganda
-				"dy":-0.4,
 				"x":1961,
 				"anchor":"start"
 			},
