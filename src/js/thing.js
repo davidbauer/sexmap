@@ -221,9 +221,9 @@ function renderDatatext() {
 			if (country[state.currentYear] > 50.5) {return 'female'}
 			else if (country[state.currentYear] < 49.5) {return 'male'}
 			else {return 'even'}
-  		}
+		}
 
-  		else {return 'nodata'}
+		else {return 'nodata'}
 	});
 
 	d3.select('.currentMaleCountries').text(sexcount['male']);
@@ -289,7 +289,7 @@ function renderMap() {
 	var countries = svg.selectAll('.country').data(topojson.feature(state.world, state.world.objects.countries).features);
 
 	countries.enter()
-	  	.insert("path", ".graticule")
+		.insert("path", ".graticule")
 		.attr("class", "country")
 		.attr("title", function(d) { return d.name;})
 		.attr("id", function(d) { return "country-" + d.id;})
@@ -323,13 +323,13 @@ function renderMap() {
 		.style({'fill': function(d) {
 			var countryData = _.findWhere(state.countries, {id: +d.id}); // underscore method to find an object in an array based on property id
 			if (countryData) {
-		 		return config.color(countryData[state.currentYear]); // colour countries
-		 	}
-		 	return '#f0f0f0'; // grey for countries without any data
+				return config.color(countryData[state.currentYear]); // colour countries
+			}
+			return '#f0f0f0'; // grey for countries without any data
 		}
 		})
 		.on('mouseover', tip.show)
-	  	.on('mouseout', tip.hide);
+		.on('mouseout', tip.hide);
 }
 
 function renderKey() {
@@ -752,15 +752,6 @@ function renderLinechart(selector, countries, size) {
 		.selectAll("line")
 		.classed("fiftyline",true)
 
-	//add "% women to the top axis label"
-	// vis.selectAll(".y-axis").each(function(){
-	// 	var this_axis = d3.select(this)
-	// 	var maxTickVal = -Infinity
-
-	// 	this_axis.selectAll(".tick text")
-	// 		.each(function(d){ maxTickVal = Math.max(d,maxTickVal)})
-	// 		.text(function(d){return d != maxTickVal ? d : d + "% female population"})
-	// })
 
 	// set background for part of linechart that means balanced
 	vis.selectAll(".chart-background").remove();
@@ -773,19 +764,27 @@ function renderLinechart(selector, countries, size) {
 		.attr("class", "chart-background")
 		// .attr("filter","url(#f_multiply)");
 
+	console.log(data)
+
 	var countryLine = vis.selectAll('.country-line')
 		.data(data, function(d) { return d.key; });
 
 	var countryLineEnter = countryLine.enter().append('g')
-		.attr('class', 'country-line');
+		.attr('class', 'country-line')
+		.attr('stroke', function(d,i) {
+			return d.key >= 990 ? qz_gray_2 : colorScale(i);
+		}).attr('fill', function(d,i) {
+			return d.key >= 990 ? qz_gray_2 : colorScale(i);
+		}); // grey for world average;
 
 	countryLine.exit().remove();
 
 	countryLineEnter.append("path")
 		.attr('class', 'country-line-path')
-		.attr('stroke', function(d,i) {
-			return d.key >= 990 ? qz_gray_2 : colorScale(i) 
-		}); // grey for world average
+		.attr("fill","none")
+	
+	countryLine.selectAll("path")
+		
 
 	vis.selectAll('.country-line-path')
 		.attr("d", function(d) { return line(d.values); })
@@ -794,9 +793,6 @@ function renderLinechart(selector, countries, size) {
 	countryLineEnter.append("text")
 		.attr("class", "legend")
 		.attr("x", width + 3)
-		.style("fill", function(d,i) {
-			return d.key >= 990 ? qz_gray_2 : colorScale(i) 
-		}); // grey for world average
 
 	countryLine.select('.legend')
 		.each(function(d,i){
@@ -827,6 +823,7 @@ function renderLinechart(selector, countries, size) {
 		.attr("x", function(d) {return x(d.pos.x)})
 		.attr("dy",function(d){return d.pos.dy + "em"})
 		.attr("text-anchor",function(d){return d.pos.anchor})
+		.style("stroke", "none") // grey for world average
 		.text(function(d) {return d.qzname; })
 		
 
