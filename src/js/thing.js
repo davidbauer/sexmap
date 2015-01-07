@@ -327,7 +327,7 @@ function renderMap() {
 			if (countryData) {
 				return config.color(countryData[state.currentYear]); // colour countries
 			}
-			return '#f0f0f0'; // grey for countries without any data
+			return '#fff'; // white for countries without any data
 		}
 		})
 		.on('mouseover', tip.show)
