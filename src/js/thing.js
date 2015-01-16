@@ -45,7 +45,7 @@ var config = {
 		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia
 		"warridden": [646,368,116], // Rwanda, Iraq, Cambodia
 		"highincome": [997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
-		"brics": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
+		"bric": [76,643,356,156], // Brazil, Russia, India, China
 		"northamerica" : [840, 124, 484, 999], // USA, Canada, Mexico, World
 		"mostrising": [344,144,524], //Hong Kong, Sri Lanka, Nepal
 		"africa": [894,404,562,434], //Zambia, Kenya, Niger, Libya
@@ -179,7 +179,7 @@ function render() {
 	renderLinechart(".chart-3", config.countryGroups.soviet, "normal");
 	renderLinechart(".chart-4", config.countryGroups.warridden, "normal");
 	renderLinechart(".chart-5", config.countryGroups.highincome, "normal");
-	renderLinechart(".chart-6", config.countryGroups.brics, "normal");
+	renderLinechart(".chart-6", config.countryGroups.bric, "normal");
 	renderLinechart(".chart-7", config.countryGroups.northamerica, "normal");
 	renderLinechart(".chart-8", config.countryGroups.mostrising,"normal");
 	renderLinechart(".chart-9", config.countryGroups.africa,"normal");
@@ -533,7 +533,7 @@ function renderLinechart(selector, countries, size) {
 
 		},
 		'.chart-6': {
-		// "brics": [
+		// "bric": [
 			76:{ //Brazil
 				"dy":1.2,
 				"x":2013,
