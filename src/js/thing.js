@@ -860,6 +860,11 @@ function renderLinechart(selector, countries, size) {
 				}
 			})
 		}
+
+		container.selectAll("p").data(["World Bank"])
+			.enter()
+			.append("p")
+			.text(function(d){return "Data: " + d})
 		
 
 }
