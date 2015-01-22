@@ -259,6 +259,8 @@ function renderMap() {
 
 	var map = d3.select("#map");
 
+	// map.insert("svg")
+
 	var svg = map.selectAll('svg').data([0]);
 
 	var svgEnter = svg.enter()
