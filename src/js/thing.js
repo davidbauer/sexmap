@@ -764,8 +764,6 @@ function renderLinechart(selector, countries, size) {
 		.attr("class", "chart-background")
 		// .attr("filter","url(#f_multiply)");
 
-	console.log(data)
-
 	var countryLine = vis.selectAll('.country-line')
 		.data(data, function(d) { return d.key; });
 
