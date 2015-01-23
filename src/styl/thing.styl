@@ -196,6 +196,7 @@ figure
 		padding 0 1em
 		text-align right
 		color $qz-gray-1
+		line-height 1.1
 
 .caption
 	font-size 16px
@@ -375,17 +376,29 @@ figure
 .chart-usergenerated
 	.legend
 		font-size 1em
+		
+.only_on_mobile
+	display none
+.not_on_mobile
+	display inline
 
 /* Mobile styles
 -------------------------------------------------------------------------------*/
 
-@media screen and (max-width $width-small) 
+@media screen and (max-width $width-small)
+	.item-body
+		padding 0 1em
 	.userinput-0 
 		margin-right 0px
 		margin-bottom 5px
 		
 	.linechart
 		font-size 0.75em
+		
+	.only_on_mobile
+		display inline
+	.not_on_mobile
+		display none
 		
 /* Custom Bigfoot styles
 -------------------------------------------------------------------------------*/

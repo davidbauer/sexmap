@@ -647,7 +647,7 @@ function renderLinechart(selector, countries, size) {
 	var pxFontSize = Number(getComputedStyle(document.getElementsByTagName("section")[3], "").fontSize.match(/(\d*(\.\d*)?)px/)[1]);
 	var size_ratio = pxFontSize/20
 
-	var margin = {top: 20*size_ratio, right: 20*size_ratio, bottom: 20*size_ratio, left: 40*size_ratio};
+	var margin = {top: 20*size_ratio, right: 5*size_ratio, bottom: 20*size_ratio, left: 40*size_ratio};
 	var width = $(selector).width() - margin.left - margin.right,
 		height = size == "normal" ? $(selector).width()/2 - margin.top - margin.bottom : $(selector).width() - margin.top - margin.bottom;
 	var overtick = {top: 15, bottom: 18};
@@ -705,7 +705,7 @@ function renderLinechart(selector, countries, size) {
 		.scale(y)
 		.orient('left')
 		.tickValues(help.exactTicks(valueExtent,ticknumberY))
-		.tickSize(width + margin.left)
+		.tickSize(width + margin.left + margin.right)
 		.tickFormat(function(d,i) {
 			return d == valueExtent[1] ? Math.round(d*10)/10 + "% female population" : Math.round(d*10)/10
 		});
@@ -760,7 +760,7 @@ function renderLinechart(selector, countries, size) {
 		.attr("y", y(50.5))
 		.attr("height", y(49.5)-y(50.5))
 		.attr("x", margin.left)
-		.attr("width", width)
+		.attr("width", width + margin.right)
 		.attr("class", "chart-background")
 		// .attr("filter","url(#f_multiply)");
 
