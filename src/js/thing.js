@@ -159,7 +159,8 @@ var help = {
 	country_to_qz_style: function(s) {
 		var correx = {
 				"United States": "US",
-				"United Kingdom": "UK"
+				"United Kingdom": "UK",
+				"Lao PDR": "Laos"
 			}
 		return correx.hasOwnProperty(s) ? correx[s] : s
 	}
@@ -308,14 +309,14 @@ function renderMap() {
 
 	var tip = d3.tip()
 	  .attr('class', 'd3-tip')
-	  .offset([5, 0])
+	  .offset([-5, 0])
 	  .html(function(d) {
 		var countryData = _.findWhere(state.countries, {id: +d.id});
 		if (countryData) {
 			if (!isNaN(countryData[state.currentYear])) { // check if actual value exists
-				return countryData.name + ": " + d3.round(countryData[state.currentYear],2) + "% women";
+				return countryData.qzname + ": " + d3.round(countryData[state.currentYear],2) + "% women";
 			}
-			else {return countryData.name + ": no data available";}
+			else {return countryData.qzname + ": no data available";}
 		}
 		return 'no data available'; 
 	  });
