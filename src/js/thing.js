@@ -48,7 +48,7 @@ var config = {
 		"bric": [76,643,356,156], // Brazil, Russia, India, China
 		"northamerica" : [840, 124, 484, 999], // USA, Canada, Mexico, World
 		"mostrising": [344,144,524], //Hong Kong, Sri Lanka, Nepal
-		"africa": [894,404,562,434], //Zambia, Kenya, Niger, Libya
+		"africa": [894,404,434], //Zambia, Kenya, Libya
 		"centraleurope": [756,276,250,380,40,999] // Switzerland, Germany, France, Italy, Austria, World	
 		}
 	} 
