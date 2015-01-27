@@ -1,6 +1,7 @@
 // @if GULP_ENV='prod'
 var urlHostCheck = /[A-za-z0-9_]+\.[A-za-z0-9_]+$/;
 var hostName = window.location.hostname.match(urlHostCheck)[0];
+var new_hash = null;
 
 var FM = FM || frameMessager({
   allowFullWindow : false,
@@ -13,6 +14,7 @@ var FM = FM || frameMessager({
 });
 
 FM.onMessage("app:activePost", function () { resize(); });
+FM.onMessage("parent:readHash", function(msg) { new_hash = msg.hash});
 // @endif
 
 var $interactive = $('#interactive-content');
@@ -51,6 +53,59 @@ function resize () {
   updateHeight(height);
 }
 
+function getHash(response) {
+  // @if GULP_ENV='prod'
+  if (!response) {
+    FM.triggerMessage('QZParent','child:readHash');
+    return getHash(true)
+  }
+  else {
+    if(new_hash) {
+      var temp = new_hash.replace("#","").split(",");
+      var o = {}, a = [];
+      new_hash = null;
+      for (var i = temp.length - 1; i >= 0; i--) {
+        a = temp[i].split(":");
+        o[a[0]] = a[1];
+      };
+
+      return o;
+    }
+    return getHash(true)
+  }
+  
+  // @endif
+
+  // @if GULP_ENV='dev'
+  return window.location.hash;
+  // @endif
+}
+
+function setHash(o) {
+  var hashstring = [];
+
+  for(var prop in o) {
+    hashstring.push(to_hashsafe(prop) + ":" + to_hashsafe(o[prop]))
+  }
+
+  hashstring = hashstring.join(",")
+
+  // @if GULP_ENV='prod'
+  FM.triggerMessage('QZParent', 'child:updateHash', { hash : hashstring });
+  // @endif
+
+  // @if GULP_ENV='dev'
+  window.location.hash = hashstring;
+  // @endif
+
+}
+
+function to_hashsafe(name) {
+  return name.toLowerCase().split(" ").join("-")
+}
+
 module.exports = {
-  resize: resize
+  resize: resize,
+  setHash: setHash
 };
+
