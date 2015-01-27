@@ -1,4 +1,9 @@
-var new_hash = null;
+
+//hash separators
+var pair_sep = "_and_";
+var key_val_sep = "--";
+
+
 // @if GULP_ENV='prod'
 var urlHostCheck = /[A-za-z0-9_]+\.[A-za-z0-9_]+$/;
 var hostName = window.location.hostname.match(urlHostCheck)[0];
@@ -14,20 +19,10 @@ var FM = FM || frameMessager({
 });
 
 
-FM.onMessage("parent:readHash", function(msg) {
-  console.log("new message recieved",msg)
-  fm_dispatch("parent:readHash", {parsed: hashStringToObject(msg.data.hash), raw:msg});
-});
-
 FM.onMessage("app:activePost", function () { resize(); });
 // @endif
 
 var $interactive = $('#interactive-content');
-
-function fm_dispatch(event_str, data) {
-  var evnt = new CustomEvent(event_str,{"detail":data});
-  document.dispatchEvent(evnt);
-}
 
 function documentHeight () {
   var body = document.body;
@@ -73,27 +68,28 @@ function scrollToPosition(o) {
   // @endif
 }
 
-function getHash(response) {
+function fm_dispatch(event_str, data) {
+  //Generic event dispatcher for asyncronous FM responses
+  var evnt = new CustomEvent(event_str,{"detail":data});
+  document.dispatchEvent(evnt);
+}
 
-      // @if GULP_ENV='prod'
-      FM.triggerMessage('QZParent','child:readHash');
-      // @endif
+function getHash() {
+  
+  // @if GULP_ENV='prod'
+  //triggers a lookup of the hash via FM on prod
+  FM.triggerMessage('QZParent','child:readHash');
+  // @endif
 
-      // @if GULP_ENV='dev'
-      fm_dispatch("parent:readHash", {parsed: hashStringToObject(window.location.hash), raw:"DEV"});
-      // @endif
-    
-
+  // @if GULP_ENV='dev'
+  //send a fake FM response on dev
+  fm_dispatch("parent:readHash", {parsed: hashStringToObject(window.location.hash), raw:"DEV"});
+  // @endif
 }
 
 function setHash(o) {
-  var hashstring = [];
-
-  for(var prop in o) {
-    hashstring.push(to_hashsafe(prop) + ":" + to_hashsafe(o[prop]));
-  }
-
-  hashstring = hashstring.join(",");
+  //sets a hash via FM
+  var hashstring = objectToHashString(o);
 
   // @if GULP_ENV='prod'
   FM.triggerMessage('QZParent', 'child:updateHash', { hash : hashstring });
@@ -105,14 +101,35 @@ function setHash(o) {
 
 }
 
+// @if GULP_ENV='prod'
+//register a listener for the hash response resulting from a getHash()
+FM.onMessage("parent:readHash", function(msg) {
+  if(msg.data) {
+    //if there is data parse it and send it with the original object
+    fm_dispatch("parent:readHash", {parsed: hashStringToObject(msg.data.hash), raw:msg});
+  }
+});
+// @endif
+
+function objectToHashString(o) {
+  //Stringify an object of keys and string-values 
+  var s = []
+  for(var prop in o) {
+    s.push(to_hashsafe(prop) + key_val_sep + to_hashsafe(o[prop]))
+  }
+
+  return "#int/" + s.join(pair_sep)
+}
+
 function hashStringToObject(s) {
+  //Objectify a strigified object of keys and string-values
   var o = {};
   if(s) {
-    s = s.replace("#","").split(",");
+    s = s.replace("#","").replace("int/","").split(key_val_sep);
     var a = [];
 
     for (var i = s.length - 1; i >= 0; i--) {
-      a = s[i].split(":");
+      a = s[i].split(pair_sep);
       o[a[0]] = a[1];
     }
   }
@@ -126,6 +143,7 @@ function hashStringToObject(s) {
 }
 
 function to_hashsafe(name) {
+  //lowercase and sub spaces
   return name.toLowerCase().split(" ").join("-");
 }
 
