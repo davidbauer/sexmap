@@ -62,15 +62,15 @@ function scrollToPosition(o) {
   // @endif
 }
 
-function getHash(callback) {
+function getHash(callback,context) {
 
     // @if GULP_ENV='prod'
-    FM.onMessage("parent:readHash", function(msg) { new_hash = msg.hash; callback(hashStringToObject(new_hash));});
+    FM.onMessage("parent:readHash", function(msg) { callback.call(context,hashStringToObject(msg.hash));});
     FM.triggerMessage('QZParent','child:readHash');
     // @endif
 
     // @if GULP_ENV='dev'
-    return callback(hashStringToObject(window.location.hash));
+    (function(){callback.call(context,hashStringToObject(window.location.hash))})();
     // @endif
 }
 
