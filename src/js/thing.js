@@ -1008,7 +1008,10 @@ $(document).ready(function () {
   		$(".userinput-0").val(from_hash[0]);
   		$(".userinput-1").val(from_hash[1]);
   		state.userselected = from_hash
-  		actions.updateUserinput()
+  		if (inited) {
+  			actions.updateUserinput()
+  		}
+  		
   		  		
   	}
   })
