@@ -913,7 +913,7 @@ function renderUserinput() {
 		state.userselected[0] = parseFloat(d3.select(".userinput-0").node().value);
 		state.userselected[1] = parseFloat(d3.select(".userinput-1").node().value);
 		actions.updateUserinput();
-		fm.setHash({"explore": state.userselected.map(String).join("_")});
+		fm.setHash({"explore": state.userselected.map(String).join(fm.hashseps.array)});
 	})
 
 }
@@ -995,7 +995,7 @@ function qzToSexmapHash(o) {
 	}
 	var chart_string = o["explore"]
 
-	return chart_string ? o["explore"].split("--").map(parseFloat) : default_userselected
+	return chart_string ? o["explore"].split(fm.hashseps.array).map(parseFloat) : default_userselected
 }
 
 $(document).ready(function () {
@@ -1008,13 +1008,11 @@ $(document).ready(function () {
   		$(".userinput-0").val(from_hash[0]);
   		$(".userinput-1").val(from_hash[1]);
   		state.userselected = from_hash
-  		if(inited) {
-  			actions.updateUserinput()
-  		}
-  		
+  		actions.updateUserinput()
+  		  		
   	}
   })
-  
+
   init()
 });
 

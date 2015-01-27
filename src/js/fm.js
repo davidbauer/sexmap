@@ -2,6 +2,7 @@
 //hash separators
 var pair_sep = "_and_";
 var key_val_sep = "--";
+var array_sep = "_"
 
 
 // @if GULP_ENV='prod'
@@ -104,7 +105,7 @@ function setHash(o) {
 // @if GULP_ENV='prod'
 //register a listener for the hash response resulting from a getHash()
 FM.onMessage("parent:readHash", function(msg) {
-  if(msg.data && msg.data.hash) {
+  if(msg && msg.data && msg.data.hash) {
     //if there is data parse it and send it with the original object
     fm_dispatch("parent:readHash", {parsed: hashStringToObject(msg.data.hash), raw:msg});
   }
@@ -125,11 +126,11 @@ function hashStringToObject(s) {
   //Objectify a strigified object of keys and string-values
   var o = {};
   if(s) {
-    s = s.replace("#","").replace("int/","").split(key_val_sep);
+    s = s.replace("#","").replace("int/","").split(pair_sep);
     var a = [];
 
     for (var i = s.length - 1; i >= 0; i--) {
-      a = s[i].split(pair_sep);
+      a = s[i].split(key_val_sep);
       o[a[0]] = a[1];
     }
   }
@@ -151,6 +152,11 @@ module.exports = {
   resize: resize,
   setHash: setHash,
   getHash: getHash,
-  scrollToPosition: scrollToPosition
+  scrollToPosition: scrollToPosition,
+  hashseps: {
+    pair: pair_sep,
+    key_val: key_val_sep,
+    array: array_sep
+  }
 };
 
