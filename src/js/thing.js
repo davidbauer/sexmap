@@ -63,6 +63,9 @@ var config = {
 var default_userselected = [392, 120, 999]
 
 function qzToSexmapHash(o) {
+	if (!o) {
+		return default_userselected;
+	}
 	var chart_string = o["explore"]
 
 	return chart_string ? o["explore"].split("-").map(parseFloat) : default_userselected
