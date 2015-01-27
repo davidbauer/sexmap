@@ -24,8 +24,8 @@ FM.onMessage("app:activePost", function () { resize(); });
 var $interactive = $('#interactive-content');
 
 function fm_dispatch(event_str, data) {
-  var evnt = new CustomEvent(event_str,{"detail":data})
-  this.dispatchEvent(evnt)
+  var evnt = new CustomEvent(event_str,{"detail":data});
+  this.dispatchEvent(evnt);
 }
 
 function documentHeight () {
@@ -79,7 +79,7 @@ function getHash(response) {
       // @endif
 
       // @if GULP_ENV='dev'
-      fm_dispatch("parent:readHash", {parsed: window.location.hash, raw:msg})
+      fm_dispatch("parent:readHash", {parsed: window.location.hash, raw:msg});
       // @endif
     
 
@@ -89,7 +89,7 @@ function setHash(o) {
   var hashstring = [];
 
   for(var prop in o) {
-    hashstring.push(to_hashsafe(prop) + ":" + to_hashsafe(o[prop]))
+    hashstring.push(to_hashsafe(prop) + ":" + to_hashsafe(o[prop]));
   }
 
   hashstring = hashstring.join(",");
@@ -105,26 +105,27 @@ function setHash(o) {
 }
 
 function hashStringToObject(s) {
+  var = {};
   if(s) {
-    var s = s.replace("#","").split(",");
-    var o = {}, a = [];
+    s = s.replace("#","").split(",");
+    var a = [];
 
     for (var i = s.length - 1; i >= 0; i--) {
       a = s[i].split(":");
-      o[a[0]] = a[1]
-    };
+      o[a[0]] = a[1];
+    }
   }
   else {
-    o = null
+    o = null;
   }
   
 
-  return o
+  return o;
 
 }
 
 function to_hashsafe(name) {
-  return name.toLowerCase().split(" ").join("-")
+  return name.toLowerCase().split(" ").join("-");
 }
 
 module.exports = {
@@ -132,6 +133,6 @@ module.exports = {
   setHash: setHash,
   getHash: getHash,
   scrollToPosition: scrollToPosition,
-  events: this;
+  events: this
 };
 
