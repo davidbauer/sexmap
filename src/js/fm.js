@@ -14,7 +14,6 @@ var FM = FM || frameMessager({
 });
 
 FM.onMessage("app:activePost", function () { resize(); });
-FM.onMessage("parent:readHash", function(msg) { new_hash = msg.hash;});
 // @endif
 
 var $interactive = $('#interactive-content');
@@ -63,30 +62,16 @@ function scrollToPosition(o) {
   // @endif
 }
 
-function getHash(response) {
-  
-  if (!response) {
+function getHash(callback) {
 
     // @if GULP_ENV='prod'
+    FM.onMessage("parent:readHash", function(msg) { new_hash = msg.hash; callback(hashStringToObject(new_hash));});
     FM.triggerMessage('QZParent','child:readHash');
-    return getHash(true)
     // @endif
 
     // @if GULP_ENV='dev'
-    return hashStringToObject(window.location.hash);
+    return callback(hashStringToObject(window.location.hash));
     // @endif
-
-  }
-  else {
-    if(new_hash) {
-      var o = hashStringToObject(new_hash);
-      new_hash = null;
-      return o;
-    }
-    return getHash(true);
-  }
-  
-  
 }
 
 function setHash(o) {

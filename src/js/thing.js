@@ -64,7 +64,7 @@ function qzToSexmapHash(o) {
 
 // STATE
 // store all input parameters for the visualisation in state so that we always know what state the visualisation is in
-
+var default_userselected = [392, 120, 999]
 
 var state = {
 	mapwidth : $("#map").width(), // .node().offsetWidth reads width of element #map, needed for responsive positioning
@@ -78,20 +78,9 @@ var state = {
 	userselected: null   // user either ids in URL or preset to japan, cameroon and world
 };
 
-var hash = fm.getHash()
 
-state.userselected = qzToSexmapHash(hash)
 
-if(!state.userselected || state.userselected == "") {
-	state.userselected = [392, 120, 999];
-	fm.setHash({"explore": state.userselected.map(String).join("-") });
-}
 
-if(hash["jump"] == "true") {
-	fm.scrollToPosition({selector:"#explore"})
-}
-
-console.log("Selected countries by user: " + state.userselected);
 
 // ACTIONS
 
@@ -157,10 +146,13 @@ var actions = {
 		},config.timelineSpeed)
 	},
 	updateUserinput : function() {
+
 		state.userselected[0] = d3.select(".userinput-0").node().value; 
 		state.userselected[1] = d3.select(".userinput-1").node().value;
 
 		fm.setHash({"explore": state.userselected.map(String).join("-") });
+		
+		
 		
 		renderLinechart(".chart-usergenerated",state.userselected,"normal");
 	},
@@ -680,7 +672,6 @@ function renderLinechart(selector, countries, size) {
 	var data = countries.map(function(id) { // take input countries and prepare the data
 		
 		var countryData = id >= 991 ? _.findWhere(state.aggregates, {id: +id}) : _.findWhere(state.countries, {id: +id});
-
 		return {
 			key: +id,
 			name: countryData.name,
@@ -947,7 +938,7 @@ function renderMapyear() {
 }
 
 
-function init() {
+function init(hash) {
 	// START
 	// load the world
 	d3.json("data/world-110m.json", function(error, world) {
@@ -984,14 +975,15 @@ function init() {
 					return;
 				}
 
+				state.userselected = qzToSexmapHash(hash)
 				actions.updateData(rows);
+				
 			});
 	});
 
 	
 	d3.select('.play').on("click", actions.toggleTimeline);
 
-	console.log("timeline " + state.timeline);
 }
 
 
@@ -1004,7 +996,7 @@ var throttleRender = throttle(function(){
 $(document).ready(function () {
   $(window).resize(throttleRender);  
   $.bigfoot();
-  init();
+  fm.getHash(init)
 });
 
 // it's the end of the code as we know it

@@ -5,7 +5,6 @@
 // require('bigfoot/client/bigfoot.js');
 // @endif
 
-console.log('qz-sexmap is ready to go!');
 
 // Load thing-specific modules here
 require('./thing');
