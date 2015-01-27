@@ -992,7 +992,7 @@ var throttleRender = throttle(function(){
 			throttleRender();
 		}	
 	}
-	, 250);
+	, 251);
 
 function qzToSexmapHash(o) {
 	if (!o) {
