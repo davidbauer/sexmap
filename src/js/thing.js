@@ -56,20 +56,20 @@ var config = {
 	} 
 
 
-function qzToSexmapHash(o) {
-	var chart_string = o["explore"]
-
-	return chart_string ? o["explore"].split("-").map(parseFloat) : null
-}
-
 // STATE
 // store all input parameters for the visualisation in state so that we always know what state the visualisation is in
 var default_userselected = [392, 120, 999]
 
+function qzToSexmapHash(o) {
+	var chart_string = o["explore"]
+
+	return chart_string ? o["explore"].split("-").map(parseFloat) : default_userselected
+}
+
 var state = {
 	mapwidth : $("#map").width(), // .node().offsetWidth reads width of element #map, needed for responsive positioning
 	active : null,
-	currentYear:d3.max(config.years), 
+	currentYear:d3.max(config.years),
 	countries: [],
 	aggregates: [],
 	total: {},
@@ -996,7 +996,7 @@ var throttleRender = throttle(function(){
 $(document).ready(function () {
   $(window).resize(throttleRender);  
   $.bigfoot();
-  fm.getHash(init)
+  fm.getHash(init,this)
 });
 
 // it's the end of the code as we know it

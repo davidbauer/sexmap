@@ -65,7 +65,7 @@ function scrollToPosition(o) {
 function getHash(callback,context) {
 
     // @if GULP_ENV='prod'
-    FM.onMessage("parent:readHash", function(msg) { callback.call(context,hashStringToObject(msg.hash));});
+    FM.onMessage("parent:readHash", function(msg) {console.log(msg); callback.call(context,hashStringToObject(msg.hash));});
     FM.triggerMessage('QZParent','child:readHash');
     // @endif
 
