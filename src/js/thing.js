@@ -49,7 +49,7 @@ var config = {
 		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia
 		"warridden": [646,368,116], // Rwanda, Iraq, Cambodia
 		"highincome": [997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
-		"bric": [76,643,356,156], // Brazil, Russia, India, China
+		"bric": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
 		"northamerica" : [840, 124, 484, 999], // USA, Canada, Mexico, World
 		"mostrising": [344,144,524], //Hong Kong, Sri Lanka, Nepal
 		"africa": [894,404,434], //Zambia, Kenya, Libya
