@@ -228,7 +228,11 @@ html.no-js
               | Main data source: The United Nations Population Division's World Population Prospects, via 
               a(href='http://data.worldbank.org/indicator/SP.POP.TOTL.FE.ZS/countries/1W?display=default', target='_blank') World Bank (2014)
               | .
-    
+
+    <!-- @if GULP_ENV='prod' -->
+    script(src='js/libs/frameMessager.min.js')
+    <!-- @endif -->
+
     script(src="http://underscorejs.org/underscore-min.js")
     script(src="js/libs/qz-d3.js")
     script(src="http://d3js.org/topojson.v1.min.js")
