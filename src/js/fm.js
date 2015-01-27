@@ -15,9 +15,9 @@ var FM = FM || frameMessager({
 
 
 FM.onMessage("parent:readHash", function(msg) {
-  console.log(msg);
-  fm_dispatch("parent:readHash", {parsed: msg.data.hash, raw:msg});
+  fm_dispatch("parent:readHash", {parsed: hashStringToObject(msg.data.hash), raw:msg});
 });
+
 FM.onMessage("app:activePost", function () { resize(); });
 // @endif
 
@@ -25,7 +25,7 @@ var $interactive = $('#interactive-content');
 
 function fm_dispatch(event_str, data) {
   var evnt = new CustomEvent(event_str,{"detail":data});
-  this.dispatchEvent(evnt);
+  document.dispatchEvent(evnt);
 }
 
 function documentHeight () {
@@ -79,7 +79,7 @@ function getHash(response) {
       // @endif
 
       // @if GULP_ENV='dev'
-      fm_dispatch("parent:readHash", {parsed: window.location.hash, raw:msg});
+      fm_dispatch("parent:readHash", {parsed: hashStringToObject(window.location.hash), raw:"DEV"});
       // @endif
     
 
@@ -132,7 +132,6 @@ module.exports = {
   resize: resize,
   setHash: setHash,
   getHash: getHash,
-  scrollToPosition: scrollToPosition,
-  events: this
+  scrollToPosition: scrollToPosition
 };
 

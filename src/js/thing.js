@@ -3,8 +3,6 @@ var throttle = require('./throttle');
 var features = require('./detectFeatures')();
 var updateHref = require("./share");
 
-var inited = false;
-
 
 qz_blue_1 = "#51b2e5";
 qz_blue_2 = "#168dd9";
@@ -62,14 +60,6 @@ var config = {
 // store all input parameters for the visualisation in state so that we always know what state the visualisation is in
 var default_userselected = [392, 120, 999]
 
-function qzToSexmapHash(o) {
-	if (!o) {
-		return default_userselected;
-	}
-	var chart_string = o["explore"]
-
-	return chart_string ? o["explore"].split("-").map(parseFloat) : default_userselected
-}
 
 var state = {
 	mapwidth : $("#map").width(), // .node().offsetWidth reads width of element #map, needed for responsive positioning
@@ -80,7 +70,7 @@ var state = {
 	total: {},
 	world: null,
 	timeline: "ready",
-	userselected: null   // user either ids in URL or preset to japan, cameroon and world
+	userselected: default_userselected  // user either ids in URL or preset to japan, cameroon and world
 };
 
 
@@ -147,13 +137,7 @@ var actions = {
 		},config.timelineSpeed)
 	},
 	updateUserinput : function() {
-
-		state.userselected[0] = d3.select(".userinput-0").node().value; 
-		state.userselected[1] = d3.select(".userinput-1").node().value;
-
-		fm.setHash({"explore": state.userselected.map(String).join("-") });
-		
-		
+		console.log(state.userselected)
 		
 		renderLinechart(".chart-usergenerated",state.userselected,"normal");
 	},
@@ -378,18 +362,22 @@ function renderKey() {
 	  
 	 g.attr("transform", "translate(" + (state.mapwidth-300)/2 + ",30)"); // position within the svg space
 
-	gEnter.selectAll("rect")
-		.data(config.color.range().map(function(d, i) {
+	var scale_data = config.color.range().map(function(d, i) {
 		  return {
 			x0: i ? x(config.color.domain()[i - 1]) : x.range()[0],
 			x1: i < config.color.domain().length ? x(config.color.domain()[i]) : x.range()[1],
 			z: d
 		  };
-		}))
-	  .enter().append("rect")
+		})
+
+	gEnter.selectAll("rect.scalebar")
+		.data(scale_data)
+	  	.enter()
+	  		.append("rect")
+	  		.attr("class","scalebar")
 		
 
-	g.selectAll("rect").attr("height", 10)
+	g.selectAll("rect.scalebar").attr("height", 10)
 		.attr("x", function(d) { return d.x0; })
 		.attr("width", function(d) { return d.x1 - d.x0; })
 		.style("fill", function(d) { return d.z; });
@@ -671,7 +659,6 @@ function renderLinechart(selector, countries, size) {
 		height = size == "normal" ? $(selector).width()/2 - margin.top - margin.bottom : $(selector).width() - margin.top - margin.bottom;
 	var overtick = {top: 15, bottom: 18};
 	var data = countries.map(function(id) { // take input countries and prepare the data
-		
 		var countryData = id >= 991 ? _.findWhere(state.aggregates, {id: +id}) : _.findWhere(state.countries, {id: +id});
 		return {
 			key: +id,
@@ -920,7 +907,10 @@ function renderUserinput() {
 		.remove();
 
 	userinput.on('change', function(d) { 
+		state.userselected[0] = parseFloat(d3.select(".userinput-0").node().value);
+		state.userselected[1] = parseFloat(d3.select(".userinput-1").node().value);
 		actions.updateUserinput();
+		fm.setHash({"explore": state.userselected.map(String).join("-") });
 	})
 
 }
@@ -939,7 +929,7 @@ function renderMapyear() {
 }
 
 
-function init(hash) {
+function init() {
 	// START
 	// load the world
 	d3.json("data/world-110m.json", function(error, world) {
@@ -976,9 +966,8 @@ function init(hash) {
 					return;
 				}
 
-				state.userselected = qzToSexmapHash(hash)
 				actions.updateData(rows);
-				inited = true;
+				fm.getHash()
 				throttleRender();
 				
 			});
@@ -991,18 +980,34 @@ function init(hash) {
 
 
 var throttleRender = throttle(function(){
-		if(inited) {
 			fm.resize()
-			actions.updateSizes()
-		}
-		
+			actions.updateSizes()		
 	}
 	, 250);
+
+function qzToSexmapHash(o) {
+	if (!o) {
+		return default_userselected;
+	}
+	var chart_string = o["explore"]
+
+	return chart_string ? o["explore"].split("-").map(parseFloat) : default_userselected
+}
+
+document.addEventListener("parent:readHash",function(e){
+	var from_hash = qzToSexmapHash(e.detail.parsed)
+	if(from_hash) {
+		$(".userinput-0").val(from_hash[0]);
+		$(".userinput-1").val(from_hash[1]);
+		state.userselected = from_hash
+		actions.updateUserinput()
+	}
+})
 
 $(document).ready(function () {
   $(window).resize(throttleRender);  
   $.bigfoot();
-  fm.getHash(init,this)
+  init()
 });
 
 // it's the end of the code as we know it
