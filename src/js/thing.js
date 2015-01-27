@@ -984,8 +984,13 @@ function init() {
 
 
 var throttleRender = throttle(function(){
+		if(inited) {
 			fm.resize()
-			actions.updateSizes()		
+			actions.updateSizes()
+		}
+		else {
+			throttleRender();
+		}	
 	}
 	, 250);
 
