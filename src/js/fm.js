@@ -97,7 +97,7 @@ function setHash(o) {
   // @endif
 
   // @if GULP_ENV='dev'
-  window.location.hash = hashstring;
+  window.location.hash = "#int/" + hashstring;
   // @endif
 
 }
@@ -119,7 +119,7 @@ function objectToHashString(o) {
     s.push(to_hashsafe(prop) + key_val_sep + to_hashsafe(o[prop]))
   }
 
-  return "#int/" + s.join(pair_sep)
+  return  s.join(pair_sep)
 }
 
 function hashStringToObject(s) {
