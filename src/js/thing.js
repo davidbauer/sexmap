@@ -3,6 +3,8 @@ var throttle = require('./throttle');
 var features = require('./detectFeatures')();
 var updateHref = require("./share");
 
+var inited = false;
+
 
 qz_blue_1 = "#51b2e5";
 qz_blue_2 = "#168dd9";
@@ -186,6 +188,7 @@ function render() {
 	renderLinechart(".chart-9", config.countryGroups.africa,"normal");
 	renderLinechart(".chart-usergenerated", state.userselected,"normal");
 	renderUserinput();
+	inited = true;
 } 
 
 // RENDERING FUNCTIONS
@@ -995,19 +998,23 @@ function qzToSexmapHash(o) {
 	return chart_string ? o["explore"].split("--").map(parseFloat) : default_userselected
 }
 
-document.addEventListener("parent:readHash",function(e){
-	var from_hash = qzToSexmapHash(e.detail.parsed)
-	if(from_hash) {
-		$(".userinput-0").val(from_hash[0]);
-		$(".userinput-1").val(from_hash[1]);
-		state.userselected = from_hash
-		actions.updateUserinput()
-	}
-})
-
 $(document).ready(function () {
   $(window).resize(throttleRender);  
   $.bigfoot();
+
+  document.addEventListener("parent:readHash",function(e){
+  	var from_hash = qzToSexmapHash(e.detail.parsed)
+  	if(from_hash) {
+  		$(".userinput-0").val(from_hash[0]);
+  		$(".userinput-1").val(from_hash[1]);
+  		state.userselected = from_hash
+  		if(inited) {
+  			actions.updateUserinput()
+  		}
+  		
+  	}
+  })
+  
   init()
 });
 
