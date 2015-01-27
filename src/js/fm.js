@@ -54,31 +54,29 @@ function resize () {
 }
 
 function getHash(response) {
-  // @if GULP_ENV='prod'
+  
   if (!response) {
+
+    // @if GULP_ENV='prod'
     FM.triggerMessage('QZParent','child:readHash');
     return getHash(true)
+    // @endif
+
+    // @if GULP_ENV='dev'
+    return hashStringToObject(window.location.hash);
+    // @endif
+
   }
   else {
     if(new_hash) {
-      var temp = new_hash.replace("#","").split(",");
-      var o = {}, a = [];
+      var o = hashStringToObject(new_hash);
       new_hash = null;
-      for (var i = temp.length - 1; i >= 0; i--) {
-        a = temp[i].split(":");
-        o[a[0]] = a[1];
-      };
-
       return o;
     }
-    return getHash(true)
+    return getHash(true);
   }
   
-  // @endif
-
-  // @if GULP_ENV='dev'
-  return window.location.hash;
-  // @endif
+  
 }
 
 function setHash(o) {
@@ -97,6 +95,19 @@ function setHash(o) {
   // @if GULP_ENV='dev'
   window.location.hash = hashstring;
   // @endif
+
+}
+
+function hashStringToObject(s) {
+  var s = s.replace("#","").split(",");
+  var o = {}, a = [];
+
+  for (var i = s.length - 1; i >= 0; i--) {
+    a = s[i].split(":");
+    o[a[0]] = a[1]
+  };
+
+  return o
 
 }
 
