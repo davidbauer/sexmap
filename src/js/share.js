@@ -18,9 +18,9 @@ var shareConfig = {
   twitter: {
     baseUrl: 'https://twitter.com/intent/tweet?',
     url: '',
-    text:+ tweetTxt,
-    related: '',
-    via: ''
+    text: '',
+    related: 'quartzthings',
+    via: 'qz'
   },
   linkedin: {
     baseUrl: 'http://linkedin.com/shareArticle?',
@@ -35,6 +35,10 @@ var shareConfig = {
   }
 };
 function updateHref (args) {
+  if(arguments.length) {
+    shareConfig = $.extend(true,shareConfig,args)
+  }
+  
   var hrefs = {};
 
   hrefs.twitter = [
@@ -70,12 +74,12 @@ function updateHref (args) {
     shareConfig.email.subject
   ].join('');
 
-  hrefs = hrefs.map(encodeURI);
 
-  $twitter.attr('href', hrefs.twitter);
-  $facebook.attr('href', hrefs.facebook);
-  $linkedin.attr('href', hrefs.linkedin);
-  $email.attr('href', hrefs.email);
+  $twitter.attr('href', encodeURI(hrefs.twitter));
+  $facebook.attr('href', encodeURI(hrefs.facebook));
+  $linkedin.attr('href', encodeURI(hrefs.linkedin));
+  $email.attr('href', encodeURI(hrefs.email));
 }
 
 module.exports = updateHref;
+

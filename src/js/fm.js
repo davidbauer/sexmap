@@ -14,7 +14,7 @@ var FM = FM || frameMessager({
 });
 
 FM.onMessage("app:activePost", function () { resize(); });
-FM.onMessage("parent:readHash", function(msg) { new_hash = msg.hash});
+FM.onMessage("parent:readHash", function(msg) { new_hash = msg.hash;});
 // @endif
 
 var $interactive = $('#interactive-content');
@@ -51,6 +51,16 @@ function resize () {
   // resize and call frameMessager
   var height = $interactive.height();
   updateHeight(height);
+}
+
+function scrollToPosition(o) {
+  // @if GULP_ENV='prod'
+  FM.triggerMessage("QZParent", 'child:scrollToPosition', o);
+  // @endif
+
+  // @if GULP_ENV='dev'
+  return;
+  // @endif
 }
 
 function getHash(response) {
@@ -117,6 +127,8 @@ function to_hashsafe(name) {
 
 module.exports = {
   resize: resize,
-  setHash: setHash
+  setHash: setHash,
+  getHash: getHash,
+  scrollToPosition: scrollToPosition
 };
 

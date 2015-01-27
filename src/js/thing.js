@@ -1,6 +1,8 @@
 var fm = require('./fm');
 var throttle = require('./throttle');
 var features = require('./detectFeatures')();
+var updateHref = require("./share");
+
 
 qz_blue_1 = "#51b2e5";
 qz_blue_2 = "#168dd9";
@@ -53,8 +55,16 @@ var config = {
 		}
 	} 
 
+
+function qzToSexmapHash(o) {
+	var chart_string = o["explore"]
+
+	return chart_string ? o["explore"].split("-").map(parseFloat) : null
+}
+
 // STATE
 // store all input parameters for the visualisation in state so that we always know what state the visualisation is in
+
 
 var state = {
 	mapwidth : $("#map").width(), // .node().offsetWidth reads width of element #map, needed for responsive positioning
@@ -65,8 +75,21 @@ var state = {
 	total: {},
 	world: null,
 	timeline: "ready",
-	userselected: parent.window.location.hash ? parent.window.location.hash.substring(2,parent.window.location.hash.length-1).split(",").map(Number) : [392, 120, 999] // user either ids in URL or preset to japan, cameroon and world
+	userselected: null   // user either ids in URL or preset to japan, cameroon and world
 };
+
+var hash = fm.getHash()
+
+state.userselected = qzToSexmapHash(hash)
+
+if(!state.userselected || state.userselected == "") {
+	state.userselected = [392, 120, 999];
+	fm.setHash({"explore": state.userselected.map(String).join("-") });
+}
+
+if(hash["jump"] == "true") {
+	fm.scrollToPosition({selector:"#explore"})
+}
 
 console.log("Selected countries by user: " + state.userselected);
 
@@ -136,7 +159,9 @@ var actions = {
 	updateUserinput : function() {
 		state.userselected[0] = d3.select(".userinput-0").node().value; 
 		state.userselected[1] = d3.select(".userinput-1").node().value;
-		parent.window.location.hash = "[" + state.userselected + "]";
+
+		fm.setHash({"explore": state.userselected.map(String).join("-") });
+		
 		renderLinechart(".chart-usergenerated",state.userselected,"normal");
 	},
 	updateMapyear : function() {
@@ -924,7 +949,6 @@ function renderMapyear() {
 
 function init() {
 	// START
-
 	// load the world
 	d3.json("data/world-110m.json", function(error, world) {
 		  
@@ -964,8 +988,7 @@ function init() {
 			});
 	});
 
-
-
+	
 	d3.select('.play').on("click", actions.toggleTimeline);
 
 	console.log("timeline " + state.timeline);
