@@ -91,8 +91,6 @@ function getHash() {
 function setHash(o) {
   //sets a hash via FM
   var hashstring = objectToHashString(o);
-  console.log(o,hashstring)
-
   // @if GULP_ENV='prod'
   FM.triggerMessage('QZParent', 'child:updateHash', { hash : hashstring });
   // @endif
