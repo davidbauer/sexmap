@@ -3,6 +3,8 @@ var throttle = require('./throttle');
 var features = require('./detectFeatures')();
 var updateHref = require("./share");
 
+var inited = false;
+
 
 qz_blue_1 = "#51b2e5";
 qz_blue_2 = "#168dd9";
@@ -977,6 +979,8 @@ function init(hash) {
 
 				state.userselected = qzToSexmapHash(hash)
 				actions.updateData(rows);
+				inited = true;
+				throttleRender();
 				
 			});
 	});
@@ -988,8 +992,11 @@ function init(hash) {
 
 
 var throttleRender = throttle(function(){
-		fm.resize()
-		actions.updateSizes()
+		if(inited) {
+			fm.resize()
+			actions.updateSizes()
+		}
+		
 	}
 	, 250);
 
