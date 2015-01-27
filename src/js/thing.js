@@ -136,9 +136,7 @@ var actions = {
 			else return;
 		},config.timelineSpeed)
 	},
-	updateUserinput : function() {
-		console.log(state.userselected)
-		
+	updateUserinput : function() {		
 		renderLinechart(".chart-usergenerated",state.userselected,"normal");
 	},
 	updateMapyear : function() {
@@ -878,14 +876,16 @@ function renderUserinput() {
 
 	var userinput_wrap = d3.select('.userinput').selectAll('div.qz-select').data([0,1]);
 
-	var userinput = userinput_wrap
+	var userinputEnter = userinput_wrap
 		.enter()
 		.append("div")
 		.attr("class","qz-select")
-		.append('select')
+		
+	userinput = userinputEnter.append('select')
 		.attr('class', function(d) {return 'userinput-' + d});
 
-	userinput_wrap.append("div").attr("class","clearfix")
+	userinputEnter
+		.append("div").attr("class","clearfix")
 
 	var options = userinput.selectAll('option')
 		.data(state.countries.filter(function(datum) { 
@@ -967,6 +967,7 @@ function init() {
 				}
 
 				actions.updateData(rows);
+				d3.select('.userinput').append("div").attr("class","clearfix")
 				fm.getHash()
 				throttleRender();
 				

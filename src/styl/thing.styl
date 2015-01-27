@@ -357,10 +357,9 @@ figure
 .userinput
 	margin-left auto
 	margin-right auto
-	clear both
 	width 400px
-	&:after
-		clear both
+	margin-bottom 2em
+	
 
 .qz-select
 	float left
@@ -402,6 +401,15 @@ figure
 		display inline
 	.not_on_mobile
 		display none
+		
+	.userinput 
+		width 100%
+	.qz-select
+		width 50%
+	
+	.qz-select + .qz-select
+		float right
+		
 		
 /* Custom Bigfoot styles
 -------------------------------------------------------------------------------*/
