@@ -92,7 +92,7 @@ function setHash(o) {
   //sets a hash via FM
   var hashstring = objectToHashString(o);
 
-  hashstring = "derpderp"
+  hashstring = "explore--480_152_999"
 
   // @if GULP_ENV='prod'
   FM.triggerMessage('QZParent', 'child:updateHash', { hash : hashstring });
