@@ -1,7 +1,7 @@
+var new_hash = null;
 // @if GULP_ENV='prod'
 var urlHostCheck = /[A-za-z0-9_]+\.[A-za-z0-9_]+$/;
 var hostName = window.location.hostname.match(urlHostCheck)[0];
-var new_hash = null;
 
 var FM = FM || frameMessager({
   allowFullWindow : false,
@@ -13,10 +13,20 @@ var FM = FM || frameMessager({
   }
 });
 
+
+FM.onMessage("parent:readHash", function(msg) {
+  console.log(msg);
+  fm_dispatch("parent:readHash", {parsed: msg.data.hash, raw:msg});
+});
 FM.onMessage("app:activePost", function () { resize(); });
 // @endif
 
 var $interactive = $('#interactive-content');
+
+function fm_dispatch(event_str, data) {
+  var evnt = new CustomEvent(event_str,{"detail":data})
+  this.dispatchEvent(evnt)
+}
 
 function documentHeight () {
   var body = document.body;
@@ -62,16 +72,17 @@ function scrollToPosition(o) {
   // @endif
 }
 
-function getHash(callback,context) {
+function getHash(response) {
 
-    // @if GULP_ENV='prod'
-    FM.onMessage("parent:readHash", function(msg) {console.log(msg); callback.call(context,hashStringToObject(msg.data.hash));});
-    FM.triggerMessage('QZParent','child:readHash');
-    // @endif
+      // @if GULP_ENV='prod'
+      FM.triggerMessage('QZParent','child:readHash');
+      // @endif
 
-    // @if GULP_ENV='dev'
-    (function(){callback.call(context,hashStringToObject(window.location.hash))})();
-    // @endif
+      // @if GULP_ENV='dev'
+      fm_dispatch("parent:readHash", {parsed: window.location.hash, raw:msg})
+      // @endif
+    
+
 }
 
 function setHash(o) {
@@ -81,7 +92,7 @@ function setHash(o) {
     hashstring.push(to_hashsafe(prop) + ":" + to_hashsafe(o[prop]))
   }
 
-  hashstring = hashstring.join(",")
+  hashstring = hashstring.join(",");
 
   // @if GULP_ENV='prod'
   FM.triggerMessage('QZParent', 'child:updateHash', { hash : hashstring });
@@ -120,6 +131,7 @@ module.exports = {
   resize: resize,
   setHash: setHash,
   getHash: getHash,
-  scrollToPosition: scrollToPosition
+  scrollToPosition: scrollToPosition,
+  events: this;
 };
 
