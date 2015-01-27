@@ -15,7 +15,7 @@ var FM = FM || frameMessager({
 
 
 FM.onMessage("parent:readHash", function(msg) {
-  console.log(msg,msg.data)
+  console.log(new Date(),msg);
   fm_dispatch("parent:readHash", {parsed: hashStringToObject(msg.data.hash), raw:msg});
 });
 
