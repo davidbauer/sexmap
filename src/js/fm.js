@@ -94,13 +94,19 @@ function setHash(o) {
 }
 
 function hashStringToObject(s) {
-  var s = s.replace("#","").split(",");
-  var o = {}, a = [];
+  if(s) {
+    var s = s.replace("#","").split(",");
+    var o = {}, a = [];
 
-  for (var i = s.length - 1; i >= 0; i--) {
-    a = s[i].split(":");
-    o[a[0]] = a[1]
-  };
+    for (var i = s.length - 1; i >= 0; i--) {
+      a = s[i].split(":");
+      o[a[0]] = a[1]
+    };
+  }
+  else {
+    o = null
+  }
+  
 
   return o
 
