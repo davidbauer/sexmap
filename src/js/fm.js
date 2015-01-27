@@ -105,7 +105,7 @@ function setHash(o) {
 }
 
 function hashStringToObject(s) {
-  var = {};
+  var o = {};
   if(s) {
     s = s.replace("#","").split(",");
     var a = [];
