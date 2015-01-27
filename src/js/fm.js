@@ -105,7 +105,7 @@ function setHash(o) {
 //register a listener for the hash response resulting from a getHash()
 FM.onMessage("parent:readHash", function(msg) {
   console.log("response",msg)
-  if(msg.data) {
+  if(msg.data && msg.data.hash) {
     console.log("and is valid")
     //if there is data parse it and send it with the original object
     fm_dispatch("parent:readHash", {parsed: hashStringToObject(msg.data.hash), raw:msg});
