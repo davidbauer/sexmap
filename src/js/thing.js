@@ -110,7 +110,6 @@ var actions = {
 
 		if (state.timeline == "ready") {
 			state.timeline = "playing";
-			console.log("timeline " + state.timeline);
 			state.currentYear = d3.min(config.years);
 			actions.playTimeline();
 		}
@@ -119,14 +118,12 @@ var actions = {
 			state.timeline = "paused";
 			clearInterval(state.timelineInterval);
 			state.timelineInterval = null;
-			console.log("timeline " + state.timeline);
 			d3.select('.play').html('<img src="assets/play.png" alt="Resume animation" title="Resume animation"/>');
 			return;
 		}
 
 		else if (state.timeline == "paused") {
 			state.timeline = "playing";
-			console.log("timeline " + state.timeline);
 			actions.playTimeline();
 		}
 	},
@@ -144,7 +141,6 @@ var actions = {
 
 			if (state.timeline == "playing") {
 				actions.updateYear(state.currentYear+1);
-				console.log("Visualising data from " + state.currentYear);
 			}
 
 			else return;
