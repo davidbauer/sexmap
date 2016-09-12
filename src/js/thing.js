@@ -34,7 +34,7 @@ color_progression = [qz_purp_3,qz_blue_1,qz_purp_4,qz_blue_2,qz_purp_1,qz_blue_3
 
 // CONFIG
 var config = { 
-	years: d3.range(1961,2014), // maximum value not included, so produces range 1961-2013
+	years: d3.range(1960,2016), // maximum value not included, so produces range 1961-2013
 	timelineSpeed : 800, // after 0.8 seconds, next year appears
 	color : d3.scale.threshold() // define steps for color changes in map
 			.domain([40,45,48,49,49.5,50.5,51,52,55,60])
@@ -945,7 +945,7 @@ function init() {
 		state.world = world;
 
 		//load the data for all countries and prepare it
-		d3.csv('data/data.csv')
+		d3.csv('data/data2015.csv')
 			.row(function(d) { // go through all rows and make sure values are saved as numbers
 				
 				var row = { // save values for all columns that we need
