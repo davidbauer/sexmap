@@ -46,7 +46,7 @@ var config = {
 	countryGroups: { // predefine country groups for linecharts, use ISO 999 to add world average
 		"indiachina": [356,156,586,50,999], // India, China, Pakistan, Bangladesh, World
 		"arab": [999,682,48,512,784,634,414], //Saudi Arabia, Bahrain, Oman, United Arab Emirates, Qatar, Kuwait
-		"soviet": [643,804,112,233,428], // Russian Federation, Ukraine, Belarus, Estonia, Latvia
+		"soviet": [643,804,112,428], // Russian Federation, Ukraine, Belarus, Latvia
 		"warridden": [646,368,116], // Rwanda, Iraq, Cambodia
 		"highincome": [997,578,36,756], // High Income, World, Norway, Australia, Switzerland	
 		"bric": [76,643,356,156,710], // Brazil, Russia, India, China, South Africa
@@ -482,17 +482,12 @@ function renderLinechart(selector, countries, size) {
 				"x":1965,
 				"anchor":"start"
 			},
-			233:{ //Estonia
-				"dy":0.5,
-				"x":2015,
-				"anchor":"end"
-			},
 			428:{ //Latvia
 				"dy":-0.5,
 				"x":2013,
 				"anchor":"end"
 			}
-			// ], // Russian Federation, Ukraine, Belarus, Estonia, Latvia
+			// ], // Russian Federation, Ukraine, Belarus, Latvia
 
 
 		},
