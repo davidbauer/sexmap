@@ -403,8 +403,8 @@ function renderLinechart(selector, countries, size) {
 				"anchor":"end"
 			},
 			156:{ //China
-				"dy":1,
-				"x":2013,
+				"dy":-0.3,
+				"x":2005,
 				"anchor":"end"
 			},
 			586:{ //Pakistan
@@ -414,7 +414,7 @@ function renderLinechart(selector, countries, size) {
 			},
 			50:{ //Banladesh
 				"dy":-0.3,
-				"x":2008,
+				"x":2000,
 				"anchor":"end"
 			},
 			999:{ //world
@@ -442,12 +442,12 @@ function renderLinechart(selector, countries, size) {
 				"anchor":"end"
 			},
 			784:{ //UAE
-				"dy":-0.3,
-				"x":2013,
+				"dy":0,
+				"x":2012,
 				"anchor":"end"
 			},
 			634:{ //Qatar
-				"dy":0.8,
+				"dy":3,
 				"x":2013,
 				"anchor":"end"
 			},
@@ -467,27 +467,27 @@ function renderLinechart(selector, countries, size) {
 		'.chart-3': {
 		// "soviet": [
 			643:{ //Russia
-				"dy":-0.4,
+				"dy":-0.3,
 				"x":1995,
 				"anchor":"middle"
 			},
 			804:{ // Ukraine
-				"dy":-0.2,
-				"x":1975,
-				"anchor":"start"
+				"dy":-0.4,
+				"x":2013,
+				"anchor":"end"
 			},
 			112:{ //Belarus
-				"dy":1,
-				"x":2005,
+				"dy":1.7,
+				"x":1965,
 				"anchor":"start"
 			},
 			233:{ //Estonia
-				"dy":-0.3,
-				"x":1964,
-				"anchor":"start"
+				"dy":0.5,
+				"x":2015,
+				"anchor":"end"
 			},
 			428:{ //Latvia
-				"dy":-0.4,
+				"dy":-0.5,
 				"x":2013,
 				"anchor":"end"
 			}
@@ -519,23 +519,23 @@ function renderLinechart(selector, countries, size) {
 		'.chart-5': {
 		// "highincome": [
 			578:{ //Norway
-				"dy":-0.4,
-				"x":1990,
-				"anchor":"middle"
+				"dy":0.7,
+				"x":2015,
+				"anchor":"end"
 			},
 			36:{ // Australia
 				"dy":1,
-				"x":1975,
-				"anchor":"start"
+				"x":2000,
+				"anchor":"middle"
 			},
 			756:{ // Switzerland
-				"dy":1,
-				"x":1970,
+				"dy":-0.5,
+				"x":2000,
 				"anchor":"middle"
 			},
 			997:{ //High Income
 				"dy":-0.3,
-				"x":1980,
+				"x":1992,
 				"anchor":"middle"
 			}
 			// ], // High Income, World, Norway, Australia, Switzerland	
@@ -546,27 +546,27 @@ function renderLinechart(selector, countries, size) {
 		// "bric": [
 			76:{ //Brazil
 				"dy":1.2,
-				"x":2013,
+				"x":2015,
 				"anchor":"end"
 			},
 			643:{ //Russia
 				"dy":-0.3,
-				"x":2013,
+				"x":2015,
 				"anchor":"end"
 			},
 			356:{ // India
-				"dy":-0.3,
-				"x":2013,
+				"dy":1,
+				"x":2015,
 				"anchor":"end"
 			},
 			156:{ //China
 				"dy":-0.3,
-				"x":1965,
-				"anchor":"start"
+				"x":2015,
+				"anchor":"end"
 			},
 			710:{ //South Africa
-				"dy":-0.3,
-				"x":2013,
+				"dy":-0.5,
+				"x":2014,
 				"anchor":"end"
 			}
 			// ], // Brazil, Russia, India, China, South Africa
@@ -578,18 +578,18 @@ function renderLinechart(selector, countries, size) {
 		// "northamerica" : [
 			840:{ //USA
 				"dy":-0.3,
-				"x":2013,
+				"x":2015,
 				"anchor":"end"
 			},
 			124:{ // Canada
-				"dy":1,
-				"x":2013,
-				"anchor":"end"
+				"dy":-0.6,
+				"x":1990,
+				"anchor":"middle"
 			},
 			484:{ //Mexico
-				"dy":-0.2,
-				"x":2005,
-				"anchor":"middle"
+				"dy":1,
+				"x":2015,
+				"anchor":"end"
 			},
 			999:{ //World
 				"dy":1,
@@ -604,7 +604,7 @@ function renderLinechart(selector, countries, size) {
 		// "mostrising": [
 			344:{ // HK
 				"dy":-0.4,
-				"x":2013,
+				"x":2015,
 				"anchor":"end"
 			},
 			144:{ //Sri Lanka
@@ -613,8 +613,8 @@ function renderLinechart(selector, countries, size) {
 				"anchor":"start"
 			},
 			524:{ //Nepal
-				"dy":-0.3,
-				"x":2013,
+				"dy":1.2,
+				"x":2015,
 				"anchor":"end"
 			}
 			// ], //Hong Kong, Sri Lanka, Nepal
@@ -683,7 +683,7 @@ function renderLinechart(selector, countries, size) {
 
 	// scale values on axes
 	var x = d3.scale.linear()
-		.domain([1960,2013])
+		.domain([1960,2015])
 		.range([margin.left, width + margin.left]);
 
 	var y = d3.scale.linear()
@@ -807,7 +807,7 @@ function renderLinechart(selector, countries, size) {
 				if(d.key == 999) {
 					d.pos = {
 						"dy":-0.4,
-						"x": d.key != 999 ? 2013 : 1961,
+						"x": d.key != 999 ? 2015 : 1960,
 						"anchor": d.key != 999 ? "end" : "start"
 					}
 				}
