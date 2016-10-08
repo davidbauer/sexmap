@@ -1004,8 +1004,7 @@ function qzToSexmapHash(o) {
 }
 
 $(document).ready(function () {
-  $(window).resize(throttleRender);  
-  $.bigfoot();
+  $(window).resize(throttleRender);
 
   document.addEventListener("parent:readHash",function(e){
   	var from_hash = qzToSexmapHash(e.detail.parsed)
