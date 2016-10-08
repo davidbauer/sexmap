@@ -34,7 +34,7 @@ color_progression = [qz_purp_3,qz_blue_1,qz_purp_4,qz_blue_2,qz_purp_1,qz_blue_3
 
 // CONFIG
 var config = { 
-	years: d3.range(1960,2016), // maximum value not included, so produces range 1961-2013
+	years: d3.range(1960,2016), // maximum value not included, so produces range 1960-2015
 	timelineSpeed : 800, // after 0.8 seconds, next year appears
 	color : d3.scale.threshold() // define steps for color changes in map
 			.domain([40,45,48,49,49.5,50.5,51,52,55,60])
@@ -91,6 +91,7 @@ var actions = {
 		renderMap();
 		renderDatatext();
 		actions.updateMapyear();
+		renderMenu();
 	},
 	updateData : function(rows) {
 		state.countries = _.where(rows, {entity: "country"});
@@ -172,7 +173,7 @@ var help = {
 // make one render() function and call all functions to render sub-elements within
 
 function render() {  	
-	// renderMenu(); // dropdown menu to let user switch between years manually
+	renderMenu(); // dropdown menu to let user switch between years manually
 	renderDatatext();
 	if (state.world && state.countries.length > 0) renderMap();
 	renderKey(); // map legend
@@ -195,7 +196,7 @@ function render() {
 
 function renderMenu() {
 
-	var menu = d3.select('#menu').selectAll('select').data([0]);
+	var menu = d3.select('.menu').selectAll('select').data([0]);
 
 	menu.enter()
 		.append('select');
