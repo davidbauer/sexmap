@@ -32,6 +32,7 @@ qz_gre_2 = "#3C703C";
 
 color_progression = [qz_purp_3,qz_blue_1,qz_purp_4,qz_blue_2,qz_purp_1,qz_blue_3,qz_purp_2,qz_blue_1] //,qz_gray_1, qz_gray_3, qz_gray_2]
 
+
 // CONFIG
 var config = { 
 	years: d3.range(1960,2016), // maximum value not included, so produces range 1960-2015
@@ -679,7 +680,7 @@ function renderLinechart(selector, countries, size) {
 
 	// scale values on axes
 	var x = d3.scale.linear()
-		.domain([1960,2015])
+		.domain([1960,2016])
 		.range([margin.left, width + margin.left]);
 
 	var y = d3.scale.linear()
@@ -737,9 +738,12 @@ function renderLinechart(selector, countries, size) {
 	visEnter.append("g")
 		.attr('class', 'axis x-axis')
 		
-
+	
 	vis.select('.x-axis').call(xAxis)
-		.attr("transform", "translate(" + 0 + "," + (height - margin.bottom + overtick.top) + ")");
+		.attr("transform", "translate(" + 0 + "," + (height - margin.bottom + overtick.top) + ")")
+		.selectAll(".tick text")
+		.filter(function(d){return d == 2015})
+		.attr("text-anchor", "end");
 
 	visEnter.append("g")
 		.attr('class', 'axis y-axis');
