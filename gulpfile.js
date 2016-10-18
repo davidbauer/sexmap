@@ -21,7 +21,7 @@ var config = require("./gulp/config");
 var utils  = require("./gulp/utils");
 var _year = new Date().getFullYear().toString();
 
-var qzdataPath = '/Users/dyanofsky/Sites/qzdata-new/qzdata';
+var qzdataPath = '/Users/dyanofsky/qzdata';
 var thingName = 'qz-sexmap';
 var thingPath = qzdataPath + '/' + '2014/qz-sexmap';
 
